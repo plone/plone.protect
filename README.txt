@@ -8,12 +8,12 @@ or applications build on top of the Plone framework.
 Form authentication
 ===================
 
-A common problem in web applications is Cross Site Form Submit, or CSFS. This
-is an attack method in which an attacker tricks a browser to do a HTTP form
-submit to another site. To do this the attacker needs to know the exact
-form parameters. Form authentication is a method to make it impossible for
-an attacker to predict those paramters by adding an extra authenticator
-which can be verified.
+A common problem in web applications is Cross Site Request Forgery or CSRF.
+This is an attack method in which an attacker tricks a browser to do a HTTP
+form submit to another site. To do this the attacker needs to know the exact
+form parameters. Form authentication is a method to make it impossible for an
+attacker to predict those paramters by adding an extra authenticator which can
+be verified.
 
 To use the form authenticator you first need to insert it into your form.
 This can be done using a simple TAL statement inside your form::
