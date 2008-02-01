@@ -13,6 +13,7 @@
        class=".authenticator.AuthenticatorView"
        permission="zope.Public"
        allowed_interface=".interfaces.IAuthenticatorView"
+       />
 
     <genericsetup:registerProfile
        name="default"
