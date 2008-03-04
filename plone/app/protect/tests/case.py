@@ -2,6 +2,10 @@ from unittest import TestCase
 from zope.component import getGlobalSiteManager
 from zope.interface import implements
 from plone.keyring.interfaces import IKeyManager
+from AccessControl.SecurityManagement import newSecurityManager
+from AccessControl.SecurityManagement import noSecurityManager
+from AccessControl.User import User
+
 
 class MockKeyManager:
     implements(IKeyManager)
@@ -20,7 +24,11 @@ class KeyringTestCase(TestCase):
         self.sm=getGlobalSiteManager()
         self.manager=MockKeyManager()
         self.sm.registerUtility(self.manager, provided=IKeyManager, event=False)
+        # Tests modify the user object so we better make sure it is *our*
+        # user object and not the built-in Anonymous User.
+        newSecurityManager(None, User('dummy', 'secret', (), ()))
 
     def tearDown(self):
         self.sm.unregisterUtility(self.manager, provided=IKeyManager)
+        noSecurityManager()
 
