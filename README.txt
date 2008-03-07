@@ -25,7 +25,7 @@ HTTP POST
 =========
 
 If you only need to allow HTTP POST requests you can use the *PostOnly*
-checker:
+checker::
 
   from plone.app.protect import PostOnly
   from plone.app.protect import protect
