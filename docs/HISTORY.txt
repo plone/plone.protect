@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.0b1 - Unreleased
+------------------
+
+- Refactor the code to offer a generic protect decorator for methods
+  which takes a list of checkers as options. Add checkers for both the
+  authenticator verification and HTTP POST-only.
+  [wichert]
+
+
 1.0a1 - January 27, 2008
 ------------------------
 
