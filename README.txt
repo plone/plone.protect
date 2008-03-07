@@ -5,6 +5,39 @@ This package contains utilities that can help to protect parts of Plone
 or applications build on top of the Plone framework.
 
 
+protect decorator
+=================
+
+The most common way to use plone.app.protect is through the ``protect``
+decorator. This decorator takes a list of *checkers* as parameters: each
+checker will check a specific security aspect of the request. For example::
+
+  from plone.app.protect import protect
+  from plone.app.protect import PostOnly
+
+  @protect(PostOnly)
+  def SensitiveMethod(self, REQUEST=None):
+      # This is only allowed with HTTP POST requests.
+
+This relies on the protected method having a parameter called REQUEST.
+
+HTTP POST
+=========
+
+If you only need to allow HTTP POST requests you can use the *PostOnly*
+checker:
+
+  from plone.app.protect import PostOnly
+  from plone.app.protect import protect
+
+  @protect(PostOnly)
+  def manage_doSomething(self, param, REQUEST=None):
+      pass
+
+This checker only operators on HTTP requests; other types of requests
+are not checked.
+
+
 Form authentication
 ===================
 
@@ -28,14 +61,14 @@ can be done using a call to the authenticator view. For example::
    if not authenticator.verify():
        raise Unauthorized
 
-You can do the same thing more conveniently using a function decorator::
+You can do the same thing more conveniently using the ``protect`` decorator::
 
-  from plone.app.protect.authenticator import AuthenticateForm
+  from plone.app.protect import CheckAuthenticator
+  from plone.app.protect import protect
 
-  @AuthenticateForm
+  @protect(CheckAuthenticator)
   def manage_doSomething(self, param, REQUEST=None):
       pass
 
-This only works for methods which have a parameter called REQUEST.
 
 
