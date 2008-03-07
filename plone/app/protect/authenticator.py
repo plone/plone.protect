@@ -36,6 +36,7 @@ def _verify(request):
 
         return False
 
+
 class AuthenticatorView(BrowserView):
     implements(IAuthenticatorView)
 
