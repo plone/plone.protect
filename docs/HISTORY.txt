@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+- Made utils.protect work with Zope >= 2.11.
+  [stefan]
+
+
 1.0b1 - March 7, 2008
 ---------------------
 
