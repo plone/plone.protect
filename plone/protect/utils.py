@@ -4,6 +4,7 @@ import inspect
 _default = []
 
 # This is based on AccessControl.requestmethod.postonly
+# It should probably be updated to use the decorator module.
 def protect(callable, *checkers):
     spec = inspect.getargspec(callable)
     args, defaults = spec[0], spec[3]
