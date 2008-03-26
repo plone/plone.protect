@@ -6,9 +6,9 @@ from unittest import makeSuite
 from AccessControl import getSecurityManager
 from zExceptions import Forbidden
 from ZPublisher.HTTPRequest import HTTPRequest
-from plone.app.protect.tests.case import KeyringTestCase
-from plone.app.protect.authenticator import AuthenticatorView
-from plone.app.protect.authenticator import AuthenticateForm
+from plone.protect.tests.case import KeyringTestCase
+from plone.protect.authenticator import AuthenticatorView
+from plone.protect.authenticator import AuthenticateForm
 
 
 

@@ -7,8 +7,8 @@ from zExceptions import Forbidden
 from ZPublisher.HTTPRequest import HTTPRequest
 from Products.Five import BrowserView
 from plone.keyring.interfaces import IKeyManager
-from plone.app.protect.interfaces import IAuthenticatorView
-from plone.app.protect.utils import protect
+from plone.protect.interfaces import IAuthenticatorView
+from plone.protect.utils import protect
 from zope.deprecation import deprecated
 
 

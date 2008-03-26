@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest import TestSuite
 from unittest import makeSuite
-from plone.app.protect.postonly import check
+from plone.protect.postonly import check
 from ZPublisher.HTTPRequest import HTTPRequest
 from zExceptions import Forbidden
 

@@ -8,12 +8,12 @@ or applications build on top of the Plone framework.
 protect decorator
 =================
 
-The most common way to use plone.app.protect is through the ``protect``
+The most common way to use plone.protect is through the ``protect``
 decorator. This decorator takes a list of *checkers* as parameters: each
 checker will check a specific security aspect of the request. For example::
 
-  from plone.app.protect import protect
-  from plone.app.protect import PostOnly
+  from plone.protect import protect
+  from plone.protect import PostOnly
 
   @protect(PostOnly)
   def SensitiveMethod(self, REQUEST=None):
@@ -27,8 +27,8 @@ HTTP POST
 If you only need to allow HTTP POST requests you can use the *PostOnly*
 checker::
 
-  from plone.app.protect import PostOnly
-  from plone.app.protect import protect
+  from plone.protect import PostOnly
+  from plone.protect import protect
 
   @protect(PostOnly)
   def manage_doSomething(self, param, REQUEST=None):
@@ -63,8 +63,8 @@ can be done using a call to the authenticator view. For example::
 
 You can do the same thing more conveniently using the ``protect`` decorator::
 
-  from plone.app.protect import CheckAuthenticator
-  from plone.app.protect import protect
+  from plone.protect import CheckAuthenticator
+  from plone.protect import protect
 
   @protect(CheckAuthenticator)
   def manage_doSomething(self, param, REQUEST=None):
