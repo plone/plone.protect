@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Unreleased
-----------
+1.0rc1 - March 28, 2008
+-----------------------
 
 - Rename plone.app.protect to plone.protect: there is nothing Plone-specific
   about the functionality in this package and it really should be used outside
