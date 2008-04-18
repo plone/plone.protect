@@ -61,9 +61,9 @@ def check(request):
 
 
 def AuthenticateForm(callable):
-    return protect(callable, check)
+    return protect(check)(callable)
 
-deprecated("AuthenticateForm", "Please use postonly(CheckAuthenticator)")
+deprecated("AuthenticateForm", "Please use the plone.protect.protect decorator")
 
 
 __all__ = [ "AuthenticatorView", "AuthenticateForm", "check" ]
