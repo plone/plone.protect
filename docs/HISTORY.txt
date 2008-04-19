@@ -1,8 +1,13 @@
 Changelog
 =========
 
-1.0 - unreleased
+1.1 - unreleased
 ----------------
+
+
+
+1.0 - April 19, 2008
+--------------------
 
 - The protect decorator had a serious design flaw which broke it. Added
   proper tests for it and fixed the problems.
