@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone.protect">
@@ -15,6 +16,7 @@
        />
     
     <genericsetup:registerProfile
+        zcml:condition="installed Products.CMFCore"
         name="default"
         title="plone.protect configuration"
         description="Local configuration for plone.protect"
