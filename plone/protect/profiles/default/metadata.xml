@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <version>1.1</version>
+  <dependencies>
+    <dependency>profile-plone.keyring:default</dependency>
+  </dependencies>
+</metadata>

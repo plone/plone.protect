@@ -25,6 +25,6 @@ setup(name='plone.protect',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          "plone.keyring",
+          "plone.keyring > 1.0",
       ],
       )

@@ -1,7 +1,10 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone.protect">
+    
+    <include package="plone.keyring" />
 
     <browser:page
        for="*"
@@ -10,6 +13,14 @@
        permission="zope.Public"
        allowed_interface=".interfaces.IAuthenticatorView"
        />
+    
+    <genericsetup:registerProfile
+        name="default"
+        title="plone.protect configuration"
+        description="Local configuration for plone.protect"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        for="Products.CMFCore.interfaces.ISiteRoot"
+        />
 
 </configure>
 
