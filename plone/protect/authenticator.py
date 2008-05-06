@@ -42,7 +42,7 @@ class AuthenticatorView(BrowserView):
     implements(IAuthenticatorView)
 
     def authenticator(self):
-        manager=getUtility(IKeyManager)()
+        manager=getUtility(IKeyManager)
         secret=manager.secret()
         user=_getUserName()
         auth=hmac.new(secret, user, sha).hexdigest()
