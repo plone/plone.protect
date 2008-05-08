@@ -18,6 +18,7 @@
     <genericsetup:registerProfile
         zcml:condition="installed Products.CMFCore"
         name="default"
+        directory="profiles/default"
         title="plone.protect configuration"
         description="Local configuration for plone.protect"
         provides="Products.GenericSetup.interfaces.EXTENSION"
