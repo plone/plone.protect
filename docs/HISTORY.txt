@@ -1,9 +1,12 @@
 Changelog
 =========
 
-1.1 - unreleased
-----------------
+1.1 - June 2, 2008
+------------------
 
+- Add an optional GenericSetup profile to make it easier to install
+  plone.protect.
+  [mj]
 
 
 1.0 - April 19, 2008
