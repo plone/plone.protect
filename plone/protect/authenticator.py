@@ -1,5 +1,4 @@
 import hmac
-import sha
 from zope.component import getUtility
 from zope.interface import implements
 from AccessControl import getSecurityManager
@@ -11,6 +10,10 @@ from plone.protect.interfaces import IAuthenticatorView
 from plone.protect.utils import protect
 from zope.deprecation import deprecated
 
+try:
+    from hashlib import sha1 as sha
+except ImportError:
+    import sha
 
 def _getUserName():
     user=getSecurityManager().getUser()

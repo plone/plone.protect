@@ -1,5 +1,4 @@
 import hmac
-import sha
 import sys
 from unittest import TestSuite
 from unittest import makeSuite
@@ -10,6 +9,10 @@ from plone.protect.tests.case import KeyringTestCase
 from plone.protect.authenticator import AuthenticatorView
 from plone.protect.authenticator import AuthenticateForm
 
+try:
+    from hashlib import sha1 as sha
+except ImportError:
+    import sha
 
 
 class AuthenticatorTests(KeyringTestCase):

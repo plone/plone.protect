@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Avoid deprecation warning for the sha module in Python 2.6.
+  [hannosch]
+
 - Specify package dependencies
   [hannosch]
 
