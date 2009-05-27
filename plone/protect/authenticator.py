@@ -7,8 +7,6 @@ from ZPublisher.HTTPRequest import HTTPRequest
 from Products.Five import BrowserView
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IAuthenticatorView
-from plone.protect.utils import protect
-from zope.deprecation import deprecated
 
 try:
     from hashlib import sha1 as sha
@@ -63,11 +61,5 @@ def check(request):
             raise Forbidden('Form authenticator is invalid.')
 
 
-def AuthenticateForm(callable):
-    return protect(check)(callable)
-
-deprecated("AuthenticateForm", "Please use the plone.protect.protect decorator")
-
-
-__all__ = [ "AuthenticatorView", "AuthenticateForm", "check" ]
+__all__ = [ "AuthenticatorView", "check" ]
 
