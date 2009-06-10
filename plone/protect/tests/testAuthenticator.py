@@ -7,7 +7,8 @@ from zExceptions import Forbidden
 from ZPublisher.HTTPRequest import HTTPRequest
 from plone.protect.tests.case import KeyringTestCase
 from plone.protect.authenticator import AuthenticatorView
-from plone.protect.authenticator import AuthenticateForm
+from plone.protect.authenticator import check
+from plone.protect import protect
 
 try:
     from hashlib import sha1 as sha
@@ -103,13 +104,13 @@ class DecoratorTests(KeyringTestCase):
         KeyringTestCase.setUp(self)
         def func(REQUEST=None):
             return 1
-        self.func=AuthenticateForm(func)
+        self.func=protect(check)(func)
 
 
     def testNoRequestParameter(self):
         def func():
             pass
-        self.assertRaises(ValueError, AuthenticateForm, func)
+        self.assertRaises(ValueError, protect(check), func)
 
 
     def testIgnoreBadRequestType(self):
