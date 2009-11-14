@@ -1,13 +1,12 @@
-import os
 from setuptools import setup, find_packages
 
-version = '2.0'
+version = '2.0a1'
 
 setup(name='plone.protect',
       version=version,
       description="Security for browser forms",
       long_description=open("README.txt").read() + "\n" + \
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+                       open("CHANGES.txt").read(),
       classifiers=[
         "Framework :: Plone",
         "Framework :: Zope2",
@@ -16,7 +15,7 @@ setup(name='plone.protect',
       keywords='zope security CSFS',
       author='Wichert Akkerman',
       author_email='plone-developers@lists.sourceforge.net',
-      url='http://svn.plone.org/svn/plone/plone.protect',
+      url='http://pypi.python.org/pypi/plone.protect',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['plone', ],

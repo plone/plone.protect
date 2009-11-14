@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.0 - Unreleased
-----------------
+2.0a1 - 2009-11-14
+------------------
 
 - Removed deprecated AuthenticateForm class and zope.deprecation dependency.
   [hannosch]
@@ -13,22 +13,22 @@ Changelog
 - Specify package dependencies
   [hannosch]
 
-1.1 - June 2, 2008
-------------------
+1.1 - 2008-06-02
+----------------
 
 - Add an optional GenericSetup profile to make it easier to install
   plone.protect.
   [mj]
 
-1.0 - April 19, 2008
---------------------
+1.0 - 2008-04-19
+----------------
 
 - The protect decorator had a serious design flaw which broke it. Added
   proper tests for it and fixed the problems.
   [wichert]
 
-1.0rc1 - March 28, 2008
------------------------
+1.0rc1 - 2008-03-28
+-------------------
 
 - Rename plone.app.protect to plone.protect: there is nothing Plone-specific
   about the functionality in this package and it really should be used outside
