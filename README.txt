@@ -57,7 +57,7 @@ this will produce a HTML input element with the authentication information.
 Next you need to add logic somewhere to verify the authenticator. This
 can be done using a call to the authenticator view. For example::
 
-   authenticator=getMultiAdapter((request, context), name=u"authenticator")
+   authenticator=getMultiAdapter((context, request), name=u"authenticator")
    if not authenticator.verify():
        raise Unauthorized
 
