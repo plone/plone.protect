@@ -4,6 +4,9 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Update license to BSD following board decision.
+  http://lists.plone.org/pipermail/membership/2009-August/001038.html
+  [elro]
 
 2.0a1 - 2009-11-14
 ------------------
