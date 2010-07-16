@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.0b1'
+version = '2.0'
 
 setup(name='plone.protect',
       version=version,
@@ -8,12 +8,15 @@ setup(name='plone.protect',
       long_description=open("README.txt").read() + "\n" + \
                        open("CHANGES.txt").read(),
       classifiers=[
-        "Framework :: Plone",
-        "Framework :: Zope2",
-        "Programming Language :: Python",
+          "Environment :: Web Environment",
+          "Framework :: Plone",
+          "Framework :: Zope2",
+          "License :: OSI Approved :: BSD License",
+          "Operating System :: OS Independent",
+          "Programming Language :: Python",
         ],
-      keywords='zope security CSFS',
-      author='Wichert Akkerman',
+      keywords='zope security CSRF',
+      author='Plone Foundation',
       author_email='plone-developers@lists.sourceforge.net',
       url='http://pypi.python.org/pypi/plone.protect',
       license='BSD',
