@@ -7,6 +7,7 @@ from zExceptions import Forbidden
 
 
 class PostOnlyTests(TestCase):
+
     def makeRequest(self, method):
         return HTTPRequest(None,
                            dict(REQUEST_METHOD=method,
@@ -28,4 +29,3 @@ def test_suite():
     suite=TestSuite()
     suite.addTest(makeSuite(PostOnlyTests))
     return suite
-

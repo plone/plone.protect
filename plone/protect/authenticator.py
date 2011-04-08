@@ -13,27 +13,28 @@ try:
 except ImportError:
     import sha
 
+
 def _getUserName():
-    user=getSecurityManager().getUser()
+    user = getSecurityManager().getUser()
     if user is None:
         return "Anonymous User"
     return user.getUserName()
 
 
 def _verify(request):
-    auth=request.get("_authenticator")
+    auth = request.get("_authenticator")
     if auth is None:
         return False
 
-    manager=getUtility(IKeyManager)
-    ring=manager[u"_system"]
-    user=_getUserName()
+    manager = getUtility(IKeyManager)
+    ring = manager[u"_system"]
+    user = _getUserName()
 
     for key in ring:
         if key is None:
             continue
-        correct=hmac.new(key, user, sha).hexdigest()
-        if correct==auth:
+        correct = hmac.new(key, user, sha).hexdigest()
+        if correct == auth:
             return True
 
     return False
@@ -43,13 +44,12 @@ class AuthenticatorView(BrowserView):
     implements(IAuthenticatorView)
 
     def authenticator(self):
-        manager=getUtility(IKeyManager)
-        secret=manager.secret()
-        user=_getUserName()
-        auth=hmac.new(secret, user, sha).hexdigest()
+        manager = getUtility(IKeyManager)
+        secret = manager.secret()
+        user = _getUserName()
+        auth = hmac.new(secret, user, sha).hexdigest()
         return '<input type="hidden" name="_authenticator" value="%s"/>' % \
                 auth
-
 
     def verify(self):
         return _verify(self.request)
@@ -61,5 +61,4 @@ def check(request):
             raise Forbidden('Form authenticator is invalid.')
 
 
-__all__ = [ "AuthenticatorView", "check" ]
-
+__all__ = ["AuthenticatorView", "check"]

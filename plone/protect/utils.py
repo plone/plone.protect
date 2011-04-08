@@ -6,6 +6,7 @@ _default = []
 # This is based on AccessControl.requestmethod.postonly
 # It should probably be updated to use the decorator module.
 class protect(object):
+
     def __init__(self, *checkers):
         self.checkers = checkers
 
@@ -51,4 +52,3 @@ class protect(object):
             name = '_facade'
             exec _buildFacade(spec, callable.__doc__) in facade_globs
         return facade_globs[name]
-

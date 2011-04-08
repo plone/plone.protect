@@ -10,7 +10,7 @@ from AccessControl.User import User
 class MockKeyManager:
     implements(IKeyManager)
 
-    keys = [ "one", "two", "three", "four", "five" ]
+    keys = ["one", "two", "three", "four", "five"]
 
     def secret(self):
         return self.keys[0]
@@ -20,9 +20,10 @@ class MockKeyManager:
 
 
 class KeyringTestCase(TestCase):
+
     def setUp(self):
-        self.sm=getGlobalSiteManager()
-        self.manager=MockKeyManager()
+        self.sm = getGlobalSiteManager()
+        self.manager = MockKeyManager()
         self.sm.registerUtility(self.manager, provided=IKeyManager, event=False)
         # Tests modify the user object so we better make sure it is *our*
         # user object and not the built-in Anonymous User.
@@ -31,4 +32,3 @@ class KeyringTestCase(TestCase):
     def tearDown(self):
         self.sm.unregisterUtility(self.manager, provided=IKeyManager)
         noSecurityManager()
-
