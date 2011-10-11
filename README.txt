@@ -71,4 +71,27 @@ You can do the same thing more conveniently using the ``protect`` decorator::
       pass
 
 
+Customized Form Authentication
+-------------------------------
 
+If you'd like use a different authentication token for different forms,
+you can provide an extra string to use with the token::
+
+  <tal:authenticator tal:define="authenticator context/@@authenticator">
+    <span tal:replace="structure python: authenticator.authenticator('a-form-related-value')"/>
+  </tal:authenticator>
+
+To verify::
+
+  authenticator=getMultiAdapter((context, request), name=u"authenticator")
+  if not authenticator.verify('a-form-related-value'):
+      raise Unauthorized
+
+With the decorator::
+  
+  from plone.protect import CustomCheckAuthenticator
+  from plone.protect import protect
+
+  @protect(CustomCheckAuthenticator('a-form-related-value'))
+  def manage_doSomething(self, param, REQUEST=None):
+      pass
