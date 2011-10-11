@@ -61,7 +61,7 @@ class AuthenticatorView(BrowserView):
 
 def check(request, extra=''):
     if isinstance(request, HTTPRequest):
-        if not _verify(request, extra=''):
+        if not _verify(request, extra):
             raise Forbidden('Form authenticator is invalid.')
 
 
