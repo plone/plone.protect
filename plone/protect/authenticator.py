@@ -68,6 +68,8 @@ def check(request, extra=''):
 def CustomCheckAuthenticator(extra=''):
     def _check(request):
         return check(request, extra)
+    return _check
 
 
-__all__ = ["AuthenticatorView", "check", "createToken", "CustomCheckAuthenticator"]
+__all__ = ["AuthenticatorView", "check", "createToken",
+           "CustomCheckAuthenticator"]
