@@ -67,15 +67,20 @@ class VerifyTests(KeyringTestCase):
         KeyringTestCase.setUp(self)
         self.view = AuthenticatorView(None, self.request)
 
-    def setAuthenticator(self, key, extra=''):
+    def setAuthenticator(self, key, extra='', name="_authenticator"):
         user = getSecurityManager().getUser().getUserName()
         auth = hmac.new(key, user + extra, sha).hexdigest()
-        self.request["_authenticator"] = auth
+        self.request[name] = auth
 
     def testCorrectAuthenticator(self):
         self.manager.keys[0] = ("secret")
         self.setAuthenticator("secret")
         self.assertEqual(self.view.verify(), True)
+
+    def testCustomAuthenticatorKeyName(self):
+        self.manager.keys[0] = ("secret")
+        self.setAuthenticator("secret", name="_my_authenticator")
+        self.assertEqual(self.view.verify(name="_my_authenticator"), True)
 
     def testOlderSecretVerifies(self):
         self.manager.keys[3] = "backup"
@@ -143,6 +148,15 @@ class DecoratorTests(KeyringTestCase):
             return True
         self.assertEquals(
             protect(CustomCheckAuthenticator('some-value'))(func)(), True)
+
+    def testAuthenticatedCustomName(self):
+        self.request['_my_authenticator'] = createToken('some-value')
+
+        def func(REQUEST=self.request):
+            return True
+        self.assertEquals(
+            protect(CustomCheckAuthenticator(
+                'some-value', '_my_authenticator'))(func)(), True)
 
 
 def test_suite():

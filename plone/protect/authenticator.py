@@ -27,13 +27,13 @@ def _parseHost(url):
     return getattr(parse, 'netloc', parse[1])
 
 
-def _verify(request, extra=''):
+def _verify(request, extra='', name='_authenticator'):
     referer = request.environ.get('HTTP_REFERER')
     if referer:
         if _parseHost(referer) != _parseHost(request.URL):
             return False
 
-    auth = request.get("_authenticator")
+    auth = request.get(name)
     if auth is None:
         return False
 
@@ -61,24 +61,24 @@ def createToken(extra=''):
 class AuthenticatorView(BrowserView):
     implements(IAuthenticatorView)
 
-    def authenticator(self, extra=''):
+    def authenticator(self, extra='', name='_authenticator'):
         auth = createToken(extra)
-        return '<input type="hidden" name="_authenticator" value="%s"/>' % \
-                auth
+        return '<input type="hidden" name="%s" value="%s"/>' % (
+                name, auth)
 
-    def verify(self, extra=''):
-        return _verify(self.request, extra)
+    def verify(self, extra='', name="_authenticator"):
+        return _verify(self.request, extra=extra, name=name)
 
 
-def check(request, extra=''):
+def check(request, extra='', name="_authenticator"):
     if isinstance(request, HTTPRequest):
-        if not _verify(request, extra):
+        if not _verify(request, extra=extra, name=name):
             raise Forbidden('Form authenticator is invalid.')
 
 
-def CustomCheckAuthenticator(extra=''):
+def CustomCheckAuthenticator(extra='', name='_authenticator'):
     def _check(request):
-        return check(request, extra)
+        return check(request, extra=extra, name=name)
     return _check
 
 
