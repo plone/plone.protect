@@ -6,6 +6,7 @@ from AccessControl import getSecurityManager
 from zExceptions import Forbidden
 from ZPublisher.HTTPRequest import HTTPRequest
 from plone.protect.tests.case import KeyringTestCase
+from plone.protect.tests.case import MockRequest
 from plone.protect.authenticator import AuthenticatorView
 from plone.protect.authenticator import check
 from plone.protect import protect
@@ -62,7 +63,7 @@ class AuthenticatorTests(KeyringTestCase):
 class VerifyTests(KeyringTestCase):
 
     def setUp(self):
-        self.request = {}
+        self.request = MockRequest()
         KeyringTestCase.setUp(self)
         self.view = AuthenticatorView(None, self.request)
 
@@ -96,6 +97,20 @@ class VerifyTests(KeyringTestCase):
         self.manager.keys[0] = ("secret")
         self.setAuthenticator("secret", 'some-extra-value')
         self.assertEqual(self.view.verify('some-extra-value'), True)
+
+    def testsChecksRefererIfPresentAndThrowsUnauthorized(self):
+        self.request.setReferer('http://host/path/to/form')
+        self.request.URL = 'http://differenthost/path/to/form/submission'
+        self.manager.keys[0] = ("secret")
+        self.setAuthenticator("secret")
+        self.assertEqual(self.view.verify(), False)
+
+    def testsChecksRefererAuthorizes(self):
+        self.request.setReferer('http://host/path/to/form')
+        self.request.URL = 'http://host/path/to/form/submission'
+        self.manager.keys[0] = ("secret")
+        self.setAuthenticator("secret")
+        self.assertEqual(self.view.verify(), True)
 
 
 class DecoratorTests(KeyringTestCase):

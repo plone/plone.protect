@@ -7,6 +7,13 @@ Changelog
 - Add MANIFEST.in.
   [WouterVH]
 
+- Add ability to customize the token created.
+  [vangheem]
+
+- Also check the REFERER header.
+  [vangheem]
+
+
 2.0 - 2010-07-18
 ----------------
 

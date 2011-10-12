@@ -7,6 +7,7 @@ from ZPublisher.HTTPRequest import HTTPRequest
 from Products.Five import BrowserView
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IAuthenticatorView
+from urlparse import urlparse
 
 try:
     from hashlib import sha1 as sha
@@ -21,7 +22,17 @@ def _getUserName():
     return user.getUserName()
 
 
+def _parseHost(url):
+    parse = urlparse(url)
+    return getattr(parse, 'netloc', parse[1])
+
+
 def _verify(request, extra=''):
+    referer = request.environ.get('HTTP_REFERER')
+    if referer:
+        if _parseHost(referer) != _parseHost(request.URL):
+            return False
+
     auth = request.get("_authenticator")
     if auth is None:
         return False
