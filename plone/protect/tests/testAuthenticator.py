@@ -6,9 +6,12 @@ from AccessControl import getSecurityManager
 from zExceptions import Forbidden
 from ZPublisher.HTTPRequest import HTTPRequest
 from plone.protect.tests.case import KeyringTestCase
+from plone.protect.tests.case import MockRequest
 from plone.protect.authenticator import AuthenticatorView
 from plone.protect.authenticator import check
 from plone.protect import protect
+from plone.protect import CustomCheckAuthenticator
+from plone.protect import createToken
 
 try:
     from hashlib import sha1 as sha
@@ -51,23 +54,33 @@ class AuthenticatorTests(KeyringTestCase):
         two = self.view.authenticator()
         self.assertNotEqual(one, two)
 
+    def testDiffersPerExtra(self):
+        one = self.view.authenticator()
+        two = self.view.authenticator('some-extra-value')
+        self.assertNotEqual(one, two)
+
 
 class VerifyTests(KeyringTestCase):
 
     def setUp(self):
-        self.request = {}
+        self.request = MockRequest()
         KeyringTestCase.setUp(self)
         self.view = AuthenticatorView(None, self.request)
 
-    def setAuthenticator(self, key):
+    def setAuthenticator(self, key, extra='', name="_authenticator"):
         user = getSecurityManager().getUser().getUserName()
-        auth = hmac.new(key, user, sha).hexdigest()
-        self.request["_authenticator"] = auth
+        auth = hmac.new(key, user + extra, sha).hexdigest()
+        self.request[name] = auth
 
     def testCorrectAuthenticator(self):
         self.manager.keys[0] = ("secret")
         self.setAuthenticator("secret")
         self.assertEqual(self.view.verify(), True)
+
+    def testCustomAuthenticatorKeyName(self):
+        self.manager.keys[0] = ("secret")
+        self.setAuthenticator("secret", name="_my_authenticator")
+        self.assertEqual(self.view.verify(name="_my_authenticator"), True)
 
     def testOlderSecretVerifies(self):
         self.manager.keys[3] = "backup"
@@ -84,6 +97,25 @@ class VerifyTests(KeyringTestCase):
     def testAuthenticatorWrongType(self):
         self.request["_authenticator"] = 123
         self.assertEqual(self.view.verify(), False)
+
+    def testExtraArgumentCanBeVerified(self):
+        self.manager.keys[0] = ("secret")
+        self.setAuthenticator("secret", 'some-extra-value')
+        self.assertEqual(self.view.verify('some-extra-value'), True)
+
+    def testsChecksRefererIfPresentAndThrowsUnauthorized(self):
+        self.request.setReferer('http://host/path/to/form')
+        self.request.URL = 'http://differenthost/path/to/form/submission'
+        self.manager.keys[0] = ("secret")
+        self.setAuthenticator("secret")
+        self.assertEqual(self.view.verify(), False)
+
+    def testsChecksRefererAuthorizes(self):
+        self.request.setReferer('http://host/path/to/form')
+        self.request.URL = 'http://host/path/to/form/submission'
+        self.manager.keys[0] = ("secret")
+        self.setAuthenticator("secret")
+        self.assertEqual(self.view.verify(), True)
 
 
 class DecoratorTests(KeyringTestCase):
@@ -108,6 +140,23 @@ class DecoratorTests(KeyringTestCase):
     def testBadAuthenticator(self):
         self.request["_authenticator"] = "incorrect"
         self.assertRaises(Forbidden, self.func, self.request)
+
+    def testAuthenticatedCustom(self):
+        self.request['_authenticator'] = createToken('some-value')
+
+        def func(REQUEST=self.request):
+            return True
+        self.assertEquals(
+            protect(CustomCheckAuthenticator('some-value'))(func)(), True)
+
+    def testAuthenticatedCustomName(self):
+        self.request['_my_authenticator'] = createToken('some-value')
+
+        def func(REQUEST=self.request):
+            return True
+        self.assertEquals(
+            protect(CustomCheckAuthenticator(
+                'some-value', '_my_authenticator'))(func)(), True)
 
 
 def test_suite():

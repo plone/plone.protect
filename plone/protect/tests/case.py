@@ -7,6 +7,17 @@ from AccessControl.SecurityManagement import noSecurityManager
 from AccessControl.User import User
 
 
+class MockRequest(dict):
+
+    def __init__(self, URL=None, *args, **kwargs):
+        super(MockRequest, self).__init__(*args, **kwargs)
+        self.environ = {}
+        self.URL = URL
+
+    def setReferer(self, url):
+        self.environ['HTTP_REFERER'] = url
+
+
 class MockKeyManager:
     implements(IKeyManager)
 
