@@ -5,7 +5,7 @@ This package contains utilities that can help to protect parts of Plone
 or applications build on top of the Plone framework.
 
 
-1) Restricting to HTTP POST
+1. Restricting to HTTP POST
 ===========================
 
 a) Using decorator
@@ -46,7 +46,7 @@ attacker to predict those parameters by adding an extra authenticator which
 can be verified.
 
 Generating the token
---------------------
+********************
 
 To use the form authenticator you first need to insert it into your form.
 This can be done using a simple TAL statement inside your form::
@@ -56,10 +56,10 @@ This can be done using a simple TAL statement inside your form::
 this will produce a HTML input element with the authentication information.
 
 Validating the token
---------------------
+********************
 
 a) ZCA way
-**********
+----------
 
 Next you need to add logic somewhere to verify the authenticator. This
 can be done using a call to the authenticator view. For example::
@@ -69,7 +69,7 @@ can be done using a call to the authenticator view. For example::
        raise Unauthorized
 
 b) Using decorator
-******************
+------------------
 
 You can do the same thing more conveniently using the ``protect`` decorator::
 
@@ -81,7 +81,7 @@ You can do the same thing more conveniently using the ``protect`` decorator::
       pass
 
 c) Passing request to a function validator
-******************************************
+------------------------------------------
 
 Or just::
 
