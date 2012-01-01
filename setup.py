@@ -5,7 +5,7 @@ version = '2.0.1'
 setup(name='plone.protect',
       version=version,
       description="Security for browser forms",
-      long_description=open("README.txt").read() + "\n" + \
+      long_description=open("README.rst").read() + "\n" + \
                        open("CHANGES.txt").read(),
       classifiers=[
           "Environment :: Web Environment",
