@@ -5,8 +5,11 @@ This package contains utilities that can help to protect parts of Plone
 or applications build on top of the Plone framework.
 
 
-Restricting to HTTP POST
-========================
+1) Restricting to HTTP POST
+===========================
+
+a) Using decorator
+******************
 
 If you only need to allow HTTP POST requests you can use the *PostOnly*
 checker::
@@ -21,9 +24,19 @@ checker::
 This checker only operators on HTTP requests; other types of requests
 are not checked.
 
+b) Passing request to a function validator
+******************************************
 
-Form authentication (CSRF)
-==========================
+Simply::
+
+    from plone.protect import PostOnly
+
+    ...
+    PostOnly(self.context.REQUEST)
+    ...
+
+2. Form authentication (CSRF)
+=============================
 
 A common problem in web applications is Cross Site Request Forgery or CSRF.
 This is an attack method in which an attacker tricks a browser to do a HTTP
@@ -45,7 +58,7 @@ this will produce a HTML input element with the authentication information.
 Validating the token
 --------------------
 
-1. ZCA way
+a) ZCA way
 **********
 
 Next you need to add logic somewhere to verify the authenticator. This
@@ -55,7 +68,7 @@ can be done using a call to the authenticator view. For example::
    if not authenticator.verify():
        raise Unauthorized
 
-2. using decorator
+b) Using decorator
 ******************
 
 You can do the same thing more conveniently using the ``protect`` decorator::
@@ -67,7 +80,7 @@ You can do the same thing more conveniently using the ``protect`` decorator::
   def manage_doSomething(self, param, REQUEST=None):
       pass
 
-3. Passing request to a function validator
+c) Passing request to a function validator
 ******************************************
 
 Or just::
@@ -92,4 +105,4 @@ checker will check a specific security aspect of the request. For example::
   def SensitiveMethod(self, REQUEST=None):
       # This is only allowed with HTTP POST requests.
 
-This relies on the protected method having a parameter called REQUEST (case sensitive).
+This **relies** on the protected method having a parameter called **REQUEST (case sensitive)**.
