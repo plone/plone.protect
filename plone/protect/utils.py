@@ -5,6 +5,8 @@ _default = []
 
 # This is based on AccessControl.requestmethod.postonly
 # It should probably be updated to use the decorator module.
+
+
 class protect(object):
 
     def __init__(self, *checkers):
@@ -48,7 +50,7 @@ class protect(object):
         try:
             name = callable.__name__
             exec _buildFacade(name, spec, callable.__doc__) in facade_globs
-        except TypeError: # BBB: Zope 2.10
+        except TypeError:  # BBB: Zope 2.10
             name = '_facade'
             exec _buildFacade(spec, callable.__doc__) in facade_globs
         return facade_globs[name]

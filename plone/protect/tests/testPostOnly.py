@@ -26,6 +26,6 @@ class PostOnlyTests(TestCase):
 
 
 def test_suite():
-    suite=TestSuite()
+    suite = TestSuite()
     suite.addTest(makeSuite(PostOnlyTests))
     return suite
