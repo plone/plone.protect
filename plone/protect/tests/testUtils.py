@@ -2,13 +2,10 @@ from unittest import TestCase
 from unittest import TestSuite
 from unittest import makeSuite
 from plone.protect.utils import protect
+from zope.globalrequest import setRequest
 
 
-def funcWithoutRequest():
-    pass
-
-
-def funcWithRequest(one, two, REQUEST=None):
+def func(one, two):
     return (one, two)
 
 
@@ -20,27 +17,24 @@ class DummyChecker:
 
 class DecoratorTests(TestCase):
 
-    def testFunctionMustHaveRequest(self):
-        protector = protect()
-        self.assertRaises(ValueError, protector, funcWithoutRequest)
-
     def testArgumentsPassed(self):
-        wrapped = protect()(funcWithRequest)
+        wrapped = protect()(func)
         self.assertEqual(wrapped("one", "two"), ("one", "two"))
 
     def testKeywordArguments(self):
-        wrapped = protect()(funcWithRequest)
+        wrapped = protect()(func)
         self.assertEqual(wrapped(one="one", two="two"), ("one", "two"))
 
     def testMixedArguments(self):
-        wrapped = protect()(funcWithRequest)
+        wrapped = protect()(func)
         self.assertEqual(wrapped("one", two="two"), ("one", "two"))
 
     def testRequestPassedToChecker(self):
         checker = DummyChecker()
-        wrapped = protect(checker)(funcWithRequest)
+        wrapped = protect(checker)(func)
         request = []
-        wrapped("one", "two", request)
+        setRequest(request)
+        wrapped("one", "two")
         self.failUnless(checker.request is request)
 
 

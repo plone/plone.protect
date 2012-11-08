@@ -6,6 +6,7 @@
     i18n_domain="plone.protect">
     
     <include package="plone.keyring" />
+    <include package="five.globalrequest" />
 
     <browser:page
        for="*"

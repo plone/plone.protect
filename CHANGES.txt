@@ -1,8 +1,11 @@
 Changelog
 =========
 
-2.0.1 - unreleased
+2.1 - unreleased
 ------------------
+
+- Refactor to use zope.globalrequest and the decorator package.
+  [elro]
 
 - Add MANIFEST.in.
   [WouterVH]

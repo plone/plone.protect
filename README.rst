@@ -18,7 +18,7 @@ checker::
   from plone.protect import protect
 
   @protect(PostOnly)
-  def manage_doSomething(self, param, REQUEST=None):
+  def doSomething(self, param):
       pass
 
 This checker only operators on HTTP requests; other types of requests
@@ -77,7 +77,7 @@ You can do the same thing more conveniently using the ``protect`` decorator::
   from plone.protect import protect
 
   @protect(CheckAuthenticator)
-  def manage_doSomething(self, param, REQUEST=None):
+  def doSomething(self, param):
       pass
 
 c) Passing request to a function validator
@@ -102,7 +102,5 @@ checker will check a specific security aspect of the request. For example::
   from plone.protect import PostOnly
 
   @protect(PostOnly)
-  def SensitiveMethod(self, REQUEST=None):
+  def SensitiveMethod(self):
       # This is only allowed with HTTP POST requests.
-
-This **relies** on the protected method having a parameter called **REQUEST (case sensitive)**.

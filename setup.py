@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.0.1'
+version = '2.1'
 
 setup(name='plone.protect',
       version=version,
@@ -26,6 +26,8 @@ setup(name='plone.protect',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'decorator',
+          'five.globalrequest',
           'plone.keyring > 1.0',
           'zope.component',
           'zope.interface',
