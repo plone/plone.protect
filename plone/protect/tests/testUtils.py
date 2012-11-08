@@ -37,6 +37,13 @@ class DecoratorTests(TestCase):
         wrapped("one", "two")
         self.failUnless(checker.request is request)
 
+    def testUnboundMethod(self):
+        class TestClass(object):
+            def method(self, one, two):
+                return (one, two)
+        TestClass.method = protect()(TestClass.method)
+        self.assertEqual(TestClass().method("one", "two"), ("one", "two"))
+
 
 def test_suite():
     suite = TestSuite()
