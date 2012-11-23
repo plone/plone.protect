@@ -103,20 +103,6 @@ class VerifyTests(KeyringTestCase):
         self.setAuthenticator("secret", 'some-extra-value')
         self.assertEqual(self.view.verify('some-extra-value'), True)
 
-    def testsChecksRefererIfPresentAndThrowsUnauthorized(self):
-        self.request.setReferer('http://host/path/to/form')
-        self.request.URL = 'http://differenthost/path/to/form/submission'
-        self.manager.keys[0] = ("secret")
-        self.setAuthenticator("secret")
-        self.assertEqual(self.view.verify(), False)
-
-    def testsChecksRefererAuthorizes(self):
-        self.request.setReferer('http://host/path/to/form')
-        self.request.URL = 'http://host/path/to/form/submission'
-        self.manager.keys[0] = ("secret")
-        self.setAuthenticator("secret")
-        self.assertEqual(self.view.verify(), True)
-
 
 class DecoratorTests(KeyringTestCase):
 

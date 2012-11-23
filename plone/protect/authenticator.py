@@ -23,13 +23,6 @@ def _getUserName():
 
 
 def _verify(request, extra='', name='_authenticator'):
-    referer = request.environ.get('HTTP_REFERER')
-    if referer:
-        # for python2.4 compatibility use
-        # urlparse(url)[1] instead of urlparse(url).netloc
-        if urlparse(referer)[1] != urlparse(request.URL)[1]:
-            return False
-
     auth = request.get(name)
     if auth is None:
         return False
