@@ -7,6 +7,10 @@ Changelog
 - Add MANIFEST.in.
   [WouterVH]
 
+- Add ability to customize the token created.
+  [vangheem]
+
+
 2.0 - 2010-07-18
 ----------------
 
