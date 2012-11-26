@@ -7,7 +7,6 @@ from ZPublisher.HTTPRequest import HTTPRequest
 from Products.Five import BrowserView
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IAuthenticatorView
-from urlparse import urlparse
 
 try:
     from hashlib import sha1 as sha
@@ -20,6 +19,20 @@ def _getUserName():
     if user is None:
         return "Anonymous User"
     return user.getUserName()
+
+
+def _is_equal(val1, val2):
+    """
+    constant time comparison
+    """
+    if not isinstance(val1, basestring) or not isinstance(val2, basestring):
+        return False
+    if len(val1) != len(val2):
+        return False
+    result = 0
+    for x, y in zip(val1, val2):
+        result |= ord(x) ^ ord(y)
+    return result == 0
 
 
 def _verify(request, extra='', name='_authenticator'):
@@ -35,7 +48,7 @@ def _verify(request, extra='', name='_authenticator'):
         if key is None:
             continue
         correct = hmac.new(key, user + extra, sha).hexdigest()
-        if correct == auth:
+        if _is_equal(correct, auth):
             return True
 
     return False
