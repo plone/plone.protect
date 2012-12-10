@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.1 - unreleased
+2.0.2 (2012-12-09)
 ------------------
 
 - Use constant time comparison to verify the authenticator. This is part of the
