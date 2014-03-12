@@ -1,23 +1,30 @@
-import hmac
-from zope.component import getUtility
-from zope.interface import implements
 from AccessControl import getSecurityManager
-from zExceptions import Forbidden
-from ZPublisher.HTTPRequest import HTTPRequest
-from Products.Five import BrowserView
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IAuthenticatorView
+from Products.Five import BrowserView
+from zExceptions import Forbidden
+from zope.component import getUtility
+from zope.interface import implements
+from ZPublisher.HTTPRequest import HTTPRequest
 
+import hmac
 try:
     from hashlib import sha1 as sha
 except ImportError:
     import sha
 
 
+ANONYMOUS_USER = "Anonymous User"
+
+
+def isAnonymousUser(user):
+    return user is None or user.getUserName() == ANONYMOUS_USER
+
+
 def _getUserName():
     user = getSecurityManager().getUser()
     if user is None:
-        return "Anonymous User"
+        return ANONYMOUS_USER
     return user.getUserName()
 
 
@@ -35,14 +42,35 @@ def _is_equal(val1, val2):
     return result == 0
 
 
+def _getKeyring(username):
+    manager = getUtility(IKeyManager)
+    if username == ANONYMOUS_USER:
+        try:
+            ring = manager[u'_anon']
+        except KeyError:
+            # no anonymous key defined.
+            # XXX should we even bother allowing to verify?
+            ring = manager[u'_system']
+    else:
+        try:
+            ring = manager[u"_forms"]
+        except KeyError:
+            ring = manager[u'_system']
+    return ring
+
+
 def _verify(request, extra='', name='_authenticator'):
     auth = request.get(name)
     if auth is None:
-        return False
+        auth = request.getHeader('X-CSRF-TOKEN')
+        if auth is None:
+            return False
+    if isinstance(auth, list):
+        # in case 2 auth attributes were added to form. It can happen
+        auth = auth[0]
 
-    manager = getUtility(IKeyManager)
-    ring = manager[u"_system"]
     user = _getUserName()
+    ring = _getKeyring(user)
 
     for key in ring:
         if key is None:
@@ -55,19 +83,21 @@ def _verify(request, extra='', name='_authenticator'):
 
 
 def createToken(extra=''):
-    manager = getUtility(IKeyManager)
-    secret = manager.secret()
     user = _getUserName()
+    ring = _getKeyring(user)
+    secret = ring.random()
     return hmac.new(secret, user + extra, sha).hexdigest()
 
 
 class AuthenticatorView(BrowserView):
     implements(IAuthenticatorView)
 
+    def token(self, extra=''):
+        return createToken(extra)
+
     def authenticator(self, extra='', name='_authenticator'):
         auth = createToken(extra)
-        return '<input type="hidden" name="%s" value="%s"/>' % (
-                name, auth)
+        return '<input type="hidden" name="%s" value="%s"/>' % (name, auth)
 
     def verify(self, extra='', name="_authenticator"):
         return _verify(self.request, extra=extra, name=name)

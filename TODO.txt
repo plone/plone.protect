@@ -1,0 +1,1 @@
+- plone.app.portlets assignments not fully installed--will cause write after site is created

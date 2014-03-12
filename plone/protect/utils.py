@@ -1,4 +1,7 @@
 from AccessControl.requestmethod import _buildFacade
+from plone.protect.authenticator import createToken
+from zope.globalrequest import getRequest
+
 import inspect
 
 _default = []
@@ -54,3 +57,26 @@ class protect(object):
             name = '_facade'
             exec _buildFacade(spec, callable.__doc__) in facade_globs
         return facade_globs[name]
+
+
+def addTokenToUrl(url, req=None):
+    if not url:
+        return url
+    if req is None:
+        req = getRequest()
+    if not url.startswith(req.SERVER_URL):
+        # only transforms urls to same site
+        return url
+    if '_auth_token' not in req.environ:
+        # let's cache this value since this could be called
+        # many times for one request
+        req.environ['_auth_token'] = createToken()
+    token = req.environ['_auth_token']
+
+    if '_authenticator' not in url:
+        if '?' not in url:
+            url += '?'
+        else:
+            url += '&'
+        url += '_authenticator=' + token
+    return url

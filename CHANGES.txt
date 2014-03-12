@@ -1,10 +1,20 @@
 Changelog
 =========
 
-2.0.3 (unreleased)
-------------------
+3.0dev (unreleased)
+-------------------
 
-- Nothing changed yet.
+- auto-rotate keyrings
+  [vangheem]
+
+- use specific keyring for protected forms
+  [vangheem]
+
+- add automatic clickjacking protection(thanks to Manish Bhattacharya)
+  [vangheem]
+
+- add automatic CSRF protection
+  [vangheem]
 
 
 2.0.2 (2012-12-09)

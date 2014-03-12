@@ -1,7 +1,9 @@
 from unittest import TestCase
 from unittest import TestSuite
 from unittest import makeSuite
-from plone.protect.utils import protect
+from plone.protect.utils import protect, addTokenToUrl
+import unittest2 as unittest
+from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
 
 
 def funcWithoutRequest():
@@ -44,7 +46,34 @@ class DecoratorTests(TestCase):
         self.failUnless(checker.request is request)
 
 
+class UrlTests(unittest.TestCase):
+
+    layer = PROTECT_FUNCTIONAL_TESTING
+
+    def testWithUrlFromSameDomain(self):
+        url = addTokenToUrl('http://nohost/foobar', self.layer['request'])
+        self.failUnless('_authenticator=' in url)
+
+    def testWithUrlFromOtherDomain(self):
+        url = addTokenToUrl('http://other/foobar', self.layer['request'])
+        self.failUnless('_authenticator=' not in url)
+
+    def testAddingWithQueryParams(self):
+        url = addTokenToUrl('http://nohost/foobar?foo=bar',
+                            self.layer['request'])
+        self.failUnless('_authenticator=' in url)
+
+    def testWithoutRequest(self):
+        url = addTokenToUrl('http://nohost/foobar')
+        self.failUnless('_authenticator=' in url)
+
+    def testWithNone(self):
+        url = addTokenToUrl(None, self.layer['request'])
+        self.failUnless(not url)
+
+
 def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(DecoratorTests))
+    suite.addTest(makeSuite(UrlTests))
     return suite

@@ -1,5 +1,5 @@
-from ZPublisher.HTTPRequest import HTTPRequest
 from zExceptions import Forbidden
+from ZPublisher.HTTPRequest import HTTPRequest
 
 
 def check(request):

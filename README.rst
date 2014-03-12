@@ -91,6 +91,13 @@ Or just::
     CheckAuthenticator(self.context.REQUEST)
     ...
 
+Headers
+-------
+
+You can also pass in the token by using the header `X-CSRF-TOKEN`. This can be
+useful for AJAX requests.
+
+
 Protect decorator
 =================
 
@@ -131,3 +138,51 @@ With the decorator::
   @protect(CustomCheckAuthenticator('a-form-related-value'))
   def manage_doSomething(self, param, REQUEST=None):
       pass
+
+
+Automatic CSRF Protection
+=========================
+
+Since version 3, plone.protect provides automatic CSRF protection. It does
+this by automatically including the auth token to all internal forms when
+the user reqeusting the page is logged in.
+
+Additionally, whenever a particular request attempts to write to the ZODB,
+it'll check for the existence of a correct auth token.
+
+
+Allowing write on read programatically
+--------------------------------------
+
+Just add an interface to the current request object::
+
+    from plone.protect.interfaces import IDisableCSRFProtection
+    from zope.interface import alsoProvides
+    alsoProvides(request, IDisableCSRFProtection)
+
+Warning! When you do this, the current request is susceptible to CSRF
+exploits so do any required CSRF protection manually.
+
+
+Clickjacking Protection
+=======================
+
+plone.protect also provides, by default, clickjacking protection since
+version 3.0.
+
+To protect against this attack, plone employs the use of the X-Frame-Options
+header. plone.protect will set the X-Frame-Options value to `SAMEORIGIN`.
+
+To customize this value, you can either override it at your proxy server or
+you can set the environment variable of `PLONE_X_FRAME_OPTIONS` to whatever
+value you'd like plone.protect to set this to.
+
+
+Disable All Automatic CSRF Protection
+=====================================
+
+To disable all automatic CSRF protection, set the environment variable
+`PLONE_CSRF_DISABLED` value to `true`.
+
+WARNING! It is very dangerous to do this. Do not do this unless the zeo client
+with this setting is not public and you know what you are doing.
