@@ -145,7 +145,7 @@ Automatic CSRF Protection
 
 Since version 3, plone.protect provides automatic CSRF protection. It does
 this by automatically including the auth token to all internal forms when
-the user reqeusting the page is logged in.
+the user requesting the page is logged in.
 
 Additionally, whenever a particular request attempts to write to the ZODB,
 it'll check for the existence of a correct auth token.
