@@ -29,7 +29,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
-        'plone.keyring > 1.0',
+        'plone.keyring >= 3.0dev',
         'zope.component',
         'zope.interface',
         'Zope2',
