@@ -16,6 +16,7 @@ from zope.component import adapts
 from zope.component.hooks import getSite
 from zope.component import ComponentLookupError
 from zope.interface import implements, Interface
+from zope.browserresource.interfaces import IResource
 
 from urlparse import urlparse
 from urllib import urlencode
@@ -198,7 +199,9 @@ class ProtectTransform(object):
         try:
             token = createToken()
         except ComponentLookupError:
-            if IApplication.providedBy(self.getContext()):
+            context = self.getContext()
+            if IApplication.providedBy(context) or \
+                    IResource.providedBy(context):
                 # skip here, utility not installed yet on zope root
                 return
             raise
