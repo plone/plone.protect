@@ -79,6 +79,9 @@ class ProtectTransform(object):
         # before anything, do the clickjacking protection
         self.request.response.setHeader('X-Frame-Options', X_FRAME_OPTIONS)
 
+        if CSRF_DISABLED:
+            return
+
         # only auto CSRF protect authenticated users
         if isAnonymousUser(getSecurityManager().getUser()):
             return
