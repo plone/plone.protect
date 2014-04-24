@@ -20,6 +20,7 @@ from zope.browserresource.interfaces import IResource
 
 from urlparse import urlparse
 from urllib import urlencode
+import itertools
 import os
 import traceback
 import logging
@@ -125,10 +126,16 @@ class ProtectTransform(object):
                              traceback.format_exc()))
             raise
 
-    def _check(self):
+    def _registered_objects(self):
         app = self.request.PARENTS[-1]
-        if len(app._p_jar._registered_objects) > 0 and not \
-                IDisableCSRFProtection.providedBy(self.request):
+        return list(itertools.chain.from_iterable([
+            conn._registered_objects
+            for conn in app._p_jar.connections.values()
+        ]))
+
+    def _check(self):
+        if len(self._registered_objects()) > 0 and \
+                not IDisableCSRFProtection.providedBy(self.request):
             # Okay, we're writing here, we need to protect!
             try:
                 check(self.request)
@@ -155,7 +162,7 @@ class ProtectTransform(object):
                 # need to be portlet assignments. XXX needs to be fixed
                 # somehow...
                 all_portlet_assignments = True
-                for obj in app._p_jar._registered_objects:
+                for obj in self._registered_objects():
                     if not IPortletAssignment.providedBy(obj):
                         all_portlet_assignments = False
                         break
