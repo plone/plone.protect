@@ -4,8 +4,8 @@ Changelog
 3.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- auto CSRF protection: check for changes on all the storages
+  [mamico]
 
 3.0.0 (2014-04-13)
 ------------------
