@@ -72,10 +72,12 @@ class AutoCSRFProtectTests(unittest.TestCase):
     def test_authentication_works_automatically(self):
         self.open('test-unprotected')
         self.browser.getControl('submit1').click()
+        self.assertEqual(self.portal.foo, "bar")
 
     def test_authentication_works_for_other_form(self):
         self.open('test-unprotected')
         self.browser.getControl('submit2').click()
+        self.assertEqual(self.portal.foo, "bar")
 
     def test_works_for_get_form_yet(self):
         self.open('test-unprotected')
@@ -85,10 +87,13 @@ class AutoCSRFProtectTests(unittest.TestCase):
         self.open('test-unprotected')
         self.browser.getForm('one').\
             getControl(name="_authenticator").value = 'foobar'
-        try:
-            self.browser.getControl('submit1').click()
-        except Exception, ex:
-            self.assertEquals(ex.getcode(), 403)
+        # XXX: plone.transformchain don't reraise exceptions
+        # try:
+        #    self.browser.getControl('submit1').click()
+        # except Exception, ex:
+        #     self.assertEquals(ex.getcode(), 403)
+        self.browser.getControl('submit1').click()
+        self.assertFalse(hasattr(self.portal, "foo"))
 
     def test_CSRF_header(self):
         self.request.environ['HTTP_X_CSRF_TOKEN'] = createToken()
@@ -109,7 +114,6 @@ class AutoCSRFProtectTests(unittest.TestCase):
             self.assertEqual('anonymous should not be protected', '')
         except LookupError:
             pass
-
 
 
 class AutoRotateTests(unittest.TestCase):
