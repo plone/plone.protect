@@ -131,7 +131,7 @@ To verify::
       raise Unauthorized
 
 With the decorator::
-  
+
   from plone.protect import CustomCheckAuthenticator
   from plone.protect import protect
 
