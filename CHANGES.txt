@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.1 (unreleased)
+3.0.1 (2014-11-01)
 ------------------
 
 - auto CSRF protection: check for changes on all the storages
