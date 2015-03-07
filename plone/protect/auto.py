@@ -68,6 +68,10 @@ class ProtectTransform(object):
                         'token to response for url %s' % self.request.URL)
             return None
 
+    def transformBytes(self, result, encoding):
+        result = unicode(result, encoding, 'ignore')
+        return self.transformIterable([result], encoding)
+
     def transformString(self, result, encoding):
         return self.transformIterable([result], encoding)
 
