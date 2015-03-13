@@ -8,6 +8,7 @@ Changelog
   with plone.app.blocks' ESI-rendering
   [atsoukka]
 
+
 3.0.1 (2014-11-01)
 ------------------
 
@@ -16,6 +17,7 @@ Changelog
 
 - CSRF test fixed
   [mamico]
+
 
 3.0.0 (2014-04-13)
 ------------------
