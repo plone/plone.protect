@@ -4,6 +4,10 @@ Changelog
 3.0.2 (2015-03-13)
 ------------------
 
+- handle zope root not having IKeyManager Utility and CRSF protection
+  not being supported on zope root requests yet
+  [vangheem]
+
 - Add ITransform.transformBytes for protect transform to fix compatibility
   with plone.app.blocks' ESI-rendering
   [atsoukka]

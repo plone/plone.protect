@@ -8,15 +8,16 @@ from plone.protect.authenticator import createToken
 from plone.protect.authenticator import isAnonymousUser
 from plone.protect.interfaces import IConfirmView
 from plone.protect.interfaces import IDisableCSRFProtection
+from plone.keyring.interfaces import IKeyManager
 from plone.transformchain.interfaces import ITransform
 from repoze.xmliter.utils import getHTMLSerializer
 import transaction
 from zExceptions import Forbidden
 from zope.component import adapts
 from zope.component.hooks import getSite
+from zope.component import getUtility
 from zope.component import ComponentLookupError
 from zope.interface import implements, Interface
-from zope.browserresource.interfaces import IResource
 
 from urlparse import urlparse
 from urllib import urlencode
@@ -43,6 +44,9 @@ class ProtectTransform(object):
 
     # should be last lxml related transform
     order = 9000
+
+    key_manager = None
+    site = None
 
     def __init__(self, published, request):
         self.published = published
@@ -102,6 +106,17 @@ class ProtectTransform(object):
         # to a ZODB object--no context
         context = self.getContext()
         if not context:
+            return
+
+        self.site = getSite()
+        try:
+            self.key_manager = getUtility(IKeyManager)
+        except ComponentLookupError:
+            pass
+
+        if self.site is None and self.key_manager is None:
+            # key manager not installed and no site object.
+            # key manager must not be installed on site root, ignore
             return
 
         if not self.check():
@@ -178,17 +193,19 @@ class ProtectTransform(object):
                     # conditions for doing the confirm form are:
                     #   1. 301, 302 response code
                     #   2. text/html response
+                    #   3. getSite could be none, zope root maybe, carry on
                     # otherwise,
                     #   just abort with a log entry because we tried to
                     #   write on read, without a POST request and we don't
                     #   know what to do with it gracefully.
                     resp = self.request.response
                     ct = resp.headers.get('content-type')
-                    if resp.status in (301, 302) or 'text/html' in ct:
+                    if self.site and (
+                            resp.status in (301, 302) or 'text/html' in ct):
                         data = self.request.form.copy()
                         data['original_url'] = self.request.URL
                         resp.redirect('%s/@@confirm-action?%s' % (
-                            getSite().absolute_url(),
+                            self.site.absolute_url(),
                             urlencode(data)
                         ))
                         return False
@@ -213,9 +230,7 @@ class ProtectTransform(object):
         try:
             token = createToken()
         except ComponentLookupError:
-            context = self.getContext()
-            if IApplication.providedBy(context) or \
-                    IResource.providedBy(context):
+            if self.site is None:
                 # skip here, utility not installed yet on zope root
                 return
             raise
@@ -223,8 +238,8 @@ class ProtectTransform(object):
         for form in root.cssselect('form'):
             # XXX should we only do POST? If we're logged in and
             # it's an internal form, I'm inclined to say no...
-            #method = form.attrib.get('method', 'GET').lower()
-            #if method != 'post':
+            # method = form.attrib.get('method', 'GET').lower()
+            # if method != 'post':
             #    continue
 
             # some get forms we definitely do not want to protect.
