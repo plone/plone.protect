@@ -52,5 +52,12 @@
         original="__call__"
         replacement=".monkey.RedirectTo__call__"
         />
+    <monkey:patch
+        description="Special handling for write on read Zope2 locking issues"
+        class="webdav.Lockable.LockableItem"
+        original="wl_lockmapping"
+        replacement=".monkey.wl_lockmapping"
+        preserveOriginal="True"
+        />
 
 </configure>

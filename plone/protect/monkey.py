@@ -22,3 +22,9 @@ def RedirectTo__call__(self, controller_state):
             auth = auth[0]
         url += '_authenticator=' + auth
     return request.RESPONSE.redirect(url)
+
+
+def wl_lockmapping(self, killinvalids=0, create=0):
+    locks = self._old_wl_lockmapping(killinvalids=killinvalids, create=create)
+    locks._v_safe_write = True  # hint to tell plone.protect to ignore this object
+    return locks

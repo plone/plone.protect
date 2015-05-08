@@ -153,7 +153,8 @@ class ProtectTransform(object):
         ]))
 
     def _check(self):
-        if len(self._registered_objects()) > 0 and \
+        registered = self._registered_objects()
+        if len(registered) > 0 and \
                 not IDisableCSRFProtection.providedBy(self.request):
             # Okay, we're writing here, we need to protect!
             try:
@@ -180,12 +181,13 @@ class ProtectTransform(object):
                 # cause some writes on read. ALL, registered objects
                 # need to be portlet assignments. XXX needs to be fixed
                 # somehow...
-                all_portlet_assignments = True
-                for obj in self._registered_objects():
-                    if not IPortletAssignment.providedBy(obj):
-                        all_portlet_assignments = False
+                safe = True
+                for obj in registered:
+                    if (not IPortletAssignment.providedBy(obj) and
+                            not getattr(obj, '_v_safe_write', False)):
+                        safe = False
                         break
-                if not all_portlet_assignments:
+                if not safe:
                     LOGGER.info('aborting transaction due to no CSRF '
                                 'protection on url %s' % self.request.URL)
                     transaction.abort()

@@ -11,5 +11,11 @@
     permission="zope2.View"
   />
 
-</configure>
+  <browser:page
+    for="*"
+    name="test-safetowrite"
+    class="plone.protect.testing.TestSafeToWriteObject"
+    permission="zope2.View"
+  />
 
+</configure>

@@ -115,6 +115,11 @@ class AutoCSRFProtectTests(unittest.TestCase):
         except LookupError:
             pass
 
+    def test_safe_to_write_with_v_safe_write(self):
+        self.open('test-safetowrite')
+        self.assertTrue(self.portal.foo, 'bar')
+        self.assertEqual(self.browser.contents, 'done')
+
 
 class AutoRotateTests(unittest.TestCase):
     layer = PROTECT_FUNCTIONAL_TESTING

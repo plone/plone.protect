@@ -164,6 +164,15 @@ Warning! When you do this, the current request is susceptible to CSRF
 exploits so do any required CSRF protection manually.
 
 
+If you just want to allow an object to be writable on a request...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can add the attribute _v_safe_write onto an object to specify that
+it is safe to write on read.
+
+    myobj._v_safe_write = True
+
+
 Clickjacking Protection
 =======================
 

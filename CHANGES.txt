@@ -4,7 +4,11 @@ Changelog
 3.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- patch locking functions to use _v_safe_write attribute
+  [vangheem]
+
+- Be able to use _v_safe_write attribute to specify objects are safe to write
+  [vangheem]
 
 
 3.0.3 (2015-03-30)
