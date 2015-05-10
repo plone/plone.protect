@@ -29,7 +29,7 @@ def wl_lockmapping(self, killinvalids=0, create=0):
     locks = self._old_wl_lockmapping(killinvalids=killinvalids, create=create)
     try:
         locks._v_safe_write = True  # hint to tell plone.protect to ignore this object
-        if not has_write_locks:
+        if not has_write_locks and create:
             # first time writing to object, need to mark it safe
             self._v_safe_write = True
     except AttributeError:
