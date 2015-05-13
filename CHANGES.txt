@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.4 (unreleased)
+3.0.4 (2015-05-13)
 ------------------
 
 - patch locking functions to use _v_safe_write attribute
