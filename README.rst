@@ -115,7 +115,7 @@ checker will check a specific security aspect of the request. For example::
 This **relies** on the protected method having a parameter called **REQUEST (case sensitive)**.
 
 Customized Form Authentication
--------------------------------
+------------------------------
 
 If you'd like use a different authentication token for different forms,
 you can provide an extra string to use with the token::
@@ -165,7 +165,7 @@ exploits so do any required CSRF protection manually.
 
 
 If you just want to allow an object to be writable on a request...
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+******************************************************************
 
 You can add the attribute _v_safe_write onto an object to specify that
 it is safe to write on read.
