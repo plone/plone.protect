@@ -8,7 +8,7 @@ setup(
     description="Security for browser forms",
     long_description='%s\n%s' % (
         open("README.rst").read(),
-        open("CHANGES.txt").read()
+        open("CHANGES.rst").read()
     ),
     classifiers=[
         "Environment :: Web Environment",
