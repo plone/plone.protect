@@ -21,7 +21,7 @@ checker::
   def manage_doSomething(self, param, REQUEST=None):
       pass
 
-This checker only operators on HTTP requests; other types of requests
+This checker only operates on HTTP requests; other types of requests
 are not checked.
 
 b) Passing request to a function validator
