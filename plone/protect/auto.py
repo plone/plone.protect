@@ -39,14 +39,14 @@ def safeWrite(obj, request=None):
     if request is None:
         request = getRequest()
     if request is None:
-        LOGGER.info('could not mark object as a safe write')
+        LOGGER.debug('could not mark object as a safe write')
     if SAFE_WRITE_KEY not in request.environ:
         request.environ[SAFE_WRITE_KEY] = []
     try:
         if obj._p_oid not in request.environ[SAFE_WRITE_KEY]:
             request.environ[SAFE_WRITE_KEY].append(obj._p_oid)
-    except:
-        LOGGER.info('object you attempted to mark safe does not have an oid')
+    except AttributeError:
+        LOGGER.debug('object you attempted to mark safe does not have an oid')
 
 
 class ProtectTransform(object):
