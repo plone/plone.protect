@@ -187,10 +187,6 @@ class ProtectTransform(object):
                     return True
                 raise
             except Forbidden:
-                if self.request.REQUEST_METHOD != 'GET':
-                    # only try to be "smart" with GET requests
-                    raise
-
                 # XXX
                 # okay, so right now, we're going to check if the current
                 # registered objects to write, are just portlet assignments.
@@ -208,7 +204,9 @@ class ProtectTransform(object):
                         safe = False
                         break
                 if not safe:
-                    import pdb; pdb.set_trace()
+                    if self.request.REQUEST_METHOD != 'GET':
+                        # only try to be "smart" with GET requests
+                        raise
                     LOGGER.info('aborting transaction due to no CSRF '
                                 'protection on url %s' % self.request.URL)
                     transaction.abort()
