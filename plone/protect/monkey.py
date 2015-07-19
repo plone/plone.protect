@@ -1,5 +1,7 @@
+from zope.component.hooks import getSite
 from urlparse import urlparse, urljoin
 from plone.protect.auto import safeWrite
+from Products.PluggableAuthService import utils as pluaggable_utils
 
 
 def RedirectTo__call__(self, controller_state):
@@ -37,3 +39,21 @@ def wl_lockmapping(self, killinvalids=0, create=0):
         # not a persistent class, ignore
         pass
     return locks
+
+
+def pluggableauth__getCSRFToken(request):
+    """
+    if we have a site object, let plone.protect do it's job
+    """
+    if getSite():
+        return
+    return pluaggable_utils._old_getCSRFToken(request)
+
+
+def pluggableauth__checkCSRFToken(request, token='csrf_token', raises=True):
+    """
+    if we have a site object, let plone.protect do it's job
+    """
+    if getSite():
+        return
+    return pluaggable_utils._old_checkCSRFToken(request)

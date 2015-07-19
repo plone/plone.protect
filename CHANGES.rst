@@ -4,6 +4,9 @@ Changelog
 3.0.5 (unreleased)
 ------------------
 
+- fix pluggable auth CSRF warnings
+  [vangheem]
+
 - fix detecting safe object writes on non-GET requests
   [vangheem]
 
