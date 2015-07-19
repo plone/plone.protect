@@ -4,7 +4,9 @@ Changelog
 3.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- instead of using _v_safe_write users should now use the safeWrite function
+  in plone.protect.auto
+  [vangheem]
 
 
 3.0.4 (2015-05-13)

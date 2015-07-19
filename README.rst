@@ -167,10 +167,10 @@ exploits so do any required CSRF protection manually.
 If you just want to allow an object to be writable on a request...
 ******************************************************************
 
-You can add the attribute _v_safe_write onto an object to specify that
-it is safe to write on read.
+You can use the `safeWrite` helper function.
 
-    myobj._v_safe_write = True
+    from plone.protect.auto import safeWrite
+    safeWrite(myobj, request)
 
 
 Clickjacking Protection
