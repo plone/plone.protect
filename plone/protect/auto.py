@@ -1,35 +1,52 @@
+import itertools
+import logging
+import os
+import traceback
+from urllib import urlencode
+from urlparse import urlparse
+
 from AccessControl import getSecurityManager
 from Acquisition import aq_parent
-from lxml import etree
 from OFS.interfaces import IApplication
+from lxml import etree
+from plone.keyring.interfaces import IKeyManager
 from plone.portlets.interfaces import IPortletAssignment
 from plone.protect.authenticator import check
 from plone.protect.authenticator import createToken
 from plone.protect.authenticator import isAnonymousUser
 from plone.protect.interfaces import IConfirmView
 from plone.protect.interfaces import IDisableCSRFProtection
-from plone.keyring.interfaces import IKeyManager
 from plone.transformchain.interfaces import ITransform
 from repoze.xmliter.utils import getHTMLSerializer
 import transaction
 from zExceptions import Forbidden
-from zope.component import adapts
-from zope.component.hooks import getSite
-from zope.component import getUtility
 from zope.component import ComponentLookupError
+from zope.component import adapts
+from zope.component import getUtility
+from zope.component.hooks import getSite
+from zope.globalrequest import getRequest
 from zope.interface import implements, Interface
 
-from urlparse import urlparse
-from urllib import urlencode
-import itertools
-import os
-import traceback
-import logging
 LOGGER = logging.getLogger('plone.protect')
 
+SAFE_WRITE_KEY = 'plone.protect.safe_oids'
 
 X_FRAME_OPTIONS = os.environ.get('PLONE_X_FRAME_OPTIONS', 'SAMEORIGIN')
 CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false') == 'true'
+
+
+def safeWrite(obj, request=None):
+    if request is None:
+        request = getRequest()
+    if request is None:
+        LOGGER.debug('could not mark object as a safe write')
+    if SAFE_WRITE_KEY not in request.environ:
+        request.environ[SAFE_WRITE_KEY] = []
+    try:
+        if obj._p_oid not in request.environ[SAFE_WRITE_KEY]:
+            request.environ[SAFE_WRITE_KEY].append(obj._p_oid)
+    except AttributeError:
+        LOGGER.debug('object you attempted to mark safe does not have an oid')
 
 
 class ProtectTransform(object):
@@ -170,10 +187,6 @@ class ProtectTransform(object):
                     return True
                 raise
             except Forbidden:
-                if self.request.REQUEST_METHOD != 'GET':
-                    # only try to be "smart" with GET requests
-                    raise
-
                 # XXX
                 # okay, so right now, we're going to check if the current
                 # registered objects to write, are just portlet assignments.
@@ -181,13 +194,19 @@ class ProtectTransform(object):
                 # cause some writes on read. ALL, registered objects
                 # need to be portlet assignments. XXX needs to be fixed
                 # somehow...
+                safe_oids = []
+                if SAFE_WRITE_KEY in self.request.environ:
+                    safe_oids = self.request.environ[SAFE_WRITE_KEY]
                 safe = True
                 for obj in registered:
                     if (not IPortletAssignment.providedBy(obj) and
-                            not getattr(obj, '_v_safe_write', False)):
+                            getattr(obj, '_p_oid', False) not in safe_oids):
                         safe = False
                         break
                 if not safe:
+                    if self.request.REQUEST_METHOD != 'GET':
+                        # only try to be "smart" with GET requests
+                        raise
                     LOGGER.info('aborting transaction due to no CSRF '
                                 'protection on url %s' % self.request.URL)
                     transaction.abort()

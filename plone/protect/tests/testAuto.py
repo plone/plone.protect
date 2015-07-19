@@ -1,17 +1,18 @@
-import unittest2 as unittest
-import transaction
-
-from plone.testing.z2 import Browser
-from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
-
-from plone.protect import createToken
-from plone.protect.authenticator import AuthenticatorView
-from plone.keyring.interfaces import IKeyManager
-from zope.component import getUtility
-from plone.app.testing import logout
-from plone.app.testing import login
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
+from plone.app.testing import login
+from plone.app.testing import logout
+from plone.keyring.interfaces import IKeyManager
+from plone.protect import createToken
+from plone.protect.authenticator import AuthenticatorView
+from plone.protect.auto import ProtectTransform
+from plone.protect.auto import safeWrite
+from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
+from plone.testing.z2 import Browser
+import transaction
+import unittest2 as unittest
+from zExceptions import Forbidden
+from zope.component import getUtility
 
 
 class AutoCSRFProtectTests(unittest.TestCase):
@@ -115,11 +116,6 @@ class AutoCSRFProtectTests(unittest.TestCase):
         except LookupError:
             pass
 
-    def test_safe_to_write_with_v_safe_write(self):
-        self.open('test-safetowrite')
-        self.assertTrue(self.portal.foo, 'bar')
-        self.assertEqual(self.browser.contents, 'done')
-
 
 class AutoRotateTests(unittest.TestCase):
     layer = PROTECT_FUNCTIONAL_TESTING
@@ -146,3 +142,23 @@ class AutoRotateTests(unittest.TestCase):
 
         self.assertNotEqual(keys, ring.data)
         self.assertNotEqual(ring.last_rotation, 0)
+
+
+class TestAutoChecks(unittest.TestCase):
+    layer = PROTECT_FUNCTIONAL_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+        self.request.REQUEST_METHOD = 'POST'
+
+    def test_safe_write_empty_returns_false(self):
+        transform = ProtectTransform(self.portal, self.request)
+        transform._registered_objects = lambda: [self.portal]
+        self.assertRaises(Forbidden, transform._check)
+
+    def test_safe_write_empty_returns_true(self):
+        safeWrite(self.portal, self.request)
+        transform = ProtectTransform(self.portal, self.request)
+        transform._registered_objects = lambda: [self.portal]
+        self.assertTrue(transform._check())
