@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.5 (unreleased)
+3.0.5 (2015-07-20)
 ------------------
 
 - fix pluggable auth CSRF warnings
