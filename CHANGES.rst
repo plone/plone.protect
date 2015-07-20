@@ -1,10 +1,11 @@
 Changelog
 =========
 
-3.0.6 (unreleased)
+3.0.6 (2015-07-20)
 ------------------
 
-- Nothing changed yet.
+- Just return if the request object is not valid.
+  [vangheem]
 
 
 3.0.5 (2015-07-20)
