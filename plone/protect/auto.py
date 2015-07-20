@@ -40,6 +40,7 @@ def safeWrite(obj, request=None):
         request = getRequest()
     if request is None:
         LOGGER.debug('could not mark object as a safe write')
+        return
     if SAFE_WRITE_KEY not in request.environ:
         request.environ[SAFE_WRITE_KEY] = []
     try:
