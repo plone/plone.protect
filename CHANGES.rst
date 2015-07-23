@@ -4,7 +4,9 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- fix pluggable auth CSRF warnings on zope root. Very difficult to reproduce.
+  Just let plone.protect do it's job also on zope root
+  [vangheem]
 
 
 3.0.6 (2015-07-20)

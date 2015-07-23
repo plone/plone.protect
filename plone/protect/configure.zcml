@@ -65,14 +65,12 @@
         class="Products.PluggableAuthService.utils"
         original="getCSRFToken"
         replacement=".monkey.pluggableauth__getCSRFToken"
-        preserveOriginal="True"
         />
     <monkey:patch
         description="Patch old pluggable auth to use plone mechanism"
         class="Products.PluggableAuthService.utils"
         original="checkCSRFToken"
         replacement=".monkey.pluggableauth__checkCSRFToken"
-        preserveOriginal="True"
         />
 
 </configure>
