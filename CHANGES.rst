@@ -4,8 +4,8 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
-- fix pluggable auth CSRF warnings on zope root. Very difficult to reproduce.
-  Just let plone.protect do it's job also on zope root
+- Fix pluggable auth CSRF warnings on zope root. Very difficult to reproduce.
+  Just let plone.protect do it's job also on zope root.
   [vangheem]
 
 
