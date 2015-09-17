@@ -252,10 +252,9 @@ class ProtectTransform(object):
         try:
             token = createToken()
         except ComponentLookupError:
-            if self.site is None:
-                # skip here, utility not installed yet on zope root
-                return
-            raise
+            if self.site is not None:
+                LOGGER.warn('Keyring not found on site. This should not happen', exc_info=True)
+            return result
 
         for form in root.cssselect('form'):
             # XXX should we only do POST? If we're logged in and

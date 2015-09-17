@@ -4,7 +4,8 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Do not raise ComponentLookupError on transform
+  [vangheem]
 
 
 3.0.7 (2015-07-24)
