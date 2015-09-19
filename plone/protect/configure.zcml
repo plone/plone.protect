@@ -61,14 +61,14 @@
         />
 
     <monkey:patch
-        zcml:condition="Products.PluggableAuthService.utils.getCSRFToken"
+        zcml:condition="installed Products.PluggableAuthService.utils.getCSRFToken"
         description="Patch old pluggable auth to use plone mechanism"
         class="Products.PluggableAuthService.utils"
         original="getCSRFToken"
         replacement=".monkey.pluggableauth__getCSRFToken"
         />
     <monkey:patch
-        zcml:condition="Products.PluggableAuthService.utils.checkCSRFToken"
+        zcml:condition="installed Products.PluggableAuthService.utils.checkCSRFToken"
         description="Patch old pluggable auth to use plone mechanism"
         class="Products.PluggableAuthService.utils"
         original="checkCSRFToken"
