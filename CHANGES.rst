@@ -4,6 +4,9 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
+- conditionally patch Products.PluggableAuthService if needed
+  [vangheem]
+
 - Do not raise ComponentLookupError on transform
   [vangheem]
 

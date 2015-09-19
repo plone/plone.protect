@@ -59,7 +59,7 @@ def _getKeyring(username):
     return ring
 
 
-def _verify(request, extra='', name='_authenticator'):
+def _verify_request(request, extra='', name='_authenticator'):
     auth = request.get(name)
     if auth is None:
         auth = request.getHeader('X-CSRF-TOKEN')
@@ -81,6 +81,9 @@ def _verify(request, extra='', name='_authenticator'):
 
     return False
 
+# We had to rename because previous hotfixes patched _verify
+_verify = _verify_request
+
 
 def createToken(extra=''):
     user = _getUserName()
@@ -100,12 +103,12 @@ class AuthenticatorView(BrowserView):
         return '<input type="hidden" name="%s" value="%s"/>' % (name, auth)
 
     def verify(self, extra='', name="_authenticator"):
-        return _verify(self.request, extra=extra, name=name)
+        return _verify_request(self.request, extra=extra, name=name)
 
 
 def check(request, extra='', name="_authenticator"):
     if isinstance(request, HTTPRequest):
-        if not _verify(request, extra=extra, name=name):
+        if not _verify_request(request, extra=extra, name=name):
             raise Forbidden('Form authenticator is invalid.')
 
 
