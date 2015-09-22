@@ -42,8 +42,9 @@ def _is_equal(val1, val2):
     return result == 0
 
 
-def _getKeyring(username):
-    manager = getUtility(IKeyManager)
+def _getKeyring(username, manager=None):
+    if manager is None:
+        manager = getUtility(IKeyManager)
     if username == ANONYMOUS_USER:
         try:
             ring = manager[u'_anon']
@@ -59,7 +60,7 @@ def _getKeyring(username):
     return ring
 
 
-def _verify_request(request, extra='', name='_authenticator'):
+def _verify_request(request, extra='', name='_authenticator', manager=None):
     auth = request.get(name)
     if auth is None:
         auth = request.getHeader('X-CSRF-TOKEN')
@@ -70,7 +71,7 @@ def _verify_request(request, extra='', name='_authenticator'):
         auth = auth[0]
 
     user = _getUserName()
-    ring = _getKeyring(user)
+    ring = _getKeyring(user, manager=manager)
 
     for key in ring:
         if key is None:
@@ -85,9 +86,9 @@ def _verify_request(request, extra='', name='_authenticator'):
 _verify = _verify_request
 
 
-def createToken(extra=''):
+def createToken(extra='', manager=None):
     user = _getUserName()
-    ring = _getKeyring(user)
+    ring = _getKeyring(user, manager=manager)
     secret = ring.random()
     return hmac.new(secret, user + extra, sha).hexdigest()
 
@@ -106,9 +107,9 @@ class AuthenticatorView(BrowserView):
         return _verify_request(self.request, extra=extra, name=name)
 
 
-def check(request, extra='', name="_authenticator"):
+def check(request, extra='', name="_authenticator", manager=None):
     if isinstance(request, HTTPRequest):
-        if not _verify_request(request, extra=extra, name=name):
+        if not _verify_request(request, extra=extra, name=name, manager=manager):
             raise Forbidden('Form authenticator is invalid.')
 
 

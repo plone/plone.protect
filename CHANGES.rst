@@ -4,7 +4,8 @@ Changelog
 3.0.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- get auto-csrf protection working on the zope root
+  [vangheem]
 
 
 3.0.8 (2015-09-20)

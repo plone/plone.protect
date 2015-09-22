@@ -1,5 +1,7 @@
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import login
 from plone.app.testing import logout
 from plone.keyring.interfaces import IKeyManager
@@ -15,22 +17,8 @@ from zExceptions import Forbidden
 from zope.component import getUtility
 
 
-class AutoCSRFProtectTests(unittest.TestCase):
+class _BaseAutoTest(object):
     layer = PROTECT_FUNCTIONAL_TESTING
-
-    def setUp(self):
-        self.portal = self.layer['portal']
-        self.browser = Browser(self.layer['app'])
-        self.request = self.layer['request']
-        login(self.portal, TEST_USER_NAME)
-        self.open('login_form')
-        self.browser.getControl(name='__ac_name').value = TEST_USER_NAME
-        self.browser.getControl(
-            name='__ac_password').value = TEST_USER_PASSWORD
-        self.browser.getControl(name='submit').click()
-
-    def open(self, path):
-        self.browser.open(self.portal.absolute_url() + '/' + path)
 
     def test_adds_csrf_protection_input(self):
         self.open('test-unprotected')
@@ -96,6 +84,23 @@ class AutoCSRFProtectTests(unittest.TestCase):
         self.browser.getControl('submit1').click()
         self.assertFalse(hasattr(self.portal, "foo"))
 
+
+class AutoCSRFProtectTests(unittest.TestCase, _BaseAutoTest):
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.browser = Browser(self.layer['app'])
+        self.request = self.layer['request']
+        login(self.portal, TEST_USER_NAME)
+        self.browser.open(self.portal.absolute_url() + '/login_form')
+        self.browser.getControl(name='__ac_name').value = TEST_USER_NAME
+        self.browser.getControl(
+            name='__ac_password').value = TEST_USER_PASSWORD
+        self.browser.getControl(name='submit').click()
+
+    def open(self, path):
+        self.browser.open(self.portal.absolute_url() + '/' + path)
+
     def test_CSRF_header(self):
         self.request.environ['HTTP_X_CSRF_TOKEN'] = createToken()
         view = AuthenticatorView(None, self.request)
@@ -115,6 +120,19 @@ class AutoCSRFProtectTests(unittest.TestCase):
             self.assertEqual('anonymous should not be protected', '')
         except LookupError:
             pass
+
+
+class TestRoot(unittest.TestCase, _BaseAutoTest):
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.browser = Browser(self.layer['app'])
+        self.request = self.layer['request']
+        self.browser.addHeader(
+            'Authorization', 'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,))
+
+    def open(self, path):
+        self.browser.open(self.portal.aq_parent.absolute_url() + '/' + path)
 
 
 class AutoRotateTests(unittest.TestCase):

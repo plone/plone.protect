@@ -1,16 +1,19 @@
-from Acquisition import aq_parent
+import logging
+import time
+
+from Products.PluggableAuthService.interfaces.events import IUserLoggedInEvent
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IDisableCSRFProtection
-from Products.PluggableAuthService.interfaces.events import IUserLoggedInEvent
 from zope.component import ComponentLookupError
 from zope.component import adapter
 from zope.component import getUtility
-from zope.component import getSiteManager
 from zope.component.hooks import getSite
+from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
+from plone.protect.utils import getRootKeyManager
+from plone.protect.utils import getRoot
 
-import time
-import logging
+
 LOGGER = logging.getLogger('plone.protect')
 
 _ring_rotation_schedules = (
@@ -38,20 +41,16 @@ def onUserLogsIn(event):
     since we already write to the database when a user logs in,
     let's check for key rotation here
     """
-    try:
-        # disable csrf protection on login requests
-        req = event.object.REQUEST
-        alsoProvides(req, IDisableCSRFProtection)
-    except AttributeError:
-        req = None
+    # disable csrf protection on login requests
+    req = getRequest()
+    alsoProvides(req, IDisableCSRFProtection)
 
     try:
         manager = getUtility(IKeyManager)
         _rotate(manager)
         # also check rotation of zope root keyring
-        app = aq_parent(getSite())
-        sm = getSiteManager(app)
-        manager = sm.getUtility(IKeyManager)
+        root = getRoot(getSite())
+        manager = getRootKeyManager(root)
         if manager:
             _rotate(manager)
     except ComponentLookupError:

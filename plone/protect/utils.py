@@ -1,8 +1,15 @@
+import inspect
+import logging
+from Acquisition import aq_parent
 from AccessControl.requestmethod import _buildFacade
+from plone.keyring.keymanager import KeyManager
 from plone.protect.authenticator import createToken
 from zope.globalrequest import getRequest
 
-import inspect
+from OFS.interfaces import IApplication
+
+SAFE_WRITE_KEY = 'plone.protect.safe_oids'
+LOGGER = logging.getLogger('plone.protect')
 
 _default = []
 
@@ -59,7 +66,7 @@ class protect(object):
         return facade_globs[name]
 
 
-def addTokenToUrl(url, req=None):
+def addTokenToUrl(url, req=None, manager=None):
     if not url:
         return url
     if req is None:
@@ -70,7 +77,7 @@ def addTokenToUrl(url, req=None):
     if '_auth_token' not in req.environ:
         # let's cache this value since this could be called
         # many times for one request
-        req.environ['_auth_token'] = createToken()
+        req.environ['_auth_token'] = createToken(manager=manager)
     token = req.environ['_auth_token']
 
     if '_authenticator' not in url:
@@ -80,3 +87,36 @@ def addTokenToUrl(url, req=None):
             url += '&'
         url += '_authenticator=' + token
     return url
+
+
+def getRootKeyManager(root):
+    if not IApplication.providedBy(root):
+        return
+    try:
+        manager = root._key_manager
+    except AttributeError:
+        manager = root._key_manager = KeyManager()
+        safeWrite(root._key_manager)
+        safeWrite(root)
+    return manager
+
+
+def getRoot(context):
+    while not IApplication.providedBy(context) and context is not None:
+        context = aq_parent(context)
+    return context
+
+
+def safeWrite(obj, request=None):
+    if request is None:
+        request = getRequest()
+    if request is None:
+        LOGGER.debug('could not mark object as a safe write')
+        return
+    if SAFE_WRITE_KEY not in request.environ:
+        request.environ[SAFE_WRITE_KEY] = []
+    try:
+        if obj._p_oid not in request.environ[SAFE_WRITE_KEY]:
+            request.environ[SAFE_WRITE_KEY].append(obj._p_oid)
+    except AttributeError:
+        LOGGER.debug('object you attempted to mark safe does not have an oid')

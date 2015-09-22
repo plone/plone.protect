@@ -7,7 +7,6 @@ from urlparse import urlparse
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_parent
-from OFS.interfaces import IApplication
 from lxml import etree
 from plone.keyring.interfaces import IKeyManager
 from plone.portlets.interfaces import IPortletAssignment
@@ -16,38 +15,26 @@ from plone.protect.authenticator import createToken
 from plone.protect.authenticator import isAnonymousUser
 from plone.protect.interfaces import IConfirmView
 from plone.protect.interfaces import IDisableCSRFProtection
+from plone.protect.utils import SAFE_WRITE_KEY
+from plone.protect.utils import getRoot
+from plone.protect.utils import getRootKeyManager
+from plone.protect.utils import safeWrite  # noqa b/w compat import
 from plone.transformchain.interfaces import ITransform
 from repoze.xmliter.utils import getHTMLSerializer
 import transaction
+import types
 from zExceptions import Forbidden
 from zope.component import ComponentLookupError
 from zope.component import adapts
 from zope.component import getUtility
 from zope.component.hooks import getSite
-from zope.globalrequest import getRequest
 from zope.interface import implements, Interface
 
 LOGGER = logging.getLogger('plone.protect')
 
-SAFE_WRITE_KEY = 'plone.protect.safe_oids'
 
 X_FRAME_OPTIONS = os.environ.get('PLONE_X_FRAME_OPTIONS', 'SAMEORIGIN')
 CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false') == 'true'
-
-
-def safeWrite(obj, request=None):
-    if request is None:
-        request = getRequest()
-    if request is None:
-        LOGGER.debug('could not mark object as a safe write')
-        return
-    if SAFE_WRITE_KEY not in request.environ:
-        request.environ[SAFE_WRITE_KEY] = []
-    try:
-        if obj._p_oid not in request.environ[SAFE_WRITE_KEY]:
-            request.environ[SAFE_WRITE_KEY].append(obj._p_oid)
-    except AttributeError:
-        LOGGER.debug('object you attempted to mark safe does not have an oid')
 
 
 class ProtectTransform(object):
@@ -103,6 +90,7 @@ class ProtectTransform(object):
     def transformIterable(self, result, encoding):
         """Apply the transform if required
         """
+
         # before anything, do the clickjacking protection
         self.request.response.setHeader('X-Frame-Options', X_FRAME_OPTIONS)
 
@@ -130,7 +118,8 @@ class ProtectTransform(object):
         try:
             self.key_manager = getUtility(IKeyManager)
         except ComponentLookupError:
-            pass
+            root = getRoot(context)
+            self.key_manager = getRootKeyManager(root)
 
         if self.site is None and self.key_manager is None:
             # key manager not installed and no site object.
@@ -146,6 +135,8 @@ class ProtectTransform(object):
 
     def getContext(self):
         published = self.request.get('PUBLISHED')
+        if isinstance(published, types.MethodType):
+            return published.im_self
         return aq_parent(published)
 
     def check(self):
@@ -176,16 +167,11 @@ class ProtectTransform(object):
                 not IDisableCSRFProtection.providedBy(self.request):
             # Okay, we're writing here, we need to protect!
             try:
-                check(self.request)
+                check(self.request, manager=self.key_manager)
                 return True
             except ComponentLookupError:
-                # okay, it's possible we're at the zope root and the KeyManager
-                # hasn't been installed yet. Let's check and carry on
-                # if this is the case
-                if IApplication.providedBy(self.getContext()):
-                    LOGGER.info('skipping csrf protection on zope root until '
-                                'keymanager gets installed')
-                    return True
+                LOGGER.info('Can not find key manager for CSRF protection. '
+                            'This should not happen.')
                 raise
             except Forbidden:
                 # XXX
@@ -250,7 +236,7 @@ class ProtectTransform(object):
         root = result.tree.getroot()
         url = urlparse(self.request.URL)
         try:
-            token = createToken()
+            token = createToken(manager=self.key_manager)
         except ComponentLookupError:
             if self.site is not None:
                 LOGGER.warn('Keyring not found on site. This should not happen', exc_info=True)
@@ -280,20 +266,5 @@ class ProtectTransform(object):
                 hidden.attrib['type'] = 'hidden'
                 hidden.attrib['value'] = token
                 form.append(hidden)
-
-        return result
-
-    def __call__(self, result, encoding):
-        if CSRF_DISABLED:
-            return result
-        if isinstance(result, unicode):
-            newResult = self.transformUnicode(result, encoding)
-        elif isinstance(result, str):
-            newResult = self.transformBytes(result, encoding)
-        else:
-            newResult = self.transformIterable(result, encoding)
-
-        if newResult is not None:
-            result = newResult
 
         return result
