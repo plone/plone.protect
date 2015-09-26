@@ -1,5 +1,7 @@
 from urlparse import urlparse, urljoin
 from plone.protect.auto import safeWrite
+import inspect
+from Products.PluggableAuthService import utils as pluggable_utils
 
 
 def RedirectTo__call__(self, controller_state):
@@ -51,3 +53,16 @@ def pluggableauth__checkCSRFToken(request, token='csrf_token', raises=True):
     let plone.protect do it's job
     """
     pass
+
+
+def marmoset_patch(func, replacement):
+    source = inspect.getsource(replacement)
+    exec source in func.func_globals
+    func.func_code = replacement.func_code
+
+
+# otherwise the patches do not get applied in some cases
+if hasattr(pluggable_utils, 'checkCSRFToken'):
+    marmoset_patch(pluggable_utils.checkCSRFToken, pluggableauth__checkCSRFToken)
+if hasattr(pluggable_utils, 'getCSRFToken'):
+    marmoset_patch(pluggable_utils.getCSRFToken, pluggableauth__getCSRFToken)
