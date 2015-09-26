@@ -195,3 +195,14 @@ To disable all automatic CSRF protection, set the environment variable
 
 WARNING! It is very dangerous to do this. Do not do this unless the zeo client
 with this setting is not public and you know what you are doing.
+
+
+Notes
+=====
+
+This package monkey patches a number of modules in order to better handle CSRF
+protection::
+
+  - Archetypes add forms, add csrf
+  - Zope2 object locking support
+  - pluggable auth csrf protection

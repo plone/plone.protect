@@ -4,6 +4,11 @@ Changelog
 3.0.9 (unreleased)
 ------------------
 
+- patch pluggable auth with marmoset patch because
+  the patch would not apply otherwise depending on
+  somewhat-random import order
+  [vangheem]
+
 - get auto-csrf protection working on the zope root
   [vangheem]
 
