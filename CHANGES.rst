@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.9 (unreleased)
+3.0.9 (2015-09-27)
 ------------------
 
 - patch pluggable auth with marmoset patch because
