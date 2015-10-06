@@ -7,7 +7,10 @@ from plone.protect.interfaces import IDisableCSRFProtection
 from zope.component import ComponentLookupError
 from zope.component import adapter
 from zope.component import getUtility
-from zope.component.hooks import getSite
+try:
+    from zope.component.hooks import getSite
+except ImportError:
+    from zope.app.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 from plone.protect.utils import getRootKeyManager

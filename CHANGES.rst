@@ -4,7 +4,8 @@ Changelog
 3.0.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- make imports backward compatible
+  [vangheem]
 
 
 3.0.9 (2015-09-27)

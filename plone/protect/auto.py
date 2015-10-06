@@ -7,6 +7,7 @@ from urlparse import urlparse
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_parent
+from Products.CMFCore.utils import getToolByName
 from lxml import etree
 from plone.keyring.interfaces import IKeyManager
 from plone.portlets.interfaces import IPortletAssignment
@@ -27,9 +28,13 @@ from zExceptions import Forbidden
 from zope.component import ComponentLookupError
 from zope.component import adapts
 from zope.component import getUtility
-from zope.component.hooks import getSite
 from zope.interface import implements, Interface
 
+
+try:
+    from zope.component.hooks import getSite
+except:
+    from zope.app.component.hooks import getSite
 LOGGER = logging.getLogger('plone.protect')
 
 
@@ -121,10 +126,17 @@ class ProtectTransform(object):
             root = getRoot(context)
             self.key_manager = getRootKeyManager(root)
 
-        if self.site is None and self.key_manager is None:
-            # key manager not installed and no site object.
-            # key manager must not be installed on site root, ignore
-            return
+        if self.site is None:
+            if self.key_manager is None:
+                # key manager not installed and no site object.
+                # key manager must not be installed on site root, ignore
+                return
+        else:
+            try:
+                self.site = getToolByName(
+                    self.site, 'portal_url', None).getPortalObject()
+            except AttributeError:
+                pass
 
         if not self.check():
             # we don't need to transform the doc, we're getting redirected
