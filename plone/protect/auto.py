@@ -1,6 +1,7 @@
 import itertools
 import logging
 import os
+import re
 import traceback
 from urllib import urlencode
 from urlparse import urlparse
@@ -9,6 +10,7 @@ from AccessControl import getSecurityManager
 from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from lxml import etree
+from lxml import html
 from plone.keyring.interfaces import IKeyManager
 from plone.portlets.interfaces import IPortletAssignment
 from plone.protect.authenticator import check
@@ -21,6 +23,7 @@ from plone.protect.utils import getRoot
 from plone.protect.utils import getRootKeyManager
 from plone.protect.utils import safeWrite  # noqa b/w compat import
 from plone.transformchain.interfaces import ITransform
+from repoze.xmliter.serializer import XMLSerializer
 from repoze.xmliter.utils import getHTMLSerializer
 import transaction
 import types
@@ -30,8 +33,8 @@ from zope.component import adapts
 from zope.component import getUtility
 from zope.interface import implements, Interface
 
-LOGGER = logging.getLogger('plone.protect')
 
+LOGGER = logging.getLogger('plone.protect')
 
 X_FRAME_OPTIONS = os.environ.get('PLONE_X_FRAME_OPTIONS', 'SAMEORIGIN')
 CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false') == 'true'
@@ -57,7 +60,10 @@ class ProtectTransform(object):
         self.published = published
         self.request = request
 
-    def parseTree(self, result):
+    def parseTree(self, result, encoding):
+        if isinstance(result, XMLSerializer):
+            return result
+
         # hhmmm, this is kind of taken right out of plone.app.theming
         # maybe this logic(parsing dom) should be someone central?
         contentType = self.request.response.getHeader('Content-Type')
@@ -70,7 +76,16 @@ class ProtectTransform(object):
             return None
 
         try:
-            return getHTMLSerializer(result, pretty_print=False)
+            # Fix layouts with CR[+LF] line endings not to lose their heads
+            # (this has been seen with downloaded themes with CR[+LF] endings)
+            iterable = [re.sub('&#13;', '\n', re.sub('&#13;\n', '\n', item))
+                        for item in result if item]
+            result = getHTMLSerializer(
+                iterable, pretty_print=False, encoding=encoding)
+            # Fix XHTML where etree.tostring breaks <![CDATA[
+            if any(['<![CDATA[' in item for item in iterable]):
+                result.serializer = html.tostring
+            return result
         except (TypeError, etree.ParseError):
             # XXX handle something special?
             LOGGER.warn('error parsing dom, failure to add csrf '
@@ -106,7 +121,7 @@ class ProtectTransform(object):
         if IConfirmView.providedBy(self.request.get('PUBLISHED')):
             # abort it, show the confirmation...
             transaction.abort()
-            return self.transform(result)
+            return self.transform(result, encoding)
 
         # next, check if we're a resource not connected
         # to a ZODB object--no context
@@ -133,7 +148,7 @@ class ProtectTransform(object):
             return
 
         # finally, let's run the transform
-        return self.transform(result)
+        return self.transform(result, encoding)
 
     def getContext(self):
         published = self.request.get('PUBLISHED')
@@ -231,8 +246,8 @@ class ProtectTransform(object):
             return False
         return True
 
-    def transform(self, result):
-        result = self.parseTree(result)
+    def transform(self, result, encoding):
+        result = self.parseTree(result, encoding)
         if result is None:
             return None
         root = result.tree.getroot()

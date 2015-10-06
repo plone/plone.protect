@@ -4,6 +4,9 @@ Changelog
 3.0.11 (unreleased)
 -------------------
 
+- play nicer with inline JavaScript
+  [vangheem]
+
 
 3.0.10 (2015-10-06)
 -------------------
