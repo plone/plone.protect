@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.10 (unreleased)
+3.0.10 (2015-10-06)
 -------------------
 
 - make imports backward compatible
