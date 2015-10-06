@@ -6,7 +6,8 @@
     xmlns:monkey="http://namespaces.plone.org/monkey"
     i18n_domain="plone.protect">
 
-    <include package="AccessControl" />
+    <include package="AccessControl"
+             zcml:condition="installed AccessControl.rolemanager" />
     <include package="plone.keyring" />
     <include package="plone.transformchain" />
     <include package="five.globalrequest" />

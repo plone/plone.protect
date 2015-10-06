@@ -7,6 +7,7 @@ from urlparse import urlparse
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_parent
+from Products.CMFCore.utils import getToolByName
 from lxml import etree
 from plone.keyring.interfaces import IKeyManager
 from plone.portlets.interfaces import IPortletAssignment
@@ -27,7 +28,6 @@ from zExceptions import Forbidden
 from zope.component import ComponentLookupError
 from zope.component import adapts
 from zope.component import getUtility
-from zope.component.hooks import getSite
 from zope.interface import implements, Interface
 
 LOGGER = logging.getLogger('plone.protect')
@@ -114,7 +114,9 @@ class ProtectTransform(object):
         if not context:
             return
 
-        self.site = getSite()
+        tool = getToolByName(context, 'portal_url', None)
+        if tool:
+            self.site = tool.getPortalObject()
         try:
             self.key_manager = getUtility(IKeyManager)
         except ComponentLookupError:
