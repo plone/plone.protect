@@ -175,7 +175,9 @@ class ProtectTransform(object):
         app = self.request.PARENTS[-1]
         return list(itertools.chain.from_iterable([
             conn._registered_objects
-            for conn in app._p_jar.connections.values()
+            # skip the 'temporary' connection since it stores session objects
+            # which get written all the time
+            for name, conn in app._p_jar.connections.items() if name != 'temporary'
         ]))
 
     def _check(self):
