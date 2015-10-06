@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.11 (unreleased)
+3.0.11 (2015-10-06)
 -------------------
 
 - play nicer with inline JavaScript
