@@ -1,10 +1,11 @@
 Changelog
 =========
 
-3.0.12 (unreleased)
+3.0.12 (2015-10-06)
 -------------------
 
-- unreleased
+- Do not check writes to temporary storage like session storage
+  [davisagli]
 
 3.0.11 (2015-10-06)
 -------------------
