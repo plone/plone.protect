@@ -36,7 +36,8 @@ from zope.interface import implements, Interface
 LOGGER = logging.getLogger('plone.protect')
 
 X_FRAME_OPTIONS = os.environ.get('PLONE_X_FRAME_OPTIONS', 'SAMEORIGIN')
-CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false') == 'true'
+CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false').lower() in \
+    ('true', 't', 'yes', 'y', '1')
 
 
 class ProtectTransform(object):
