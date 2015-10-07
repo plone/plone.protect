@@ -4,7 +4,9 @@ Changelog
 3.0.14 (unreleased)
 -------------------
 
-- nothing.
+- Avoid TypeError when checking the content-type header.
+  [maurits]
+
 
 3.0.13 (2015-10-07)
 -------------------
