@@ -4,7 +4,9 @@ Changelog
 3.0.13 (unreleased)
 -------------------
 
-- unreleased
+- Always force html serializer as the XHTML variant seems
+  to cause character encoding issues
+  [vangheem]
 
 3.0.12 (2015-10-06)
 -------------------
