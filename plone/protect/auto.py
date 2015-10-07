@@ -36,7 +36,8 @@ from zope.interface import implements, Interface
 LOGGER = logging.getLogger('plone.protect')
 
 X_FRAME_OPTIONS = os.environ.get('PLONE_X_FRAME_OPTIONS', 'SAMEORIGIN')
-CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false') == 'true'
+CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false').lower() in \
+    ('true', 't', 'yes', 'y', '1')
 
 
 class ProtectTransform(object):
@@ -102,7 +103,8 @@ class ProtectTransform(object):
         """
 
         # before anything, do the clickjacking protection
-        self.request.response.setHeader('X-Frame-Options', X_FRAME_OPTIONS)
+        if X_FRAME_OPTIONS:
+            self.request.response.setHeader('X-Frame-Options', X_FRAME_OPTIONS)
 
         if CSRF_DISABLED:
             return
@@ -221,7 +223,7 @@ class ProtectTransform(object):
                     #   write on read, without a POST request and we don't
                     #   know what to do with it gracefully.
                     resp = self.request.response
-                    ct = resp.headers.get('content-type')
+                    ct = resp.getHeader('Content-Type', '')
                     if self.site and (
                             resp.status in (301, 302) or 'text/html' in ct):
                         data = self.request.form.copy()

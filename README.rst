@@ -94,7 +94,7 @@ Or just::
 Headers
 -------
 
-You can also pass in the token by using the header `X-CSRF-TOKEN`. This can be
+You can also pass in the token by using the header ``X-CSRF-TOKEN``. This can be
 useful for AJAX requests.
 
 
@@ -167,7 +167,7 @@ exploits so do any required CSRF protection manually.
 If you just want to allow an object to be writable on a request...
 ******************************************************************
 
-You can use the `safeWrite` helper function.
+You can use the ``safeWrite`` helper function.
 
     from plone.protect.auto import safeWrite
     safeWrite(myobj, request)
@@ -180,18 +180,20 @@ plone.protect also provides, by default, clickjacking protection since
 version 3.0.
 
 To protect against this attack, plone employs the use of the X-Frame-Options
-header. plone.protect will set the X-Frame-Options value to `SAMEORIGIN`.
+header. plone.protect will set the X-Frame-Options value to ``SAMEORIGIN``.
 
 To customize this value, you can either override it at your proxy server or
-you can set the environment variable of `PLONE_X_FRAME_OPTIONS` to whatever
+you can set the environment variable of ``PLONE_X_FRAME_OPTIONS`` to whatever
 value you'd like plone.protect to set this to.
+
+You can opt out of this by making the environment variable empty.
 
 
 Disable All Automatic CSRF Protection
 =====================================
 
 To disable all automatic CSRF protection, set the environment variable
-`PLONE_CSRF_DISABLED` value to `true`.
+``PLONE_CSRF_DISABLED`` value to ``true``.
 
 WARNING! It is very dangerous to do this. Do not do this unless the zeo client
 with this setting is not public and you know what you are doing.
