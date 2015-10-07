@@ -186,6 +186,8 @@ To customize this value, you can either override it at your proxy server or
 you can set the environment variable of `PLONE_X_FRAME_OPTIONS` to whatever
 value you'd like plone.protect to set this to.
 
+You can opt out of this by making the environment variable empty.
+
 
 Disable All Automatic CSRF Protection
 =====================================

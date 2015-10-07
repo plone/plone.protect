@@ -4,6 +4,10 @@ Changelog
 3.0.14 (unreleased)
 -------------------
 
+- You can opt out of clickjacking protection by setting the
+  environment variable ``PLONE_X_FRAME_OPTIONS`` to an empty string.
+  [maurits]
+
 - Be more flexible in parsing the ``PLONE_CSRF_DISABLED`` environment
   variable.  We are no longer case sensitive, and we accept ``true``,
   ``t``, ``yes``, ``y``, ``1`` as true values.
