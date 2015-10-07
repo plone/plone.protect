@@ -1,7 +1,6 @@
 import itertools
 import logging
 import os
-import re
 import traceback
 from urllib import urlencode
 from urlparse import urlparse
@@ -76,15 +75,11 @@ class ProtectTransform(object):
             return None
 
         try:
-            # Fix layouts with CR[+LF] line endings not to lose their heads
-            # (this has been seen with downloaded themes with CR[+LF] endings)
-            iterable = [re.sub('&#13;', '\n', re.sub('&#13;\n', '\n', item))
-                        for item in result if item]
             result = getHTMLSerializer(
-                iterable, pretty_print=False, encoding=encoding)
-            # Fix XHTML where etree.tostring breaks <![CDATA[
-            if any(['<![CDATA[' in item for item in iterable]):
-                result.serializer = html.tostring
+                result, pretty_print=False, encoding=encoding)
+            # We are going to force html output here always as XHTML
+            # output does odd character encodings
+            result.serializer = html.tostring
             return result
         except (TypeError, etree.ParseError):
             # XXX handle something special?
