@@ -108,7 +108,7 @@ class ProtectTransform(object):
         """
 
         # before anything, do the clickjacking protection
-        if X_FRAME_OPTIONS:
+        if X_FRAME_OPTIONS and not self.request.response.getHeader('X-Frame-Options'):
             self.request.response.setHeader('X-Frame-Options', X_FRAME_OPTIONS)
 
         if CSRF_DISABLED:

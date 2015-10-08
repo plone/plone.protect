@@ -182,9 +182,11 @@ version 3.0.
 To protect against this attack, plone employs the use of the X-Frame-Options
 header. plone.protect will set the X-Frame-Options value to ``SAMEORIGIN``.
 
-To customize this value, you can either override it at your proxy server or
-you can set the environment variable of ``PLONE_X_FRAME_OPTIONS`` to whatever
-value you'd like plone.protect to set this to.
+To customize this value, you can set it to a custom value for a custom view
+(e.g. ``self.request.response.setHeader('X-Frame-Options', 'ALLOWALL')``),
+override it at your proxy server, or you can set the environment variable of
+``PLONE_X_FRAME_OPTIONS`` to whatever value you'd like plone.protect to set
+this to globally.
 
 You can opt out of this by making the environment variable empty.
 
