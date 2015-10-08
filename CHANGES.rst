@@ -4,6 +4,10 @@ Changelog
 3.0.14 (unreleased)
 -------------------
 
+- Handle TypeError caused by getToolByName on an
+  invalid context
+  [vangheem]
+
 - You can opt out of clickjacking protection by setting the
   environment variable ``PLONE_X_FRAME_OPTIONS`` to an empty string.
   [maurits]
