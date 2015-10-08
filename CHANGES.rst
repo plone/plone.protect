@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.14 (unreleased)
+3.0.14 (2015-10-08)
 -------------------
 
 - Handle TypeError caused by getToolByName on an
