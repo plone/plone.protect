@@ -5,6 +5,10 @@
       lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border', 1)" />
+
 <body>
   <metal:title fill-slot="content-title">
      <h1 class="documentFirstHeading">

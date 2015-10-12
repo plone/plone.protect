@@ -4,6 +4,9 @@ Changelog
 3.0.15 (unreleased)
 -------------------
 
+- Disable editable border for @@confirm-action view.
+  [lgraf]
+
 - Make title and description show up on @@confirm-action view.
   [lgraf]
 
