@@ -154,23 +154,44 @@ it'll check for the existence of a correct auth token.
 Allowing write on read programatically
 --------------------------------------
 
-Just add an interface to the current request object::
+When you need to allow a known write on read, you've got several options.
 
-    from plone.protect.interfaces import IDisableCSRFProtection
-    from zope.interface import alsoProvides
-    alsoProvides(request, IDisableCSRFProtection)
+Adding a CSRF token to your links
+**********************************
 
-Warning! When you do this, the current request is susceptible to CSRF
-exploits so do any required CSRF protection manually.
+If you've got a GET request that causes a known write on read, your first
+option should be to simply add a CSRF token to the URLs that result in that
+request. ``plone.protect`` provides the ``addTokenToUrl`` function for this
+purpose::
+
+    from plone.protect.utils import addTokenToUrl
+
+    url = addTokenToUrl(url)
 
 
 If you just want to allow an object to be writable on a request...
 ******************************************************************
 
-You can use the ``safeWrite`` helper function.
+You can use the ``safeWrite`` helper function::
 
     from plone.protect.auto import safeWrite
+
     safeWrite(myobj, request)
+
+
+Marking the entire request as safe
+**********************************
+
+Just add the ``IDisableCSRFProtection`` interface to the current request
+object::
+
+    from plone.protect.interfaces import IDisableCSRFProtection
+    from zope.interface import alsoProvides
+
+    alsoProvides(request, IDisableCSRFProtection)
+
+Warning! When you do this, the current request is susceptible to CSRF
+exploits so do any required CSRF protection manually.
 
 
 Clickjacking Protection
