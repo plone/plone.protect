@@ -4,6 +4,9 @@ Changelog
 3.0.15 (unreleased)
 -------------------
 
+- Internationalized confirm.pt
+  [vincentfretin]
+
 - Disable editable border for @@confirm-action view.
   [lgraf]
 

@@ -11,20 +11,20 @@
 
 <body>
   <metal:title fill-slot="content-title">
-     <h1 class="documentFirstHeading">
+     <h1 class="documentFirstHeading" i18n:translate="">
          Confirming User Action.
      </h1>
   </metal:title>
 
   <metal:description fill-slot="content-description">
-     <div class="documentDescription">
+     <div class="documentDescription" i18n:translate="">
          Confirm that you'd like to perform this action.
      </div>
   </metal:description>
 
   <metal:content-core fill-slot="content-core">
     <metal:content-core define-macro="content-core">
-      <p class="discreet">
+      <p class="discreet" i18n:translate="">
         Careful, it's possible someone is executing an exploit against you.
         Verify you just performed an action on this site and that you were
         not referred here by a different website or email.
@@ -34,7 +34,7 @@
           <input type="hidden" tal:attributes="name key; value python: request.form[key]" />
         </tal:values>
         <dl>
-          <dt>Original URL</dt>
+          <dt i18n:translate="">Original URL</dt>
           <dd tal:content="request/original_url" />
         </dl>
         <div class="formControls">
