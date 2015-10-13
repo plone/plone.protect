@@ -5,14 +5,18 @@
       lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border', 1)" />
+
 <body>
-  <metal:title define-slot="content-title">
+  <metal:title fill-slot="content-title">
      <h1 class="documentFirstHeading">
          Confirming User Action.
      </h1>
   </metal:title>
 
-  <metal:description define-slot="content-description">
+  <metal:description fill-slot="content-description">
      <div class="documentDescription">
          Confirm that you'd like to perform this action.
      </div>

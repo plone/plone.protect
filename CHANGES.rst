@@ -4,6 +4,12 @@ Changelog
 3.0.15 (unreleased)
 -------------------
 
+- Disable editable border for @@confirm-action view.
+  [lgraf]
+
+- Make title and description show up on @@confirm-action view.
+  [lgraf]
+
 - Allow views to override 'X-Frame-Options' by setting the response header
   manually.
   [alecm]
