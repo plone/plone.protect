@@ -17,6 +17,9 @@ Changelog
   manually.
   [alecm]
 
+- Avoid parsing redirect responses (this avoids a warning on the log files).
+  [gforcada]
+
 3.0.14 (2015-10-08)
 -------------------
 
