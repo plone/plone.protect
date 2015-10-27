@@ -69,7 +69,7 @@ class ProtectTransform(object):
     def parseTree(self, result, encoding):
         # if it's a redirect, the result is empty
         request = getRequest()
-        if request.response.status int (301, 302):
+        if request.response.status in (301, 302):
             return result
 
         if isinstance(result, XMLSerializer):
