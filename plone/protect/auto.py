@@ -31,6 +31,7 @@ from zope.component import ComponentLookupError
 from zope.component import adapts
 from zope.component import getUtility
 from zope.interface import implements, Interface
+from zope.globalrequest import getRequest
 
 try:
     from zope.component.hooks import getSite
@@ -66,6 +67,11 @@ class ProtectTransform(object):
         self.request = request
 
     def parseTree(self, result, encoding):
+        # if it's a redirect, the result is empty
+        request = getRequest()
+        if request.response.status int (301, 302):
+            return result
+
         if isinstance(result, XMLSerializer):
             return result
 
