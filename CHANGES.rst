@@ -4,6 +4,10 @@ Changelog
 3.0.15 (unreleased)
 -------------------
 
+- make sure to always compare content type with a string when checking
+  if we should show the confirm-action view.
+  [vangheem]
+
 - Internationalized confirm.pt
   [vincentfretin]
 
