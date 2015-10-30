@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.15 (unreleased)
+3.0.15 (2015-10-30)
 -------------------
 
 - make sure to always compare content type with a string when checking
