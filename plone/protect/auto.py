@@ -67,10 +67,10 @@ class ProtectTransform(object):
         self.request = request
 
     def parseTree(self, result, encoding):
-        # if it's a redirect, the result is empty
+        # if it's a redirect, the result shall not be transformed
         request = getRequest()
         if request.response.status in (301, 302):
-            return result
+            return None
 
         if isinstance(result, XMLSerializer):
             return result
