@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*"
+- Make sure transforms don't fail on redirects.
+  [lgraf]
 
 
 3.0.15 (2015-10-30)
