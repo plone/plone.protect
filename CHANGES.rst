@@ -4,10 +4,6 @@ Changelog
 3.0.15 (unreleased)
 -------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Make sure transforms don't fail on redirects.
