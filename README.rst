@@ -231,3 +231,8 @@ protection::
   - Archetypes add forms, add csrf
   - Zope2 object locking support
   - pluggable auth csrf protection
+
+If you are using a proxy cache in front of your site, be aware that
+you will need to clear the entry for ``++resource++protect.js`` every
+time you update this package or you will find issues with modals while
+editing content.
