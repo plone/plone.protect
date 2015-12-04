@@ -4,7 +4,7 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:monkey="http://namespaces.plone.org/monkey"
-    i18n_domain="plone.protect">
+    i18n_domain="plone">
 
     <include package="AccessControl"
              zcml:condition="installed AccessControl.rolemanager" />

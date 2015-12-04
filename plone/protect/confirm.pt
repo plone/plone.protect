@@ -38,7 +38,8 @@
           <dd tal:content="request/original_url" />
         </dl>
         <div class="formControls">
-          <input type="submit" value="Confirm action" name="form.button.confirm" class="standalone" />
+          <input type="submit" value="Confirm action" i18n:attributes="value"
+                 name="form.button.confirm" class="standalone" />
         </div>
       </form>
     </metal:content-core>

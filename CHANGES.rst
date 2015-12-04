@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Internationalized button in confirm.pt
+  [vincentfretin]
 
 
 3.0.16 (2015-11-05)
