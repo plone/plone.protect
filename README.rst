@@ -236,3 +236,16 @@ If you are using a proxy cache in front of your site, be aware that
 you will need to clear the entry for ``++resource++protect.js`` every
 time you update this package or you will find issues with modals while
 editing content.
+
+
+Compatibility
+=============
+
+``plone.protect`` version 3 was made for Plone 5.  You can use it on
+Plone 4 for better protection, but you will need the
+``plone4.csrffixes`` hotfix package as well.  Otherwise you get
+needless warnings or errors.  See the `hotfix announcement`_ and the
+`hotfix page`_.
+
+.. _`hotfix announcement`: https://plone.org/products/plone/security/advisories/security-vulnerability-20151006-csrf
+.. _`hotfix page`: https://plone.org/products/plone-hotfix/releases/20151006
