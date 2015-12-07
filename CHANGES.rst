@@ -4,13 +4,9 @@ Changelog
 3.0.17 (unreleased)
 -------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
-- Internationalized button in confirm.pt
+- Internationalized button in confirm.pt.
   [vincentfretin]
 
 
