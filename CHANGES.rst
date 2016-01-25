@@ -10,8 +10,10 @@ New:
 
 Fixes:
 
-- *add item here*
-
+- Clean up the monkey patch for CMFFormController RedirectTo by moving it to
+  that package.
+  Issue https://github.com/plone/Products.CMFPlone/issues/1335
+  [fredvd, staeff]
 
 3.0.17 (2015-12-07)
 -------------------

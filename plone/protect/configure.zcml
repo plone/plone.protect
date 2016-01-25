@@ -48,12 +48,6 @@
     <include package="collective.monkeypatcher" />
 
     <monkey:patch
-        description="Allows ATContentTypes add forms to append auth token"
-        class="Products.CMFFormController.Actions.RedirectTo.RedirectTo"
-        original="__call__"
-        replacement=".monkey.RedirectTo__call__"
-        />
-    <monkey:patch
         description="Special handling for write on read Zope2 locking issues"
         class="webdav.Lockable.LockableItem"
         original="wl_lockmapping"
