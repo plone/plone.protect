@@ -1,7 +1,9 @@
-from urlparse import urlparse, urljoin
 from plone.protect.auto import safeWrite
-import inspect
 from Products.PluggableAuthService import utils as pluggable_utils
+from urlparse import urljoin
+from urlparse import urlparse
+
+import inspect
 
 
 def RedirectTo__call__(self, controller_state):

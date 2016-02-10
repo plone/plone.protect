@@ -1,17 +1,19 @@
-import hmac
-import sys
-from unittest import TestSuite
-from unittest import makeSuite
 from AccessControl import getSecurityManager
-from zExceptions import Forbidden
-from ZPublisher.HTTPRequest import HTTPRequest
-from plone.protect.tests.case import KeyringTestCase
-from plone.protect.tests.case import MockRequest
+from plone.protect import createToken
+from plone.protect import CustomCheckAuthenticator
+from plone.protect import protect
 from plone.protect.authenticator import AuthenticatorView
 from plone.protect.authenticator import check
-from plone.protect import protect
-from plone.protect import CustomCheckAuthenticator
-from plone.protect import createToken
+from plone.protect.tests.case import KeyringTestCase
+from plone.protect.tests.case import MockRequest
+from unittest import makeSuite
+from unittest import TestSuite
+from zExceptions import Forbidden
+from ZPublisher.HTTPRequest import HTTPRequest
+
+import hmac
+import sys
+
 
 try:
     from hashlib import sha1 as sha

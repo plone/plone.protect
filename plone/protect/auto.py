@@ -1,13 +1,6 @@
-import itertools
-import logging
-import os
-import traceback
-from urllib import urlencode
-from urlparse import urlparse
-
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_parent
-from Products.CMFCore.utils import getToolByName
 from lxml import etree
 from lxml import html
 from plone.keyring.interfaces import IKeyManager
@@ -17,21 +10,31 @@ from plone.protect.authenticator import createToken
 from plone.protect.authenticator import isAnonymousUser
 from plone.protect.interfaces import IConfirmView
 from plone.protect.interfaces import IDisableCSRFProtection
-from plone.protect.utils import SAFE_WRITE_KEY
 from plone.protect.utils import getRoot
 from plone.protect.utils import getRootKeyManager
+from plone.protect.utils import SAFE_WRITE_KEY
 from plone.protect.utils import safeWrite  # noqa b/w compat import
 from plone.transformchain.interfaces import ITransform
+from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.serializer import XMLSerializer
 from repoze.xmliter.utils import getHTMLSerializer
+from urllib import urlencode
+from urlparse import urlparse
+from zExceptions import Forbidden
+from zope.component import adapts
+from zope.component import ComponentLookupError
+from zope.component import getUtility
+from zope.globalrequest import getRequest
+from zope.interface import implementer
+from zope.interface import Interface
+
+import itertools
+import logging
+import os
+import traceback
 import transaction
 import types
-from zExceptions import Forbidden
-from zope.component import ComponentLookupError
-from zope.component import adapts
-from zope.component import getUtility
-from zope.interface import implementer, Interface
-from zope.globalrequest import getRequest
+
 
 try:
     from zope.component.hooks import getSite
@@ -113,10 +116,15 @@ class ProtectTransform(object):
         """
 
         # before anything, do the clickjacking protection
-        if X_FRAME_OPTIONS and not self.request.response.getHeader('X-Frame-Options'):
+        if X_FRAME_OPTIONS and \
+           not self.request.response.getHeader('X-Frame-Options'):
             self.request.response.setHeader('X-Frame-Options', X_FRAME_OPTIONS)
 
         if CSRF_DISABLED:
+            # or IDisableCSRFProtection.providedBy(self.request):
+            # Don't do any transformation if CSRF Protection is disabled
+            # for this request, either by Environment setting or
+            # explicit by MarkerInterface IDisableCSRFProtection.
             return
 
         # only auto CSRF protect authenticated users
@@ -188,7 +196,8 @@ class ProtectTransform(object):
             conn._registered_objects
             # skip the 'temporary' connection since it stores session objects
             # which get written all the time
-            for name, conn in app._p_jar.connections.items() if name != 'temporary'
+            for name, conn in app._p_jar.connections.items()
+            if name != 'temporary'
         ]))
 
     def _check(self):
@@ -224,8 +233,13 @@ class ProtectTransform(object):
                     if self.request.REQUEST_METHOD != 'GET':
                         # only try to be "smart" with GET requests
                         raise
-                    LOGGER.info('%s\naborting transaction due to no CSRF '
-                                'protection on url %s'%(traceback.print_stack(), self.request.URL))
+                    LOGGER.info(
+                        '{0}\naborting transaction due to no CSRF '
+                        'protection on url {1}'.format(
+                            traceback.print_stack(),
+                            self.request.URL
+                        )
+                    )
                     transaction.abort()
 
                     # conditions for doing the confirm form are:
@@ -269,7 +283,10 @@ class ProtectTransform(object):
             token = createToken(manager=self.key_manager)
         except ComponentLookupError:
             if self.site is not None:
-                LOGGER.warn('Keyring not found on site. This should not happen', exc_info=True)
+                LOGGER.warn(
+                    'Keyring not found on site. This should not happen',
+                    exc_info=True
+                )
             return result
 
         for form in root.cssselect('form'):

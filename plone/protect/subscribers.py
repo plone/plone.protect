@@ -1,20 +1,22 @@
+from plone.keyring.interfaces import IKeyManager
+from plone.protect.interfaces import IDisableCSRFProtection
+from plone.protect.utils import getRoot
+from plone.protect.utils import getRootKeyManager
+from Products.PluggableAuthService.interfaces.events import IUserLoggedInEvent
+from zope.component import adapter
+from zope.component import ComponentLookupError
+from zope.component import getUtility
+from zope.globalrequest import getRequest
+from zope.interface import alsoProvides
+
 import logging
 import time
 
-from Products.PluggableAuthService.interfaces.events import IUserLoggedInEvent
-from plone.keyring.interfaces import IKeyManager
-from plone.protect.interfaces import IDisableCSRFProtection
-from zope.component import ComponentLookupError
-from zope.component import adapter
-from zope.component import getUtility
+
 try:
     from zope.component.hooks import getSite
 except ImportError:
     from zope.app.component.hooks import getSite
-from zope.globalrequest import getRequest
-from zope.interface import alsoProvides
-from plone.protect.utils import getRootKeyManager
-from plone.protect.utils import getRoot
 
 
 LOGGER = logging.getLogger('plone.protect')

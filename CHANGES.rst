@@ -11,14 +11,26 @@ New:
   Fixes https://github.com/plone/plone.protect/issues/42
   [maurits]
 
+- include a setup.cfg and a .editorconfig file with code conventions:
+
+  - settings for isort
+  - plone styleguide settings
+
+  [loechel]
+
 Fixes:
 
 - Use zope.interface decorator.
   [gforcada]
 
+- Apply code conventions.
+  [loechel]
+
 
 3.0.18 (2016-02-25)
 -------------------
+
+- *add item here*
 
 Fixes:
 
