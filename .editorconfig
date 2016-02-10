@@ -1,0 +1,21 @@
+# EditorConfig Settings (http://EditorConfig.org)
+
+# top-most EditorConfig file
+root = false
+
+# Unix-style newlines with a newline ending every file
+[*]
+charset = utf-8
+indent_style = space
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[{*.py,*.cfg}]
+indent_size = 4
+
+[{*.html,*.dtml,*.pt,*.zpt,*.xml,*.zcml,*.js,*.yml,*.json}]
+indent_size = 2
+
+[Makefile]
+indent_style = tab

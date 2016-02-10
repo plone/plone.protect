@@ -16,9 +16,26 @@ Fixes:
 - Use zope.interface decorator.
   [gforcada]
 
+- modify ProtectTransform.transformIterable (auto.py) to disable transform
+  explicite if request has a IDisableCSRFProtection MarkerInterface.
+
+  Reason: transform / parseTree modifies result html / DOM on all requests even if it is not necessary or intented.
+  If the request returns a browsers view which just contains a html snippet (widget code, ESI output) without HTML doctype and html root element or body element it will be wrapped.
+  Such request should mark the request with IDisableCSRFProtection.
+  [loechel]
+
+- apply code conventions.
+  [loechel]
+
 
 3.0.18 (2016-02-25)
 -------------------
+- include a setup.cfg and a .editorconfig file with code conventions: [loechel]
+
+  - settings for isort
+  - plone styleguide settings
+
+- *add item here*
 
 Fixes:
 
