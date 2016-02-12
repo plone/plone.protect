@@ -4,7 +4,10 @@ Changelog
 2.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Added ``plone.protect.interfaces.IDisableCSRFProtection`` from
+  plone.protect 3.  It has no effect in this version.  It is only here
+  to avoid having to do conditional imports when you want to disable
+  csrf protection that is not actually in this version.  [maurits]
 
 
 2.0.2 (2012-12-09)
