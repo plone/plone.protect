@@ -64,6 +64,9 @@ def createToken(extra=''):
 class AuthenticatorView(BrowserView):
     implements(IAuthenticatorView)
 
+    def token(self, extra=''):
+        return createToken(extra)
+
     def authenticator(self, extra='', name='_authenticator'):
         auth = createToken(extra)
         return '<input type="hidden" name="%s" value="%s"/>' % (

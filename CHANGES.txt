@@ -4,6 +4,9 @@ Changelog
 2.0.3 (unreleased)
 ------------------
 
+- Added ``token`` to ``@@authenticator`` view.  For forward
+  compatibility with plone.protect 3.  [maurits]
+
 - Added ``plone.protect.interfaces.IDisableCSRFProtection`` from
   plone.protect 3.  It has no effect in this version.  It is only here
   to avoid having to do conditional imports when you want to disable

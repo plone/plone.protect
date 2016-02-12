@@ -3,6 +3,9 @@ from zope.interface import Interface
 
 class IAuthenticatorView(Interface):
 
+    def token():
+        """return token value"""
+
     def authenticator():
         """Return an xhtml snippet which sets an authenticator.
 
