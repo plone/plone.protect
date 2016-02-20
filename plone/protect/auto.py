@@ -119,7 +119,8 @@ class ProtectTransform(object):
            not self.request.response.getHeader('X-Frame-Options'):
             self.request.response.setHeader('X-Frame-Options', X_FRAME_OPTIONS)
 
-        if CSRF_DISABLED or IDisableCSRFProtection.providedBy(self.request):
+        if CSRF_DISABLED:
+            # or IDisableCSRFProtection.providedBy(self.request):
             # Don't do any transformation if CSRF Protection is disabled
             # for this request, either by Environment setting or
             # explicit by MarkerInterface IDisableCSRFProtection.

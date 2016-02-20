@@ -11,6 +11,13 @@ New:
   Fixes https://github.com/plone/plone.protect/issues/42
   [maurits]
 
+- include a setup.cfg and a .editorconfig file with code conventions:
+
+  - settings for isort
+  - plone styleguide settings
+
+  [loechel]
+
 Fixes:
 
 - Use zope.interface decorator.
@@ -22,7 +29,7 @@ Fixes:
   Reason: transform / parseTree modifies result html / DOM on all requests even if it is not necessary or intented.
   If the request returns a browsers view which just contains a html snippet (widget code, ESI output) without HTML doctype and html root element or body element it will be wrapped.
   Such request should mark the request with IDisableCSRFProtection.
-  [loechel]
+  [loechel]:
 
 - apply code conventions.
   [loechel]
@@ -30,10 +37,6 @@ Fixes:
 
 3.0.18 (2016-02-25)
 -------------------
-- include a setup.cfg and a .editorconfig file with code conventions: [loechel]
-
-  - settings for isort
-  - plone styleguide settings
 
 - *add item here*
 
