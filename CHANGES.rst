@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fixed AttributeError when calling ``safeWrite`` on a
+  ``TestRequest``, because this has no ``environ.``.  [maurits]
 
 
 3.0.17 (2015-12-07)

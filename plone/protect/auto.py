@@ -213,7 +213,7 @@ class ProtectTransform(object):
                 # need to be portlet assignments. XXX needs to be fixed
                 # somehow...
                 safe_oids = []
-                if SAFE_WRITE_KEY in self.request.environ:
+                if SAFE_WRITE_KEY in getattr(self.request, 'environ', {}):
                     safe_oids = self.request.environ[SAFE_WRITE_KEY]
                 safe = True
                 for obj in registered:
