@@ -71,14 +71,19 @@ def addTokenToUrl(url, req=None, manager=None):
         return url
     if req is None:
         req = getRequest()
-    if not url.startswith(req.SERVER_URL):
+    if req is None or not url.startswith(req.SERVER_URL):
         # only transforms urls to same site
         return url
-    if '_auth_token' not in req.environ:
-        # let's cache this value since this could be called
-        # many times for one request
-        req.environ['_auth_token'] = createToken(manager=manager)
-    token = req.environ['_auth_token']
+    if getattr(req, 'environ', _default) is _default:
+        # TestRequests have no environ.
+        token = createToken(manager=manager)
+    elif '_auth_token' not in req.environ:
+        # Let's cache this value since this could be called
+        # many times for one request.
+        token = createToken(manager=manager)
+        req.environ['_auth_token'] = token
+    else:
+        token = req.environ['_auth_token']
 
     if '_authenticator' not in url:
         if '?' not in url:
