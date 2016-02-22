@@ -110,7 +110,8 @@ def getRoot(context):
 def safeWrite(obj, request=None):
     if request is None:
         request = getRequest()
-    if request is None:
+    if request is None or getattr(request, 'environ', _default) is _default:
+        # Request not found or it is a TestRequest without an environment.
         LOGGER.debug('could not mark object as a safe write')
         return
     if SAFE_WRITE_KEY not in request.environ:
