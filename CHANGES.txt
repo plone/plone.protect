@@ -1,8 +1,10 @@
 Changelog
 =========
 
-2.0.3 (unreleased)
+2.0.3 (2016-02-24)
 ------------------
+
+Fixes:
 
 - Added ``token`` to ``@@authenticator`` view.  For forward
   compatibility with plone.protect 3.  [maurits]
