@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '3.0.18.dev0'
+version = '3.0.18'
 
 setup(
     name='plone.protect',
