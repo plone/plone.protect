@@ -4,10 +4,6 @@ Changelog
 3.0.18 (unreleased)
 -------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Fixed AttributeError when calling ``safeWrite`` on a
