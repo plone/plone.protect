@@ -115,7 +115,6 @@ def check(request, extra='', name="_authenticator", manager=None):
             try:
                 raise Forbidden('Form authenticator is invalid.')
             except Forbidden:
-                import pdb; pdb.set_trace()
                 LOGGER.error("Error (Forbidden) checking CSRF for URL: %s.\n%s" % (
                              request.URL,
                              traceback.format_exc()))
