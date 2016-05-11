@@ -1,5 +1,3 @@
-import logging
-import traceback
 from AccessControl import getSecurityManager
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IAuthenticatorView
@@ -17,7 +15,6 @@ except ImportError:
 
 
 ANONYMOUS_USER = "Anonymous User"
-LOGGER = logging.getLogger('plone.protect')
 
 
 def isAnonymousUser(user):
@@ -112,13 +109,7 @@ class AuthenticatorView(BrowserView):
 def check(request, extra='', name="_authenticator", manager=None):
     if isinstance(request, HTTPRequest):
         if not _verify_request(request, extra=extra, name=name, manager=manager):
-            try:
-                raise Forbidden('Form authenticator is invalid.')
-            except Forbidden:
-                LOGGER.error("Error (Forbidden) checking CSRF for URL: %s.\n%s" % (
-                             request.URL,
-                             traceback.format_exc()))
-                raise
+            raise Forbidden('Form authenticator is invalid.')
 
 def CustomCheckAuthenticator(extra='', name='_authenticator'):
     def _check(request):
