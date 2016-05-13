@@ -225,8 +225,8 @@ class ProtectTransform(object):
                     if self.request.REQUEST_METHOD != 'GET':
                         # only try to be "smart" with GET requests
                         raise
-                    LOGGER.info('aborting transaction due to no CSRF '
-                                'protection on url %s' % self.request.URL)
+                    LOGGER.info('%s\naborting transaction due to no CSRF '
+                                'protection on url %s'%(traceback.print_stack(), self.request.URL))
                     transaction.abort()
 
                     # conditions for doing the confirm form are:
