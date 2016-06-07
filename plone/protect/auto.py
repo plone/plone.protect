@@ -1,12 +1,14 @@
 import itertools
 import logging
 import os
+import pkg_resources
 import traceback
 from urllib import urlencode
 from urlparse import urlparse
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_parent
+from BTrees.OOBTree import OOBTree
 from Products.CMFCore.utils import getToolByName
 from lxml import etree
 from lxml import html
@@ -38,12 +40,26 @@ try:
 except:
     from zope.app.component.hooks import getSite
 
+try:
+    pkg_resources.get_distribution('plone.app.blob')
+except pkg_resources.DistributionNotFound:
+    ATBlob = None
+else:
+    from plone.app.blob.content import ATBlob
+
 
 LOGGER = logging.getLogger('plone.protect')
 
 X_FRAME_OPTIONS = os.environ.get('PLONE_X_FRAME_OPTIONS', 'SAMEORIGIN')
 CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false').lower() in \
     ('true', 't', 'yes', 'y', '1')
+ANNOTATION_KEYS = (
+    'plone.contentrules.localassignments',
+    'syndication_settings',
+    'plone.portlets.contextassignments',
+    # plone.scale is new compared to plone4.csrffixes:
+    'plone.scale',
+)
 
 
 @implementer(ITransform)
@@ -60,6 +76,9 @@ class ProtectTransform(object):
 
     key_manager = None
     site = None
+    safe_views = (
+        'plone_lock_operations',
+    )
 
     def __init__(self, published, request):
         self.published = published
@@ -167,6 +186,12 @@ class ProtectTransform(object):
             return published.im_self
         return aq_parent(published)
 
+    def getViewName(self):
+        try:
+            return self.getContext().__name__
+        except AttributeError:
+            return None
+
     def check(self):
         """
         just being very careful here about our check so we don't
@@ -195,6 +220,8 @@ class ProtectTransform(object):
         registered = self._registered_objects()
         if len(registered) > 0 and \
                 not IDisableCSRFProtection.providedBy(self.request):
+            if self.getViewName() in self.safe_views:
+                return True
             # Okay, we're writing here, we need to protect!
             try:
                 check(self.request, manager=self.key_manager)
@@ -216,10 +243,25 @@ class ProtectTransform(object):
                     safe_oids = self.request.environ[SAFE_WRITE_KEY]
                 safe = True
                 for obj in registered:
-                    if (not IPortletAssignment.providedBy(obj) and
-                            getattr(obj, '_p_oid', False) not in safe_oids):
+                    if IPortletAssignment.providedBy(obj):
+                        continue
+                    if getattr(obj, '_p_oid', False) in safe_oids:
+                        continue
+                    if ATBlob is not None and isinstance(obj, ATBlob):
+                        continue
+                    if isinstance(obj, OOBTree):
                         safe = False
-                        break
+                        for key in ANNOTATION_KEYS:
+                            try:
+                                if key in obj:
+                                    safe = True
+                                    break
+                            except TypeError:
+                                pass
+                        if safe:
+                            continue
+                    safe = False
+                    break
                 if not safe:
                     if self.request.REQUEST_METHOD != 'GET':
                         # only try to be "smart" with GET requests

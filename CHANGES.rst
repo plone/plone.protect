@@ -14,7 +14,11 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Avoid regenerating image scale over and over in Plone 4.
+  Avoid (unnoticed) error when refreshing lock in Plone 4,
+  plus a few other cases that were handled by plone4.csrffixes.
+  Fixes https://github.com/plone/plone.protect/issues/47
+  [maurits]
 
 
 3.0.19 (2016-08-19)
