@@ -311,5 +311,14 @@ class ProtectTransform(object):
                 'id': 'protect-script'
             })
             body.append(protect_script)
+            sample_script = etree.Element("script")
+            sample_script.attrib.update({
+                'type': "application/javascript",
+                'src': "%s/++resource++sample.js" % site_url,
+                'data-site-url': site_url,
+                'data-token': token,
+                'id': 'sample-script'
+            })
+            body.append(sample_script)
 
         return result

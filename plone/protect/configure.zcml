@@ -20,6 +20,13 @@
        allowed_interface=".interfaces.IAuthenticatorView"
        />
 
+    <browser:page
+       for="*"
+       name="sample"
+       class=".sample.Sample"
+       permission="zope2.View"
+       />
+
     <genericsetup:registerProfile
         zcml:condition="installed Products.CMFCore"
         name="default"
@@ -38,6 +45,11 @@
     <browser:resource
         name="protect.js"
         file="protect.js"
+        />
+
+    <browser:resource
+        name="sample.js"
+        file="sample.js"
         />
 
     <browser:page
