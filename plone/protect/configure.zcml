@@ -35,6 +35,11 @@
         factory=".auto.ProtectTransform"
         />
 
+    <browser:resource
+        name="protect.js"
+        file="protect.js"
+        />
+
     <browser:page
         name="confirm-action"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"

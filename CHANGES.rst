@@ -6,7 +6,10 @@ Changelog
 
 New:
 
-- *add item here*
+- Added protect.js from plone4.csrffixes.  This adds an ``X-CSRF-TOKEN``
+  header to ajax requests.
+  Fixes https://github.com/plone/plone.protect/issues/42
+  [maurits]
 
 Fixes:
 
