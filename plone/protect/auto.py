@@ -298,4 +298,18 @@ class ProtectTransform(object):
                 hidden.attrib['value'] = token
                 form.append(hidden)
 
+        if self.site is not None and not root.cssselect('#protect-script'):
+            # Alternative: add this in the resource registry.
+            site_url = self.site.absolute_url()
+            body = root.cssselect('body')[0]
+            protect_script = etree.Element("script")
+            protect_script.attrib.update({
+                'type': "application/javascript",
+                'src': "%s/++resource++protect.js" % site_url,
+                'data-site-url': site_url,
+                'data-token': token,
+                'id': 'protect-script'
+            })
+            body.append(protect_script)
+
         return result
