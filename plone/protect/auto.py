@@ -30,7 +30,7 @@ from zExceptions import Forbidden
 from zope.component import ComponentLookupError
 from zope.component import adapts
 from zope.component import getUtility
-from zope.interface import implements, Interface
+from zope.interface import implementer, Interface
 from zope.globalrequest import getRequest
 
 try:
@@ -46,14 +46,13 @@ CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false').lower() in \
     ('true', 't', 'yes', 'y', '1')
 
 
+@implementer(ITransform)
 class ProtectTransform(object):
     """
     XXX Need to be extremely careful with everything we do in here
     since an error here would mean the transform is skipped
     and no CSRF protection...
     """
-
-    implements(ITransform)
     adapts(Interface, Interface)  # any context, any request
 
     # should be last lxml related transform
