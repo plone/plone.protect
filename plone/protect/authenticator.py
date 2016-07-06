@@ -4,7 +4,7 @@ from plone.protect.interfaces import IAuthenticatorView
 from Products.Five import BrowserView
 from zExceptions import Forbidden
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 from ZPublisher.HTTPRequest import HTTPRequest
 
 import hmac
@@ -93,8 +93,8 @@ def createToken(extra='', manager=None):
     return hmac.new(secret, user + extra, sha).hexdigest()
 
 
+@implementer(IAuthenticatorView)
 class AuthenticatorView(BrowserView):
-    implements(IAuthenticatorView)
 
     def token(self, extra=''):
         return createToken(extra)

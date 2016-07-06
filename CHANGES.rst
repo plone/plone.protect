@@ -13,7 +13,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Use zope.interface decorator.
+  [gforcada]
 
 
 3.0.18 (2016-02-25)
