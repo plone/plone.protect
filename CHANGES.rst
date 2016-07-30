@@ -18,6 +18,7 @@ New:
 
   [loechel]
 
+
 Fixes:
 
 - Use zope.interface decorator.
@@ -29,8 +30,6 @@ Fixes:
 
 3.0.18 (2016-02-25)
 -------------------
-
-- *add item here*
 
 Fixes:
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl.requestmethod import _buildFacade
 from Acquisition import aq_parent
 from OFS.interfaces import IApplication

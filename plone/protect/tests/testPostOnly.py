@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.protect.postonly import check
 from unittest import makeSuite
 from unittest import TestCase

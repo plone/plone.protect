@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.protect.utils import getRoot
