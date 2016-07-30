@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
 from plone.testing.z2 import Browser
+
 import unittest2 as unittest
 
 

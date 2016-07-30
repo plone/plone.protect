@@ -1,9 +1,10 @@
-from plone.app.testing import TEST_USER_NAME
-from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
+# -*- coding: utf-8 -*-
 from plone.app.testing import login
 from plone.app.testing import logout
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.keyring.interfaces import IKeyManager
 from plone.protect import createToken
 from plone.protect.authenticator import AuthenticatorView
@@ -11,10 +12,11 @@ from plone.protect.auto import ProtectTransform
 from plone.protect.auto import safeWrite
 from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
 from plone.testing.z2 import Browser
-import transaction
-import unittest2 as unittest
 from zExceptions import Forbidden
 from zope.component import getUtility
+
+import transaction
+import unittest2 as unittest
 
 
 class _BaseAutoTest(object):

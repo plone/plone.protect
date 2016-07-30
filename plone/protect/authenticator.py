@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IAuthenticatorView
@@ -8,6 +9,8 @@ from zope.interface import implementer
 from ZPublisher.HTTPRequest import HTTPRequest
 
 import hmac
+
+
 try:
     from hashlib import sha1 as sha
 except ImportError:
