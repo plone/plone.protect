@@ -13,7 +13,7 @@ from plone.protect.interfaces import IDisableCSRFProtection
 from plone.protect.utils import getRoot
 from plone.protect.utils import getRootKeyManager
 from plone.protect.utils import SAFE_WRITE_KEY
-from plone.protect.utils import safeWrite   # noqa b/w compat import
+from plone.protect.utils import safeWrite  # noqa b/w compat import
 from plone.transformchain.interfaces import ITransform
 from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.serializer import XMLSerializer
@@ -25,7 +25,8 @@ from zope.component import adapts
 from zope.component import ComponentLookupError
 from zope.component import getUtility
 from zope.globalrequest import getRequest
-from zope.interface import implementer, Interface
+from zope.interface import implementer
+from zope.interface import Interface
 
 import itertools
 import logging

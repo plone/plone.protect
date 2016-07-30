@@ -1,10 +1,10 @@
-from unittest import TestCase
-from zope.component import getGlobalSiteManager
-from plone.keyring.interfaces import IKeyManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from AccessControl.User import User
+from plone.keyring.interfaces import IKeyManager
 from plone.keyring.keymanager import KeyManager
+from unittest import TestCase
+from zope.component import getGlobalSiteManager
 
 
 class MockRequest(dict):
