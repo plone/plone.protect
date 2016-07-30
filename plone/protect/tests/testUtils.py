@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
 from plone.protect.utils import addTokenToUrl
 from plone.protect.utils import protect

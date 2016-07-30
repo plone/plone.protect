@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from plone.protect import createToken
 from plone.protect import CustomCheckAuthenticator

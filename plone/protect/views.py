@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.protect.interfaces import IConfirmView
 from Products.Five import BrowserView
 from zope.interface import implementer
