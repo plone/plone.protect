@@ -14,7 +14,11 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Removed ``RedirectTo`` patch.  The patch has been merged to
+  ``Products.CMFFormController`` 3.0.7 (Plone 4.3 and 5.0) and 3.1.2
+  (Plone 5.1).  Note that we are not requiring those versions in our
+  ``setup.py``, because the code in this package no longer needs it.
+  [maurits]
 
 
 3.0.19 (2016-08-19)
