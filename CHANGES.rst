@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- Only try the confirm view for urls that are in the portal.
+  This applies PloneHotfix20160830.  [maurits]
+
 - Removed ``RedirectTo`` patch.  The patch has been merged to
   ``Products.CMFFormController`` 3.0.7 (Plone 4.3 and 5.0) and 3.1.2
   (Plone 5.1).  Note that we are not requiring those versions in our
