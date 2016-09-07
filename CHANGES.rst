@@ -4,14 +4,6 @@ Changelog
 3.0.20 (unreleased)
 -------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Only try the confirm view for urls that are in the portal.
