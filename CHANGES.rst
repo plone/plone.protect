@@ -4,14 +4,6 @@ Changelog
 3.0.21 (unreleased)
 -------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Avoid regenerating image scale over and over in Plone 4.
