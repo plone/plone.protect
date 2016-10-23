@@ -33,7 +33,6 @@ from zope.component import ComponentLookupError
 from zope.component import adapts
 from zope.component import getUtility
 from zope.interface import implementer, Interface
-from zope.globalrequest import getRequest
 
 try:
     from zope.component.hooks import getSite
@@ -86,7 +85,8 @@ class ProtectTransform(object):
 
     def parseTree(self, result, encoding):
         # if it's a redirect, the result shall not be transformed
-        request = getRequest()
+        request = self.request
+
         if request.response.status in (301, 302):
             return None
 
