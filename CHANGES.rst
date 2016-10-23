@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- avoid zope.globalrequest.getRequest()
+  [tschorr]
+
 - *add item here*
 
 
