@@ -4,20 +4,10 @@ Changelog
 3.0.22 (unreleased)
 -------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - avoid zope.globalrequest.getRequest()
   [tschorr]
-
-- *add item here*
 
 
 3.0.21 (2016-10-05)
