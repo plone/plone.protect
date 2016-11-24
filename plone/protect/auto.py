@@ -1,15 +1,8 @@
-import itertools
-import logging
-import os
-import pkg_resources
-import traceback
-from urllib import urlencode
-from urlparse import urlparse
+# -*- coding: utf-8 -*-
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_parent
 from BTrees.OOBTree import OOBTree
-from Products.CMFCore.utils import getToolByName
 from lxml import etree
 from lxml import html
 from plone.keyring.interfaces import IKeyManager
@@ -19,20 +12,29 @@ from plone.protect.authenticator import createToken
 from plone.protect.authenticator import isAnonymousUser
 from plone.protect.interfaces import IConfirmView
 from plone.protect.interfaces import IDisableCSRFProtection
-from plone.protect.utils import SAFE_WRITE_KEY
 from plone.protect.utils import getRoot
 from plone.protect.utils import getRootKeyManager
+from plone.protect.utils import SAFE_WRITE_KEY
 from plone.protect.utils import safeWrite  # noqa b/w compat import
 from plone.transformchain.interfaces import ITransform
+from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.serializer import XMLSerializer
 from repoze.xmliter.utils import getHTMLSerializer
-import transaction
-import types
+from urllib import urlencode
+from urlparse import urlparse
 from zExceptions import Forbidden
-from zope.component import ComponentLookupError
 from zope.component import adapts
+from zope.component import ComponentLookupError
 from zope.component import getUtility
 from zope.interface import implementer, Interface
+
+import itertools
+import logging
+import os
+import pkg_resources
+import traceback
+import transaction
+import types
 
 try:
     from zope.component.hooks import getSite
@@ -47,7 +49,7 @@ else:
     from plone.app.blob.content import ATBlob
 
 
-LOGGER = logging.getLogger('plone.protect')
+logger = logging.getLogger('plone.protect')
 
 X_FRAME_OPTIONS = os.environ.get('PLONE_X_FRAME_OPTIONS', 'SAMEORIGIN')
 CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false').lower() in \
@@ -113,7 +115,7 @@ class ProtectTransform(object):
             return result
         except (TypeError, etree.ParseError):
             # XXX handle something special?
-            LOGGER.warn('error parsing dom, failure to add csrf '
+            logger.warn('error parsing dom, failure to add csrf '
                         'token to response for url %s' % self.request.URL)
             return None
 
@@ -132,7 +134,10 @@ class ProtectTransform(object):
         """
 
         # before anything, do the clickjacking protection
-        if X_FRAME_OPTIONS and not self.request.response.getHeader('X-Frame-Options'):
+        if (
+            X_FRAME_OPTIONS and
+            not self.request.response.getHeader('X-Frame-Options')
+        ):
             self.request.response.setHeader('X-Frame-Options', X_FRAME_OPTIONS)
 
         if CSRF_DISABLED:
@@ -201,7 +206,7 @@ class ProtectTransform(object):
             return self._check()
         except:
             transaction.abort()
-            LOGGER.error("Error checking for CSRF. "
+            logger.error("Error checking for CSRF. "
                          "Transaction will be aborted since the request "
                          "is now unsafe:\n%s" % (
                              traceback.format_exc()))
@@ -213,7 +218,8 @@ class ProtectTransform(object):
             conn._registered_objects
             # skip the 'temporary' connection since it stores session objects
             # which get written all the time
-            for name, conn in app._p_jar.connections.items() if name != 'temporary'
+            for name, conn in app._p_jar.connections.items()
+            if name != 'temporary'
         ]))
 
     def _check(self):
@@ -227,7 +233,7 @@ class ProtectTransform(object):
                 check(self.request, manager=self.key_manager)
                 return True
             except ComponentLookupError:
-                LOGGER.info('Can not find key manager for CSRF protection. '
+                logger.info('Can not find key manager for CSRF protection. '
                             'This should not happen.')
                 raise
             except Forbidden:
@@ -266,8 +272,13 @@ class ProtectTransform(object):
                     if self.request.REQUEST_METHOD != 'GET':
                         # only try to be "smart" with GET requests
                         raise
-                    LOGGER.info('%s\naborting transaction due to no CSRF '
-                                'protection on url %s'%(traceback.print_stack(), self.request.URL))
+                    logger.info(
+                        '{0:s}\naborting transaction due to no CSRF '
+                        'protection on url {1:s}'.format(
+                            traceback.print_stack(),
+                            self.request.URL
+                        )
+                    )
                     transaction.abort()
 
                     # conditions for doing the confirm form are:
@@ -311,7 +322,10 @@ class ProtectTransform(object):
             token = createToken(manager=self.key_manager)
         except ComponentLookupError:
             if self.site is not None:
-                LOGGER.warn('Keyring not found on site. This should not happen', exc_info=True)
+                logger.warn(
+                    'Keyring not found on site. This should not happen',
+                    exc_info=True
+                )
             return result
 
         for form in root.cssselect('form'):
