@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.protect.auto import safeWrite
 import inspect
 from Products.PluggableAuthService import utils as pluggable_utils

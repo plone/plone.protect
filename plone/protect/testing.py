@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.Five import BrowserView
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer

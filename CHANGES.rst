@@ -14,8 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
-
+- Code Style: utf8-headers
+  [jensens]
 
 3.0.22 (2016-11-17)
 -------------------

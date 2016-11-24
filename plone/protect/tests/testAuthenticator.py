@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hmac
 import sys
 from unittest import TestSuite

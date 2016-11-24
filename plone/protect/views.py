@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.protect.interfaces import IConfirmView
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView

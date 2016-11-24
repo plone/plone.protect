@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from unittest import TestCase
 from zope.component import getGlobalSiteManager
 from plone.keyring.interfaces import IKeyManager
