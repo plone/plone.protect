@@ -41,6 +41,7 @@ def marmoset_patch(func, replacement):
 
 # otherwise the patches do not get applied in some cases
 if hasattr(pluggable_utils, 'checkCSRFToken'):
-    marmoset_patch(pluggable_utils.checkCSRFToken, pluggableauth__checkCSRFToken)
+    marmoset_patch(pluggable_utils.checkCSRFToken,
+                   pluggableauth__checkCSRFToken)
 if hasattr(pluggable_utils, 'getCSRFToken'):
     marmoset_patch(pluggable_utils.getCSRFToken, pluggableauth__getCSRFToken)

@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- Code Style: utf8-headers, sorting, new style namespace delcaration,
+- Code Style: utf8-headers, import sorting, new style namespace declaration, autopep8
   [jensens]
 
 3.0.22 (2016-11-17)

@@ -66,7 +66,9 @@ class TestUnprotectedView(BrowserView):
             self.request.URL,
         )
 
+
 class TestSafeToWriteObject(BrowserView):
+
     def __call__(self):
         self.context.foo = 'bar'
         safeWrite(self)
