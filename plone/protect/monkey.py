@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from plone.protect.auto import safeWrite
-import inspect
 from Products.PluggableAuthService import utils as pluggable_utils
+
+import inspect
 
 
 def wl_lockmapping(self, killinvalids=0, create=0):

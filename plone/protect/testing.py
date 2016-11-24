@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from Products.Five import BrowserView
+from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import applyProfile
 from plone.app.testing.layers import FunctionalTesting
 from plone.protect.auto import safeWrite
+from Products.Five import BrowserView
 from zope.configuration import xmlconfig
 
 

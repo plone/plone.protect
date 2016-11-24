@@ -9,6 +9,8 @@ from zope.interface import implementer
 from ZPublisher.HTTPRequest import HTTPRequest
 
 import hmac
+
+
 try:
     from hashlib import sha1 as sha
 except ImportError:

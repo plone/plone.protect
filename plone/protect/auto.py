@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from AccessControl import getSecurityManager
 from Acquisition import aq_parent
 from BTrees.OOBTree import OOBTree
@@ -26,7 +25,8 @@ from zExceptions import Forbidden
 from zope.component import adapts
 from zope.component import ComponentLookupError
 from zope.component import getUtility
-from zope.interface import implementer, Interface
+from zope.interface import implementer
+from zope.interface import Interface
 
 import itertools
 import logging
@@ -35,6 +35,7 @@ import pkg_resources
 import traceback
 import transaction
 import types
+
 
 try:
     from zope.component.hooks import getSite
