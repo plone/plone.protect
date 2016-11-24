@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
+from plone.protect.utils import addTokenToUrl
+from plone.protect.utils import protect
+from unittest import makeSuite
 from unittest import TestCase
 from unittest import TestSuite
-from unittest import makeSuite
-from plone.protect.utils import protect, addTokenToUrl
+
 import unittest2 as unittest
-from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
 
 
 def funcWithoutRequest():

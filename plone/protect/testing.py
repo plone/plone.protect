@@ -1,9 +1,10 @@
-from Products.Five import BrowserView
+# -*- coding: utf-8 -*-
+from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import applyProfile
 from plone.app.testing.layers import FunctionalTesting
 from plone.protect.auto import safeWrite
+from Products.Five import BrowserView
 from zope.configuration import xmlconfig
 
 
@@ -65,7 +66,9 @@ class TestUnprotectedView(BrowserView):
             self.request.URL,
         )
 
+
 class TestSafeToWriteObject(BrowserView):
+
     def __call__(self):
         self.context.foo = 'bar'
         safeWrite(self)

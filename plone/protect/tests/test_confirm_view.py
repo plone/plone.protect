@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
 from zExceptions import Forbidden
 from zope.component import getMultiAdapter

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zExceptions import Forbidden
 from ZPublisher.HTTPRequest import HTTPRequest
 

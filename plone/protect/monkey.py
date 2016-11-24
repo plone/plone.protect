@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 from plone.protect.auto import safeWrite
-import inspect
 from Products.PluggableAuthService import utils as pluggable_utils
+
+import inspect
 
 
 def wl_lockmapping(self, killinvalids=0, create=0):
@@ -39,6 +41,7 @@ def marmoset_patch(func, replacement):
 
 # otherwise the patches do not get applied in some cases
 if hasattr(pluggable_utils, 'checkCSRFToken'):
-    marmoset_patch(pluggable_utils.checkCSRFToken, pluggableauth__checkCSRFToken)
+    marmoset_patch(pluggable_utils.checkCSRFToken,
+                   pluggableauth__checkCSRFToken)
 if hasattr(pluggable_utils, 'getCSRFToken'):
     marmoset_patch(pluggable_utils.getCSRFToken, pluggableauth__getCSRFToken)

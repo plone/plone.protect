@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
+from plone.protect.postonly import check
+from unittest import makeSuite
 from unittest import TestCase
 from unittest import TestSuite
-from unittest import makeSuite
-from plone.protect.postonly import check
-from ZPublisher.HTTPRequest import HTTPRequest
 from zExceptions import Forbidden
+from ZPublisher.HTTPRequest import HTTPRequest
 
 
 class PostOnlyTests(TestCase):

@@ -1,12 +1,14 @@
-import inspect
-import logging
-from Acquisition import aq_parent
+# -*- coding: utf-8 -*-
 from AccessControl.requestmethod import _buildFacade
+from Acquisition import aq_parent
+from OFS.interfaces import IApplication
 from plone.keyring.keymanager import KeyManager
 from plone.protect.authenticator import createToken
 from zope.globalrequest import getRequest
 
-from OFS.interfaces import IApplication
+import inspect
+import logging
+
 
 SAFE_WRITE_KEY = 'plone.protect.safe_oids'
 LOGGER = logging.getLogger('plone.protect')
