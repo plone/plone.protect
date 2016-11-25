@@ -42,7 +42,7 @@
 
     <browser:page
         name="confirm-action"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        for="*"
         class=".views.ConfirmView"
         template="confirm.pt"
         permission="zope2.View"

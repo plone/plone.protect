@@ -14,8 +14,14 @@ New features:
 
 Bug fixes:
 
+- Allow ``confirm-action`` for all contexts, instead of only Plone Site root.
+  This avoids an error when calling it on a subsite.
+  Fixes `issue #51 <https://github.com/plone/plone.protect/issues/51>`_.
+  [maurits]
+
 - Code Style: utf8-headers, import sorting, new style namespace declaration, autopep8
   [jensens]
+
 - Fix #57: Html must contain "body", otherwise plone.protect breaks.
   [jensens]
 
