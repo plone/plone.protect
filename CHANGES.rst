@@ -16,6 +16,9 @@ Bug fixes:
 
 - Code Style: utf8-headers, import sorting, new style namespace declaration, autopep8
   [jensens]
+- Fix #57: Html must contain "body", otherwise plone.protect breaks.
+  [jensens]
+
 
 3.0.22 (2016-11-17)
 -------------------
