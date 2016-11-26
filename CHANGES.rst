@@ -4,14 +4,6 @@ Changelog
 3.0.23 (unreleased)
 -------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Allow ``confirm-action`` for all contexts, instead of only Plone Site root.
