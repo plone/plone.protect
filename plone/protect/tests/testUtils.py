@@ -6,7 +6,7 @@ from unittest import makeSuite
 from unittest import TestCase
 from unittest import TestSuite
 
-import unittest2 as unittest
+import unittest
 
 
 def funcWithoutRequest():

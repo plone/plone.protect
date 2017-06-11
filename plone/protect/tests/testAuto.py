@@ -16,7 +16,7 @@ from zExceptions import Forbidden
 from zope.component import getUtility
 
 import transaction
-import unittest2 as unittest
+import unittest
 
 
 class _BaseAutoTest(object):
