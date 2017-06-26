@@ -55,6 +55,11 @@ This can be done using a simple TAL statement inside your form::
 
 this will produce a HTML input element with the authentication information.
 
+If you want to create the token value programmatically, use the following::
+
+    from plone.protect.authenticator import createToken
+    token = createToken()
+
 Validating the token
 --------------------
 
@@ -220,6 +225,32 @@ To disable all automatic CSRF protection, set the environment variable
 
 WARNING! It is very dangerous to do this. Do not do this unless the zeo client
 with this setting is not public and you know what you are doing.
+
+..note::
+    This doesn't disable explicit and manual CSRF protection checks.
+
+
+Fixing CSRF Protection failures in tests
+========================================
+
+If you get ``Unauthorized`` errors in tests due to unprotected form submission
+where normally automatic protection would be in place you can use the following
+blueprint to protect your forms::
+
+    from plone.protect.authenticator import createToken
+    from ..testing import MY_INTEGRATION_TESTING_LAYER
+    import unittest
+
+    class MyTest(unittest.TestCase):
+
+        layer = MY_INTEGRATION_TESTING_LAYER
+
+        def setUp(self):
+            self.request = self.layer['request']
+            # Disable plone.protect for these tests
+            self.request.form['_authenticator'] = createToken()
+            # Eventuelly you find this also useful
+            self.request.environ['REQUEST_METHOD'] = 'POST'
 
 
 Notes
