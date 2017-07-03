@@ -276,7 +276,7 @@ class ProtectTransform(object):
                     logger.info(
                         '{0:s}\naborting transaction due to no CSRF '
                         'protection on url {1:s}'.format(
-                            traceback.print_stack(),
+                            '\n'.join(traceback.format_stack()),
                             self.request.URL
                         )
                     )
