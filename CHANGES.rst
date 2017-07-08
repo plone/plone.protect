@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix logging to no longer write traceback to stdout, but include it in the
+  logging message instead.
+  [jone]
 
 
 3.0.24 (2017-07-03)
