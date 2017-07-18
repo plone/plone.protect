@@ -4,14 +4,6 @@ Changelog
 3.0.25 (unreleased)
 -------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Fix logging to no longer write traceback to stdout, but include it in the
