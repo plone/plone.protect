@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Catch ``AttributeError`` on transform.
+  [hvelarde]
 
 Bug fixes:
 

@@ -114,7 +114,7 @@ class ProtectTransform(object):
             # output does odd character encodings
             result.serializer = html.tostring
             return result
-        except (TypeError, etree.ParseError):
+        except (AttributeError, TypeError, etree.ParseError):
             # XXX handle something special?
             logger.warn('error parsing dom, failure to add csrf '
                         'token to response for url %s' % self.request.URL)
