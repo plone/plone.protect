@@ -4,18 +4,10 @@ Changelog
 3.0.26 (unreleased)
 -------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Catch ``AttributeError`` on transform.
   [hvelarde]
-
-Bug fixes:
-
-- *add item here*
 
 
 3.0.25 (2017-07-18)
