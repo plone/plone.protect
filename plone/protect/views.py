@@ -13,5 +13,5 @@ class ConfirmView(BrowserView):
         urltool = getToolByName(self.context, 'portal_url')
         original_url = getattr(self.request, 'original_url', '')
         if not original_url or not urltool.isURLInPortal(original_url):
-            raise Forbidden('url not in portal')
+            raise Forbidden('url not in portal: {0}'.format(original_url))
         return self.index()
