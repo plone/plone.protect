@@ -10,7 +10,9 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Log forbidden URLs.
+  Fixes https://github.com/plone/plone.protect/issues/66
+  [gforcada]
 
 Bug fixes:
 
