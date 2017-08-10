@@ -16,6 +16,9 @@ New features:
 
 Bug fixes:
 
+- README wording tweaks 
+  [tkimnguyen]
+  
 - *add item here*
 
 
