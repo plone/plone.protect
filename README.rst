@@ -1,7 +1,7 @@
 Introduction
 ============
 
-This package contains utilities that can help to protect parts of Plone
+This package contains utilities that can help protect parts of Plone
 or applications build on top of the Plone framework.
 
 
@@ -21,7 +21,7 @@ checker::
   def manage_doSomething(self, param, REQUEST=None):
       pass
 
-This checker only operates on HTTP requests; other types of requests
+This checker operates only on HTTP requests; other types of requests
 are not checked.
 
 b) Passing request to a function validator
@@ -63,8 +63,8 @@ If you want to create the token value programmatically, use the following::
 Validating the token
 --------------------
 
-a) ZCA way
-**********
+a) Zope Component Architecture way
+**********************************
 
 Next you need to add logic somewhere to verify the authenticator. This
 can be done using a call to the authenticator view. For example::
@@ -156,7 +156,7 @@ Additionally, whenever a particular request attempts to write to the ZODB,
 it'll check for the existence of a correct auth token.
 
 
-Allowing write on read programatically
+Allowing write on read programmatically
 --------------------------------------
 
 When you need to allow a known write on read, you've got several options.
@@ -205,7 +205,7 @@ Clickjacking Protection
 plone.protect also provides, by default, clickjacking protection since
 version 3.0.
 
-To protect against this attack, plone employs the use of the X-Frame-Options
+To protect against this attack, Plone uses the X-Frame-Options
 header. plone.protect will set the X-Frame-Options value to ``SAMEORIGIN``.
 
 To customize this value, you can set it to a custom value for a custom view
@@ -223,7 +223,7 @@ Disable All Automatic CSRF Protection
 To disable all automatic CSRF protection, set the environment variable
 ``PLONE_CSRF_DISABLED`` value to ``true``.
 
-WARNING! It is very dangerous to do this. Do not do this unless the zeo client
+WARNING! It is very dangerous to do this. Do not do this unless the ZEO client
 with this setting is not public and you know what you are doing.
 
 ..note::
@@ -274,7 +274,7 @@ Compatibility
 
 ``plone.protect`` version 3 was made for Plone 5.  You can use it on
 Plone 4 for better protection, but you will need the
-``plone4.csrffixes`` hotfix package as well.  Otherwise you get
+``plone4.csrffixes`` hotfix package as well to avoid getting
 needless warnings or errors.  See the `hotfix announcement`_ and the
 `hotfix page`_.
 
