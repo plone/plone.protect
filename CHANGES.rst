@@ -4,19 +4,11 @@ Changelog
 3.0.27 (unreleased)
 -------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Log forbidden URLs.
   Fixes https://github.com/plone/plone.protect/issues/66
   [gforcada]
-
-Bug fixes:
-
-- *add item here*
 
 
 3.0.26 (2017-08-04)
