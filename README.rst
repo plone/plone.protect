@@ -157,7 +157,7 @@ it'll check for the existence of a correct auth token.
 
 
 Allowing write on read programmatically
---------------------------------------
+---------------------------------------
 
 When you need to allow a known write on read, you've got several options.
 

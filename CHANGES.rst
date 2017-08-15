@@ -14,10 +14,8 @@ New features:
 
 Bug fixes:
 
-- README wording tweaks 
+- README wording tweaks
   [tkimnguyen]
-  
-- *add item here*
 
 
 3.1 (2017-08-14)
