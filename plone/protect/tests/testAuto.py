@@ -182,3 +182,26 @@ class TestAutoChecks(unittest.TestCase):
         transform = ProtectTransform(self.portal, self.request)
         transform._registered_objects = lambda: [self.portal]
         self.assertTrue(transform._check())
+
+class TestAutoTransform(unittest.TestCase):
+    layer = PROTECT_FUNCTIONAL_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+        self.request.response.setHeader('Content-Type', 'text/html')
+        self.request.REQUEST_METHOD = 'POST'
+
+    def test_empty_no_error(self):
+        # empty pages (eg. tiles or ajax requests) should not lead to
+        # transform errors or warnings
+        transform = ProtectTransform(self.portal, self.request)
+        result = transform.transform(['\n'], 'utf-8')
+        self.assertEqual(result, None)
+
+    def test_html(self):
+        transform = ProtectTransform(self.portal, self.request)
+        result = transform.transform([(
+            '<html>\n<body><form action="http://nohost/myaction" method="POST">'
+            '</form></body>\n</html>')], 'utf-8')
+        self.failUnless('_authenticator' in result.serialize())

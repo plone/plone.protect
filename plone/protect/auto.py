@@ -107,6 +107,12 @@ class ProtectTransform(object):
                                                    'compress',):
             return None
 
+        if isinstance(result, list):
+            # do not parse empty strings to omit warning log message
+            if len(result) == 1:
+                if result[0].strip() == u'':
+                    return None
+
         try:
             result = getHTMLSerializer(
                 result, pretty_print=False, encoding=encoding)
