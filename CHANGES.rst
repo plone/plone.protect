@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Transform does not log a warning for empty responses
+  (Fixes https://github.com/plone/plone.protect/issues/15)
+  [fRiSi]
 
 
 3.1.1 (2017-08-27)
