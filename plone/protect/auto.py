@@ -107,12 +107,10 @@ class ProtectTransform(object):
                                                    'compress',):
             return None
 
-        if isinstance(result, list):
+        if isinstance(result, list) and len(result) == 1:
             # do not parse empty strings to omit warning log message
-            if len(result) == 1:
-                if result[0].strip() == u'':
-                    return None
-
+            if not result[0].strip():
+                return None
         try:
             result = getHTMLSerializer(
                 result, pretty_print=False, encoding=encoding)
@@ -139,7 +137,6 @@ class ProtectTransform(object):
     def transformIterable(self, result, encoding):
         """Apply the transform if required
         """
-
         # before anything, do the clickjacking protection
         if (
             X_FRAME_OPTIONS and
@@ -320,6 +317,7 @@ class ProtectTransform(object):
         return True
 
     def transform(self, result, encoding):
+
         result = self.parseTree(result, encoding)
         if result is None:
             return None
