@@ -38,6 +38,7 @@ setup(
     install_requires=[
         'setuptools',
         'plone.keyring >= 3.0dev',
+        'six',
         'zope.component',
         'zope.interface',
         'Zope2',

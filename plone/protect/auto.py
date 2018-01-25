@@ -19,8 +19,8 @@ from plone.transformchain.interfaces import ITransform
 from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.serializer import XMLSerializer
 from repoze.xmliter.utils import getHTMLSerializer
-from urllib import urlencode
-from urlparse import urlparse
+from six.moves.urllib.parse import urlencode
+from six.moves.urllib.parse import urlparse
 from zExceptions import Forbidden
 from zope.component import adapts
 from zope.component import ComponentLookupError
@@ -32,6 +32,7 @@ import itertools
 import logging
 import os
 import pkg_resources
+import six
 import traceback
 import transaction
 import types
@@ -125,7 +126,7 @@ class ProtectTransform(object):
             return None
 
     def transformBytes(self, result, encoding):
-        result = unicode(result, encoding, 'ignore')
+        result = six.text_type(result, encoding, 'ignore')
         return self.transformIterable([result], encoding)
 
     def transformString(self, result, encoding):

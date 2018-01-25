@@ -81,7 +81,7 @@ class _BaseAutoTest(object):
         # XXX: plone.transformchain don't reraise exceptions
         # try:
         #    self.browser.getControl('submit1').click()
-        # except Exception, ex:
+        # except Exception as ex:
         #     self.assertEquals(ex.getcode(), 403)
         self.browser.getControl('submit1').click()
         self.assertFalse(hasattr(self.portal, "foo"))
