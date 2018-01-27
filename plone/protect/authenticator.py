@@ -9,6 +9,7 @@ from zope.interface import implementer
 from ZPublisher.HTTPRequest import HTTPRequest
 
 import hmac
+import six
 
 
 try:
@@ -35,7 +36,7 @@ def _is_equal(val1, val2):
     """
     constant time comparison
     """
-    if not isinstance(val1, basestring) or not isinstance(val2, basestring):
+    if not isinstance(val1, six.string_types) or not isinstance(val2, six.string_types):
         return False
     if len(val1) != len(val2):
         return False

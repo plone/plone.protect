@@ -18,6 +18,9 @@ Bug fixes:
   (Fixes https://github.com/plone/plone.protect/issues/15)
   [fRiSi]
 
+- Add Python 2 / 3 compatibility
+  [vincero]
+
 
 3.1.1 (2017-08-27)
 ------------------
