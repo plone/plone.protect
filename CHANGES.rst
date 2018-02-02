@@ -4,14 +4,6 @@ Changelog
 3.1.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Transform does not log a warning for empty responses
