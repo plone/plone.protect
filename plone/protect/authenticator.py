@@ -77,10 +77,14 @@ def _verify_request(request, extra='', name='_authenticator', manager=None):
     user = _getUserName()
     ring = _getKeyring(user, manager=manager)
 
+    if six.PY3:
+        user = user.encode('utf-8')
+        extra = extra.encode('utf-8')
+
     for key in ring:
         if key is None:
             continue
-        correct = hmac.new(key, user + extra, sha).hexdigest()
+        correct = hmac.new(key.encode('utf-8'), user + extra, sha).hexdigest()
         if _is_equal(correct, auth):
             return True
 
