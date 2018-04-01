@@ -131,7 +131,7 @@ class ProtectTransform(object):
             return None
 
     def transformBytes(self, result, encoding):
-        result = six.text_type(result, encoding, 'ignore')
+        result = result.decode(encoding, 'ignore')
         return self.transformIterable([result], encoding)
 
     def transformString(self, result, encoding):
@@ -198,7 +198,7 @@ class ProtectTransform(object):
     def getContext(self):
         published = self.request.get('PUBLISHED')
         if isinstance(published, types.MethodType):
-            return published.im_self
+            return published.__self__
         return aq_parent(published)
 
     def getViewName(self):

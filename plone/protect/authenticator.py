@@ -94,6 +94,10 @@ def createToken(extra='', manager=None):
     user = _getUserName()
     ring = _getKeyring(user, manager=manager)
     secret = ring.random()
+    if six.PY3:
+        secret = secret.encode('utf-8')
+        user = user.encode('utf-8')
+        extra = extra.encode('utf-8')
     return hmac.new(secret, user + extra, sha).hexdigest()
 
 
