@@ -4,14 +4,6 @@ Changelog
 3.1.3 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - More Python 2 / 3 compatibility
