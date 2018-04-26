@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Avoid CSRF warnings due to generating image scales
+  stored in a plone.scale.storage.ScalesDict.
+  [davisagli]
 
 
 3.0.27 (2018-07-16)
