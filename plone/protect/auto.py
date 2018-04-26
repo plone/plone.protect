@@ -50,6 +50,11 @@ except pkg_resources.DistributionNotFound:
 else:
     from plone.app.blob.content import ATBlob
 
+try:
+    from plone.scale.storage import ScalesDict
+except ImportError:
+    ScalesDict = None
+
 
 logger = logging.getLogger('plone.protect')
 
@@ -60,9 +65,9 @@ ANNOTATION_KEYS = (
     'plone.contentrules.localassignments',
     'syndication_settings',
     'plone.portlets.contextassignments',
-    # plone.scale is new compared to plone4.csrffixes:
     'plone.scale',
 )
+SAFE_TYPES = tuple(t for t in [ATBlob, ScalesDict] if t is not None)
 
 
 @implementer(ITransform)
@@ -258,7 +263,7 @@ class ProtectTransform(object):
                         continue
                     if getattr(obj, '_p_oid', False) in safe_oids:
                         continue
-                    if ATBlob is not None and isinstance(obj, ATBlob):
+                    if SAFE_TYPES and isinstance(obj, SAFE_TYPES):
                         continue
                     if isinstance(obj, OOBTree):
                         safe = False
