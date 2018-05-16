@@ -34,7 +34,7 @@ class protect(object):
 
         arglen = len(args)
         if defaults is not None:
-            defaults = list(zip(args[arglen - len(defaults):], defaults))
+            defaults = zip(args[arglen - len(defaults):], defaults)
             arglen -= len(defaults)
 
         def _curried(*args, **kw):
@@ -59,8 +59,12 @@ class protect(object):
 
         # Build a facade, with a reference to our locally-scoped _curried
         facade_globs = dict(_curried=_curried, _default=_default)
-        name = callable.__name__
-        exec(_buildFacade(name, spec, callable.__doc__), facade_globs)
+        try:
+            name = callable.__name__
+            exec(_buildFacade(name, spec, callable.__doc__) in facade_globs)
+        except TypeError:  # BBB: Zope 2.10
+            name = '_facade'
+            exec(_buildFacade(spec, callable.__doc__) in facade_globs)
         return facade_globs[name]
 
 
