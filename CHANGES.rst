@@ -24,7 +24,9 @@ Bug fixes:
 
 Bug fixes:
 
-- More Python 2 / 3 compatibility
+- More Python 2 / 3 compatibility.
+  Warning: this gives a SyntaxError on Python 2.7.8 or lower.
+  See `issue 74 <https://github.com/plone/plone.protect/issues/74>`_.
   [pbauer]
 
 
