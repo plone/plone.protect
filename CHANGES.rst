@@ -6,7 +6,14 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Version 3.1.3 introduced a Python 3 compatibility fix that broke some Python 2 versions with a ``SyntaxError``.
+  Reports are mostly for Python 2.7.8 and lower, but also one for 2.7.14, but only on Travis.
+  So this marks a breaking change.
+  The incompatibility will be reverted on branch 3.x.
+  Version 3.1.4 should be safe to use again.
+  See `issue 74 <https://github.com/plone/plone.protect/issues/74>`_.
+  and `issue 75 <https://github.com/plone/plone.protect/issues/75>`_.
+  [maurits]
 
 New features:
 
