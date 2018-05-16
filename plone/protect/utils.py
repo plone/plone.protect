@@ -61,10 +61,10 @@ class protect(object):
         facade_globs = dict(_curried=_curried, _default=_default)
         try:
             name = callable.__name__
-            exec(_buildFacade(name, spec, callable.__doc__) in facade_globs)
+            exec _buildFacade(name, spec, callable.__doc__) in facade_globs
         except TypeError:  # BBB: Zope 2.10
             name = '_facade'
-            exec(_buildFacade(spec, callable.__doc__) in facade_globs)
+            exec _buildFacade(spec, callable.__doc__) in facade_globs
         return facade_globs[name]
 
 
