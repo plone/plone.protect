@@ -223,11 +223,13 @@ Disable All Automatic CSRF Protection
 To disable all automatic CSRF protection, set the environment variable
 ``PLONE_CSRF_DISABLED`` value to ``true``.
 
-WARNING! It is very dangerous to do this. Do not do this unless the ZEO client
-with this setting is not public and you know what you are doing.
+.. Warning::
 
-..note::
-    This doesn't disable explicit and manual CSRF protection checks.
+   It is very dangerous to do this. Do not do this unless the ZEO client
+   with this setting is not public and you know what you are doing.
+
+.. Note::
+   This doesn't disable explicit and manual CSRF protection checks.
 
 
 Fixing CSRF Protection failures in tests
