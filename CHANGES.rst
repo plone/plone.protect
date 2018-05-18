@@ -14,6 +14,12 @@ New features:
 
 Bug fixes:
 
+- Reverted the part of the changes from 3.1.3 that introduced a possible ``SyntaxError`` on some Python 2 versions.
+  Reports are mostly for Python 2.7.8 and lower, but also one for 2.7.14, but only on Travis.
+  See `issue 74 <https://github.com/plone/plone.protect/issues/74>`_
+  and `issue 75 <https://github.com/plone/plone.protect/issues/75>`_.
+  [maurits]
+
 - Avoid CSRF warnings due to generating image scales
   stored in a plone.scale.storage.ScalesDict.
   [davisagli]
@@ -24,7 +30,9 @@ Bug fixes:
 
 Bug fixes:
 
-- More Python 2 / 3 compatibility
+- More Python 2 / 3 compatibility.
+  Warning: this gives a SyntaxError on Python 2.7.8 or lower.
+  See `issue 74 <https://github.com/plone/plone.protect/issues/74>`_.
   [pbauer]
 
 
