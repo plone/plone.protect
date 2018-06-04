@@ -4,14 +4,6 @@ Changelog
 3.1.4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Reverted the part of the changes from 3.1.3 that introduced a possible ``SyntaxError`` on some Python 2 versions.
