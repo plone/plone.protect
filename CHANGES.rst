@@ -50,6 +50,9 @@ Bug fixes:
   stored in a plone.scale.storage.ScalesDict.
   [davisagli]
 
+- More Python 2 / 3 compatibility
+  [pbauer, MatthewWilkes]
+
 
 3.1.3 (2018-04-04)
 ------------------
@@ -60,8 +63,6 @@ Bug fixes:
   Warning: this gives a SyntaxError on Python 2.7.8 or lower.
   See `issue 74 <https://github.com/plone/plone.protect/issues/74>`_.
   [pbauer]
-- More Python 2 / 3 compatibility
-  [pbauer, MatthewWilkes]
 
 
 3.1.2 (2018-02-02)
