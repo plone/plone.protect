@@ -47,7 +47,7 @@ class _BaseAutoTest(object):
         try:
             form.getControl(name="_authenticator")
             self.assertEqual('should not add authenticator', '')
-        except:
+        except Exception:
             pass
 
     def test_does_not_add_csrf_protection_to_different_domain_scheme_relative(
@@ -57,7 +57,7 @@ class _BaseAutoTest(object):
         try:
             form.getControl(name="_authenticator")
             self.assertEqual('should not add authenticator', '')
-        except:
+        except Exception:
             pass
 
     def test_authentication_works_automatically(self):
@@ -97,8 +97,9 @@ class AutoCSRFProtectTests(unittest.TestCase, _BaseAutoTest):
         self.browser.open(self.portal.absolute_url() + '/login_form')
         self.browser.getControl(name='__ac_name').value = TEST_USER_NAME
         self.browser.getControl(
-            name='__ac_password').value = TEST_USER_PASSWORD
-        self.browser.getControl(name='submit').click()
+            name='__ac_password'
+        ).value = TEST_USER_PASSWORD
+        self.browser.getControl('Log in').click()
 
     def open(self, path):
         self.browser.open(self.portal.absolute_url() + '/' + path)
@@ -131,7 +132,9 @@ class TestRoot(unittest.TestCase, _BaseAutoTest):
         self.browser = Browser(self.layer['app'])
         self.request = self.layer['request']
         self.browser.addHeader(
-            'Authorization', 'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,))
+            'Authorization',
+            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+        )
 
     def open(self, path):
         self.browser.open(self.portal.aq_parent.absolute_url() + '/' + path)
@@ -158,7 +161,7 @@ class AutoRotateTests(unittest.TestCase):
         self.browser.getControl(name='__ac_name').value = TEST_USER_NAME
         self.browser.getControl(
             name='__ac_password').value = TEST_USER_PASSWORD
-        self.browser.getControl(name='submit').click()
+        self.browser.getControl('Log in').click()
 
         self.assertNotEqual(keys, ring.data)
         self.assertNotEqual(ring.last_rotation, 0)
@@ -183,6 +186,7 @@ class TestAutoChecks(unittest.TestCase):
         transform._registered_objects = lambda: [self.portal]
         self.assertTrue(transform._check())
 
+
 class TestAutoTransform(unittest.TestCase):
     layer = PROTECT_FUNCTIONAL_TESTING
 
@@ -202,6 +206,7 @@ class TestAutoTransform(unittest.TestCase):
     def test_html(self):
         transform = ProtectTransform(self.portal, self.request)
         result = transform.transform([(
-            '<html>\n<body><form action="http://nohost/myaction" method="POST">'
+            '<html>\n<body>'
+            '<form action="http://nohost/myaction" method="POST">'
             '</form></body>\n</html>')], 'utf-8')
         self.failUnless('_authenticator' in result.serialize())

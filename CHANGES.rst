@@ -21,6 +21,9 @@ New features:
 
 Bug fixes:
 
+- Fixed tests to work with merged plone.login
+  [jensens]
+
 - Avoid CSRF warnings due to generating image scales
   stored in a plone.scale.storage.ScalesDict.
   [davisagli]
