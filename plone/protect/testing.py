@@ -24,6 +24,8 @@ class ProtectedLayer(PloneSandboxLayer):
         applyProfile(portal, 'plone.protect:default')
         self.portal = portal
 
+    def tearDownZope(self, app):
+        from plone.protect.monkey import enable_zope_csrf_checks
 
 PROTECT_FIXTURE = ProtectedLayer()
 PROTECT_FUNCTIONAL_TESTING = FunctionalTesting(
