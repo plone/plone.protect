@@ -57,7 +57,7 @@
         description="Special handling for write on read Zope2 locking issues"
         class="webdav.Lockable.LockableItem"
         original="wl_lockmapping"
-        replacement=".monkey.wl_lockmapping"
+        replacement=".monkey_webdav.wl_lockmapping"
         preserveOriginal="True"
         />
 </configure>

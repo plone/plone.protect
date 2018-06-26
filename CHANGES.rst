@@ -50,6 +50,9 @@ Bug fixes:
   stored in a plone.scale.storage.ScalesDict.
   [davisagli]
 
+- Fix marmoset monkey patching for Python 3
+  [jensens]
+
 
 3.1.3 (2018-04-04)
 ------------------

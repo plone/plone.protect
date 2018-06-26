@@ -35,13 +35,15 @@ def pluggableauth__checkCSRFToken(request, token='csrf_token', raises=True):
 
 def marmoset_patch(func, replacement):
     source = inspect.getsource(replacement)
-    exec source in func.func_globals
-    func.func_code = replacement.func_code
+    exec(source, func.__globals__)
+    func.__code__ = replacement.__code__
 
 
 # otherwise the patches do not get applied in some cases
 if hasattr(pluggable_utils, 'checkCSRFToken'):
-    marmoset_patch(pluggable_utils.checkCSRFToken,
-                   pluggableauth__checkCSRFToken)
+    marmoset_patch(
+        pluggable_utils.checkCSRFToken,
+        pluggableauth__checkCSRFToken,
+    )
 if hasattr(pluggable_utils, 'getCSRFToken'):
     marmoset_patch(pluggable_utils.getCSRFToken, pluggableauth__getCSRFToken)
