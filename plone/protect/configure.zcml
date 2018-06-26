@@ -57,7 +57,14 @@
         description="Special handling for write on read Zope2 locking issues"
         class="webdav.Lockable.LockableItem"
         original="wl_lockmapping"
-        replacement=".monkey_webdav.wl_lockmapping"
+        replacement=".monkey.wl_lockmapping"
         preserveOriginal="True"
         />
+
+    <include package="z3c.zcmlhook" file="meta.zcml" />
+
+    <zcml:customAction
+        handler=".monkey.disable_zope_csrf_checks"
+        />
+
 </configure>

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from plone.protect.auto import safeWrite
-from Products.PluggableAuthService import utils as pluggable_utils
-
 import inspect
 
 
@@ -39,11 +37,13 @@ def marmoset_patch(func, replacement):
     func.__code__ = replacement.__code__
 
 
-# otherwise the patches do not get applied in some cases
-if hasattr(pluggable_utils, 'checkCSRFToken'):
-    marmoset_patch(
-        pluggable_utils.checkCSRFToken,
-        pluggableauth__checkCSRFToken,
-    )
-if hasattr(pluggable_utils, 'getCSRFToken'):
-    marmoset_patch(pluggable_utils.getCSRFToken, pluggableauth__getCSRFToken)
+def disable_zope_csrf_checks():
+    from Products.PluggableAuthService import utils as pluggable_utils
+    if hasattr(pluggable_utils, 'checkCSRFToken'):
+        marmoset_patch(
+            pluggable_utils.checkCSRFToken,
+            pluggableauth__checkCSRFToken,
+        )
+    if hasattr(pluggable_utils, 'getCSRFToken'):
+        marmoset_patch(
+            pluggable_utils.getCSRFToken, pluggableauth__getCSRFToken)
