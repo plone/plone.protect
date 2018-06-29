@@ -4,17 +4,11 @@ Changelog
 3.0.27 (unreleased)
 -------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
-- *add item here*
+- Fix package dependencies;
+  ``cssselect`` has been an extra of ``lxml`` since 2014 (closes `#79 <https://github.com/plone/plone.protect/issues/79>`_).
+  [hvelarde]
 
 
 3.0.26 (2017-08-04)
