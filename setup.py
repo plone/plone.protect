@@ -33,6 +33,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
+        'lxml[cssselect]',
         'setuptools',
         'plone.keyring >= 3.0dev',
         'six',

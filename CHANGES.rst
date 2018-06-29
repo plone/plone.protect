@@ -21,6 +21,10 @@ New features:
 
 Bug fixes:
 
+- Fix package dependencies;
+  ``cssselect`` has been an extra of ``lxml`` since 2014 (closes `#79 <https://github.com/plone/plone.protect/issues/79>`_).
+  [hvelarde]
+
 - Fixed tests to work with merged plone.login
   [jensens]
 
