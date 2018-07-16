@@ -15,10 +15,6 @@ Breaking changes:
   and `issue 75 <https://github.com/plone/plone.protect/issues/75>`_.
   [maurits]
 
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Avoid CSRF warnings due to generating image scales
