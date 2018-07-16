@@ -3,7 +3,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = '3.0.27.dev0'
+version = '3.0.27'
 
 setup(
     name='plone.protect',
