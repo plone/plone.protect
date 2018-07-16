@@ -14,7 +14,12 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix package dependencies;
+  ``cssselect`` has been an extra of ``lxml`` since 2014 (closes `#79 <https://github.com/plone/plone.protect/issues/79>`_).
+  [hvelarde]
+
+- Fixed tests to work with merged plone.login
+  [jensens]
 
 
 4.0.0 (2018-07-16)
@@ -32,13 +37,6 @@ Breaking changes:
   [maurits]
 
 Bug fixes:
-
-- Fix package dependencies;
-  ``cssselect`` has been an extra of ``lxml`` since 2014 (closes `#79 <https://github.com/plone/plone.protect/issues/79>`_).
-  [hvelarde]
-
-- Fixed tests to work with merged plone.login
-  [jensens]
 
 - Avoid CSRF warnings due to generating image scales
   stored in a plone.scale.storage.ScalesDict.
