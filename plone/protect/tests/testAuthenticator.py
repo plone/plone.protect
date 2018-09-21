@@ -15,6 +15,7 @@ from ZPublisher.HTTPRequest import HTTPRequest
 import hmac
 import sys
 
+import six
 
 try:
     from hashlib import sha1 as sha
@@ -69,7 +70,10 @@ class VerifyTests(KeyringTestCase):
 
     def setAuthenticator(self, key, extra='', name="_authenticator"):
         user = getSecurityManager().getUser().getUserName()
-        auth = hmac.new(key, user + extra, sha).hexdigest()
+        if six.PY3:
+            user = user.encode('utf-8')
+            extra = extra.encode('utf-8')
+        auth = hmac.new(key.encode('utf-8'), user + extra, sha).hexdigest()
         self.request[name] = auth
 
     def testCorrectAuthenticator(self):

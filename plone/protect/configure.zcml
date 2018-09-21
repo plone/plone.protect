@@ -60,4 +60,11 @@
         replacement=".monkey.wl_lockmapping"
         preserveOriginal="True"
         />
+
+    <include package="z3c.zcmlhook" file="meta.zcml" />
+
+    <zcml:customAction
+        handler=".monkey.disable_zope_csrf_checks"
+        />
+
 </configure>

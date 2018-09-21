@@ -209,4 +209,4 @@ class TestAutoTransform(unittest.TestCase):
             '<html>\n<body>'
             '<form action="http://nohost/myaction" method="POST">'
             '</form></body>\n</html>')], 'utf-8')
-        self.failUnless('_authenticator' in result.serialize())
+        self.failUnless(b'_authenticator' in result.serialize())

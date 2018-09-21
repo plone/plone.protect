@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.protect.auto import safeWrite
-from Products.PluggableAuthService import utils as pluggable_utils
-
+from zope.testing.cleanup import addCleanUp
 import inspect
 
 
@@ -35,13 +34,35 @@ def pluggableauth__checkCSRFToken(request, token='csrf_token', raises=True):
 
 def marmoset_patch(func, replacement):
     source = inspect.getsource(replacement)
-    exec source in func.func_globals
-    func.func_code = replacement.func_code
+    exec(source, func.__globals__)
+    func._old_code = func.__code__
+    func.__code__ = replacement.__code__
 
 
-# otherwise the patches do not get applied in some cases
-if hasattr(pluggable_utils, 'checkCSRFToken'):
-    marmoset_patch(pluggable_utils.checkCSRFToken,
-                   pluggableauth__checkCSRFToken)
-if hasattr(pluggable_utils, 'getCSRFToken'):
-    marmoset_patch(pluggable_utils.getCSRFToken, pluggableauth__getCSRFToken)
+def disable_zope_csrf_checks():
+    from Products.PluggableAuthService import utils as pluggable_utils
+    if hasattr(pluggable_utils, 'checkCSRFToken'):
+        marmoset_patch(
+            pluggable_utils.checkCSRFToken,
+            pluggableauth__checkCSRFToken,
+        )
+    if hasattr(pluggable_utils, 'getCSRFToken'):
+        marmoset_patch(
+            pluggable_utils.getCSRFToken, pluggableauth__getCSRFToken)
+
+
+def enable_zope_csrf_checks():
+    from Products.PluggableAuthService import utils as pluggable_utils
+    if hasattr(pluggable_utils, 'checkCSRFToken'):
+        try:
+            pluggable_utils.checkCSRFToken.__code__ = \
+                pluggable_utils.checkCSRFToken._old_code
+        except AttributeError:
+            pass
+    if hasattr(pluggable_utils, 'getCSRFToken'):
+        try:
+            pluggable_utils.getCSRFToken.__code__ = \
+                pluggable_utils.getCSRFToken._old_code
+        except AttributeError:
+            pass
+addCleanUp(enable_zope_csrf_checks)

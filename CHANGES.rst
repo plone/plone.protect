@@ -14,7 +14,17 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- More Python 2 / 3 compatibility
+  [pbauer, MatthewWilkes]
+
+- Fix marmoset monkey patching for Python 3
+  [jensens]
+
+- Don't patch until zcml loaded
+  [davisagli]
+
+- Put the marmoset on a leash  (reset csrf-checks after tests)
+  [davisagli]
 
 
 4.0.1 (2018-07-16)
