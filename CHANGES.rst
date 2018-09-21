@@ -14,7 +14,17 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- More Python 2 / 3 compatibility
+  [pbauer, MatthewWilkes]
+
+- Fix marmoset monkey patching for Python 3
+  [jensens]
+
+- Don't patch until zcml loaded
+  [davisagli]
+
+- Put the marmoset on a leash  (reset csrf-checks after tests)
+  [davisagli]
 
 
 4.0.1 (2018-07-16)
@@ -50,9 +60,6 @@ Bug fixes:
   stored in a plone.scale.storage.ScalesDict.
   [davisagli]
 
-- Fix marmoset monkey patching for Python 3
-  [jensens]
-
 
 3.1.3 (2018-04-04)
 ------------------
@@ -63,8 +70,6 @@ Bug fixes:
   Warning: this gives a SyntaxError on Python 2.7.8 or lower.
   See `issue 74 <https://github.com/plone/plone.protect/issues/74>`_.
   [pbauer]
-- More Python 2 / 3 compatibility
-  [pbauer, MatthewWilkes]
 
 
 3.1.2 (2018-02-02)
