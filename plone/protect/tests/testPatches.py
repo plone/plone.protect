@@ -29,7 +29,7 @@ class TestCSRF(unittest.TestCase):
         )
         self.browser.getControl(name='password').value = SITE_OWNER_PASSWORD
         self.browser.getControl(name='confirm').value = SITE_OWNER_PASSWORD
-        self.browser.getForm().submit()
+        self.browser.getForm(action='manage_updateUserPassword').submit()
         self.assertEquals(
             self.browser.url,
             '%s/acl_users/users/manage_users?'
