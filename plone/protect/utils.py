@@ -6,8 +6,13 @@ from plone.keyring.keymanager import KeyManager
 from plone.protect.authenticator import createToken
 from zope.globalrequest import getRequest
 
-import inspect
 import logging
+import six
+
+if six.PY3:
+    from inspect import getfullargspec
+else:  # Python 2
+    from inspect import getargspec as getfullargspec
 
 
 SAFE_WRITE_KEY = 'plone.protect.safe_oids'
@@ -25,7 +30,7 @@ class protect(object):
         self.checkers = checkers
 
     def __call__(self, callable):
-        spec = inspect.getargspec(callable)
+        spec = getfullargspec(callable)
         args, defaults = spec[0], spec[3]
         try:
             r_index = args.index("REQUEST")
@@ -60,7 +65,7 @@ class protect(object):
         # Build a facade, with a reference to our locally-scoped _curried
         facade_globs = dict(_curried=_curried, _default=_default)
         name = callable.__name__
-        exec(_buildFacade(name, spec, callable.__doc__), facade_globs)
+        exec(_buildFacade(name, callable, callable.__doc__), facade_globs)
         return facade_globs[name]
 
 
