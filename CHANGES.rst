@@ -6,7 +6,9 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Adapt to changed visibility of `buildfacade` in
+  `AccessControl.requestmethod`. Requires AccessControl >= 4.0b6
+  [tschorr]
 
 New features:
 

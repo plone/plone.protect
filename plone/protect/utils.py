@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from AccessControl.requestmethod import _buildFacade
+from AccessControl.requestmethod import buildfacade
 from Acquisition import aq_parent
 from OFS.interfaces import IApplication
 from plone.keyring.keymanager import KeyManager
@@ -60,7 +60,7 @@ class protect(object):
         # Build a facade, with a reference to our locally-scoped _curried
         facade_globs = dict(_curried=_curried, _default=_default)
         name = callable.__name__
-        exec(_buildFacade(name, spec, callable.__doc__), facade_globs)
+        exec(buildfacade(name, callable, callable.__doc__), facade_globs)
         return facade_globs[name]
 
 
