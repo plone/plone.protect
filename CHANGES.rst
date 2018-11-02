@@ -10,10 +10,6 @@ Breaking changes:
   `AccessControl.requestmethod`. Requires AccessControl >= 4.0b6
   [tschorr]
 
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - More Python 2 / 3 compatibility
