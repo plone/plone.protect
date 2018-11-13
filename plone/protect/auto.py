@@ -58,7 +58,18 @@ except ImportError:
 
 logger = logging.getLogger('plone.protect')
 
+# protects visitors against clickjacking attacks
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 X_FRAME_OPTIONS = os.environ.get('PLONE_X_FRAME_OPTIONS', 'SAMEORIGIN')
+
+# configure the built in reflective XSS protection
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+X_XSS_PROTECTION = os.environ.get('PLONE_X_XSS_PROTECTION', '1; mode=block')
+
+# allows to opt-out of MIME type sniffing
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+X_CONTENT_TYPE_OPTIONS = os.environ.get('PLONE_X_CONTENT_TYPE_OPTIONS', 'nosniff')  # noqa: E501
+
 CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false').lower() in \
     ('true', 't', 'yes', 'y', '1')
 ANNOTATION_KEYS = (
@@ -141,14 +152,22 @@ class ProtectTransform(object):
         return self.transformIterable([result], encoding)
 
     def transformIterable(self, result, encoding):
-        """Apply the transform if required
-        """
-        # before anything, do the clickjacking protection
-        if (
-            X_FRAME_OPTIONS and
-            not self.request.response.getHeader('X-Frame-Options')
-        ):
-            self.request.response.setHeader('X-Frame-Options', X_FRAME_OPTIONS)
+        """Apply the transform if required."""
+        response = self.request.response
+
+        # before anything, add the security headers
+
+        name = 'X-Frame-Options'  # clickjacking protection
+        if X_FRAME_OPTIONS and not response.getHeader(name):
+            response.setHeader(name, X_FRAME_OPTIONS)
+
+        name = 'X-Xss-Protection'  # reflective XSS protection
+        if X_FRAME_OPTIONS and not response.getHeader(name):
+            response.setHeader(name, X_XSS_PROTECTION)
+
+        name = 'X-Content-Type-Options'  # opt-out of MIME type sniffing
+        if X_CONTENT_TYPE_OPTIONS and not response.getHeader(name):
+            response.setHeader(name, X_CONTENT_TYPE_OPTIONS)
 
         if CSRF_DISABLED:
             return

@@ -12,7 +12,12 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add support for ``X-Xss-Protection`` and ``X-Content-Type-Options`` response headers.
+  The ``X-Xss-Protection`` response header is a feature of Internet Explorer, Chrome and Safari that stops pages from loading when they detect reflected cross-site scripting (XSS) attacks;
+  its default value is set to ``1; mode=block``.
+  The ``X-Content-Type-Options`` response header is a marker used by the server to indicate that the MIME types advertised in the ``Content-Type`` headers should not be changed and must be followed;
+  its default value is set to ``nosniff``.
+  [hvelarde]
 
 Bug fixes:
 

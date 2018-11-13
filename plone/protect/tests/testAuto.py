@@ -210,3 +210,59 @@ class TestAutoTransform(unittest.TestCase):
             '<form action="http://nohost/myaction" method="POST">'
             '</form></body>\n</html>')], 'utf-8')
         self.failUnless(b'_authenticator' in result.serialize())
+
+
+class SecurityHeadersTestCase(unittest.TestCase):
+    """Test case to check security headers are added."""
+
+    layer = PROTECT_FUNCTIONAL_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+        self.request.response.setHeader('Content-Type', 'text/html')
+
+    def test_x_frame_options(self):
+        # default value
+        header = 'x-frame-options'
+        transform = ProtectTransform(self.portal, self.request)
+        transform.transformIterable(['\n'], 'utf-8')
+        response = self.request.response
+        self.assertIn(header, response.headers)
+        self.assertEqual(response.getHeader(header), 'SAMEORIGIN')
+
+        # if a value is already set, the header respects it
+        response.setHeader(header, 'foo')
+        transform.transformIterable(['\n'], 'utf-8')
+        self.assertIn(header, response.headers)
+        self.assertEqual(response.getHeader(header), 'foo')
+
+    def test_x_xss_protection(self):
+        # default value
+        header = 'x-xss-protection'
+        transform = ProtectTransform(self.portal, self.request)
+        transform.transformIterable(['\n'], 'utf-8')
+        response = self.request.response
+        self.assertIn(header, response.headers)
+        self.assertEqual(response.getHeader(header), '1; mode=block')
+
+        # if a value is already set, the header respects it
+        response.setHeader(header, 'foo')
+        transform.transformIterable(['\n'], 'utf-8')
+        self.assertIn(header, response.headers)
+        self.assertEqual(response.getHeader(header), 'foo')
+
+    def test_x_content_type_options(self):
+        # default value
+        header = 'x-content-type-options'
+        transform = ProtectTransform(self.portal, self.request)
+        transform.transformIterable(['\n'], 'utf-8')
+        response = self.request.response
+        self.assertIn(header, response.headers)
+        self.assertEqual(response.getHeader(header), 'nosniff')
+
+        # if a value is already set, the header respects it
+        response.setHeader(header, 'foo')
+        transform.transformIterable(['\n'], 'utf-8')
+        self.assertIn(header, response.headers)
+        self.assertEqual(response.getHeader(header), 'foo')
