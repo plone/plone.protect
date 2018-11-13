@@ -44,7 +44,6 @@ setup(
         'Zope2',
         'plone.transformchain',
         'repoze.xmliter>=0.3',
-        'five.globalrequest',
         'collective.monkeypatcher'
     ],
     extras_require={
