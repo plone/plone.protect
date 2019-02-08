@@ -38,8 +38,8 @@ class AuthenticatorTests(KeyringTestCase):
 
     def testIsHtmlInput(self):
         auth = self.view.authenticator()
-        self.failUnless(auth.startswith("<input"))
-        self.failUnless(auth.endswith("/>"))
+        self.assertTrue(auth.startswith("<input"))
+        self.assertTrue(auth.endswith("/>"))
 
     def testDiffersPerUser(self):
         one = self.view.authenticator()

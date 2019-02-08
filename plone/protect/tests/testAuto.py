@@ -11,7 +11,7 @@ from plone.protect.authenticator import AuthenticatorView
 from plone.protect.auto import ProtectTransform
 from plone.protect.auto import safeWrite
 from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from zExceptions import Forbidden
 from zope.component import getUtility
 
@@ -209,4 +209,4 @@ class TestAutoTransform(unittest.TestCase):
             '<html>\n<body>'
             '<form action="http://nohost/myaction" method="POST">'
             '</form></body>\n</html>')], 'utf-8')
-        self.failUnless(b'_authenticator' in result.serialize())
+        self.assertTrue(b'_authenticator' in result.serialize())

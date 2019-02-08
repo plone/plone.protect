@@ -46,7 +46,7 @@ class DecoratorTests(TestCase):
         wrapped = protect(checker)(funcWithRequest)
         request = []
         wrapped("one", "two", request)
-        self.failUnless(checker.request is request)
+        self.assertTrue(checker.request is request)
 
 
 class UrlTests(unittest.TestCase):
@@ -55,24 +55,24 @@ class UrlTests(unittest.TestCase):
 
     def testWithUrlFromSameDomain(self):
         url = addTokenToUrl('http://nohost/foobar', self.layer['request'])
-        self.failUnless('_authenticator=' in url)
+        self.assertTrue('_authenticator=' in url)
 
     def testWithUrlFromOtherDomain(self):
         url = addTokenToUrl('http://other/foobar', self.layer['request'])
-        self.failUnless('_authenticator=' not in url)
+        self.assertTrue('_authenticator=' not in url)
 
     def testAddingWithQueryParams(self):
         url = addTokenToUrl('http://nohost/foobar?foo=bar',
                             self.layer['request'])
-        self.failUnless('_authenticator=' in url)
+        self.assertTrue('_authenticator=' in url)
 
     def testWithoutRequest(self):
         url = addTokenToUrl('http://nohost/foobar')
-        self.failUnless('_authenticator=' in url)
+        self.assertTrue('_authenticator=' in url)
 
     def testWithNone(self):
         url = addTokenToUrl(None, self.layer['request'])
-        self.failUnless(not url)
+        self.assertTrue(not url)
 
 
 def test_suite():
