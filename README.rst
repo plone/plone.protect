@@ -179,7 +179,7 @@ If you just want to allow an object to be writable on a request...
 
 You can use the ``safeWrite`` helper function::
 
-    from plone.protect.auto import safeWrite
+    from plone.protect.utils import safeWrite
 
     safeWrite(myobj, request)
 
