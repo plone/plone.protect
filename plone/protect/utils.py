@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from AccessControl.requestmethod import buildfacade
 from Acquisition import aq_parent
+from BTrees.OOBTree import OOBTree
+from BTrees.IOBTree import IOBTree
 from OFS.interfaces import IApplication
 from plone.keyring.keymanager import KeyManager
 from plone.protect.authenticator import createToken
@@ -122,5 +124,11 @@ def safeWrite(obj, request=None):
     try:
         if obj._p_oid not in request.environ[SAFE_WRITE_KEY]:
             request.environ[SAFE_WRITE_KEY].append(obj._p_oid)
+        if isinstance(obj, (OOBTree, IOBTree)):
+            bucket = obj._firstbucket
+            while bucket:
+                if bucket._p_oid not in request.environ[SAFE_WRITE_KEY]:
+                    request.environ[SAFE_WRITE_KEY].append(bucket._p_oid)
+                bucket = bucket._next
     except AttributeError:
         LOGGER.debug('object you attempted to mark safe does not have an oid')

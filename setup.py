@@ -51,6 +51,7 @@ setup(
         'test': [
             'plone.app.testing',
             'Products.CMFPlone'
+            'zope.annotation',
         ],
     }
 )

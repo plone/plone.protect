@@ -13,6 +13,7 @@ from plone.protect.auto import safeWrite
 from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
 from plone.testing.zope import Browser
 from zExceptions import Forbidden
+from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 
 import transaction
@@ -184,6 +185,21 @@ class TestAutoChecks(unittest.TestCase):
         safeWrite(self.portal, self.request)
         transform = ProtectTransform(self.portal, self.request)
         transform._registered_objects = lambda: [self.portal]
+        self.assertTrue(transform._check())
+
+    def test_safe_write_large_oobtree(self):
+        annotations = IAnnotations(self.portal)
+        # Make sure the OOBTree has a second bucket. One bucket holds 30 items.
+        for idx in range(35):
+            key = '{0}{1}'.format(__name__, idx)
+            value = 'test'
+            annotations[key] = value
+        transaction.commit()
+        # Key that is alphabetically after the others ends up in the second
+        # bucket.
+        annotations['{0}{1}'.format(__name__, 'XXX999')] = 'abcd'
+        safeWrite(annotations.obj.__annotations__)
+        transform = ProtectTransform(self.portal, self.request)
         self.assertTrue(transform._check())
 
 
