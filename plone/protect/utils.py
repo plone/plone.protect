@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 from AccessControl.requestmethod import buildfacade
 from Acquisition import aq_parent
-from BTrees.OOBTree import OOBTree
+from BTrees.IFBTree import IFBTree
+from BTrees.IIBTree import IIBTree
 from BTrees.IOBTree import IOBTree
+from BTrees.LFBTree import LFBTree
+from BTrees.LLBTree import LLBTree
+from BTrees.LOBTree import LOBTree
+from BTrees.OIBTree import OIBTree
+from BTrees.OLBTree import OLBTree
+from BTrees.OOBTree import OOBTree
 from OFS.interfaces import IApplication
 from plone.keyring.keymanager import KeyManager
 from plone.protect.authenticator import createToken
@@ -124,7 +131,18 @@ def safeWrite(obj, request=None):
     try:
         if obj._p_oid not in request.environ[SAFE_WRITE_KEY]:
             request.environ[SAFE_WRITE_KEY].append(obj._p_oid)
-        if isinstance(obj, (OOBTree, IOBTree)):
+        btree_types = (
+            IFBTree,
+            IIBTree,
+            IOBTree,
+            LFBTree,
+            LLBTree,
+            LOBTree,
+            OIBTree,
+            OLBTree,
+            OOBTree,
+        )
+        if isinstance(obj, btree_types):
             bucket = obj._firstbucket
             while bucket:
                 if bucket._p_oid not in request.environ[SAFE_WRITE_KEY]:
