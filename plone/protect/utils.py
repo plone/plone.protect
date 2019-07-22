@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 from AccessControl.requestmethod import buildfacade
 from Acquisition import aq_parent
+from BTrees.IFBTree import IFBTree
+from BTrees.IIBTree import IIBTree
+from BTrees.IOBTree import IOBTree
+from BTrees.LFBTree import LFBTree
+from BTrees.LLBTree import LLBTree
+from BTrees.LOBTree import LOBTree
+from BTrees.OIBTree import OIBTree
+from BTrees.OLBTree import OLBTree
+from BTrees.OOBTree import OOBTree
 from OFS.interfaces import IApplication
 from plone.keyring.keymanager import KeyManager
 from plone.protect.authenticator import createToken
@@ -11,6 +20,17 @@ import logging
 
 
 SAFE_WRITE_KEY = 'plone.protect.safe_oids'
+BTREE_TYPES = (
+    IFBTree,
+    IIBTree,
+    IOBTree,
+    LFBTree,
+    LLBTree,
+    LOBTree,
+    OIBTree,
+    OLBTree,
+    OOBTree,
+)
 LOGGER = logging.getLogger('plone.protect')
 
 _default = []
@@ -122,5 +142,11 @@ def safeWrite(obj, request=None):
     try:
         if obj._p_oid not in request.environ[SAFE_WRITE_KEY]:
             request.environ[SAFE_WRITE_KEY].append(obj._p_oid)
+        if isinstance(obj, BTREE_TYPES):
+            bucket = obj._firstbucket
+            while bucket:
+                if bucket._p_oid not in request.environ[SAFE_WRITE_KEY]:
+                    request.environ[SAFE_WRITE_KEY].append(bucket._p_oid)
+                bucket = bucket._next
     except AttributeError:
         LOGGER.debug('object you attempted to mark safe does not have an oid')
