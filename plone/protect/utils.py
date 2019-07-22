@@ -20,6 +20,17 @@ import logging
 
 
 SAFE_WRITE_KEY = 'plone.protect.safe_oids'
+BTREE_TYPES = (
+    IFBTree,
+    IIBTree,
+    IOBTree,
+    LFBTree,
+    LLBTree,
+    LOBTree,
+    OIBTree,
+    OLBTree,
+    OOBTree,
+)
 LOGGER = logging.getLogger('plone.protect')
 
 _default = []
@@ -131,18 +142,7 @@ def safeWrite(obj, request=None):
     try:
         if obj._p_oid not in request.environ[SAFE_WRITE_KEY]:
             request.environ[SAFE_WRITE_KEY].append(obj._p_oid)
-        btree_types = (
-            IFBTree,
-            IIBTree,
-            IOBTree,
-            LFBTree,
-            LLBTree,
-            LOBTree,
-            OIBTree,
-            OLBTree,
-            OOBTree,
-        )
-        if isinstance(obj, btree_types):
+        if isinstance(obj, BTREE_TYPES):
             bucket = obj._firstbucket
             while bucket:
                 if bucket._p_oid not in request.environ[SAFE_WRITE_KEY]:
