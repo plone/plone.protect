@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.3 (2019-08-23)
+------------------
+
+Bug fixes:
+
+
+- When marking an OOBTree as safe, also mark its buckets as safe. Fixes issues with objects that have many annotations. (#88)
+
+
 4.1.2 (2019-02-13)
 ------------------
 

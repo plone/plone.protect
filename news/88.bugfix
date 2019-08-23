@@ -1,1 +1,0 @@
-When marking an OOBTree as safe, also mark its buckets as safe. Fixes issues with objects that have many annotations.
