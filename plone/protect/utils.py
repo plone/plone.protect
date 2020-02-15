@@ -45,8 +45,15 @@ class protect(object):
         self.checkers = checkers
 
     def __call__(self, callable):
-        spec = inspect.getargspec(callable)
-        args, defaults = spec[0], spec[3]
+        try:
+            spec = inspect.getfullargspec(callable)
+        except AttributeError:
+            # Python 2.7 compatibility
+            spec = inspect.getargspec(callable)
+
+        args = spec.args
+        defaults = spec.defaults
+
         try:
             r_index = args.index("REQUEST")
         except ValueError:
