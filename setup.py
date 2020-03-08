@@ -14,6 +14,7 @@ setup(
         open("CHANGES.rst").read()
     ),
     classifiers=[
+        "Development Status :: 6 - Mature",
         "Environment :: Web Environment",
         "Framework :: Plone",
         "Framework :: Plone :: 4.3",
