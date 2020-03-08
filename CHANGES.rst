@@ -8,6 +8,14 @@ Changelog
 
 .. towncrier release notes start
 
+3.1.5 (2020-03-09)
+------------------
+
+Bug fixes:
+
+
+- Documentation: fixed ``safeWrite`` location.  [maurits] (#0)
+
 
 3.1.4 (2018-06-04)
 ------------------
