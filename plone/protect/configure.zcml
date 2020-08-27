@@ -52,9 +52,9 @@
     <include package="collective.monkeypatcher" />
 
     <monkey:patch
-        zcml:condition="installed webdav.Lockable"
+        zcml:condition="installed OFS.Lockable"
         description="Special handling for write on read Zope2 locking issues"
-        class="webdav.Lockable.LockableItem"
+        class="OFS.Lockable.LockableItem"
         original="wl_lockmapping"
         replacement=".monkey.wl_lockmapping"
         preserveOriginal="True"
