@@ -32,7 +32,7 @@ setup(
     keywords='zope security CSRF',
     author='Plone Foundation',
     author_email='plone-developers@lists.sourceforge.net',
-    url='https://pypi.org/project/plone.protect',
+    url='https://github.com/plone/plone.protect',
     license='BSD',
     packages=find_packages(),
     namespace_packages=['plone', ],
