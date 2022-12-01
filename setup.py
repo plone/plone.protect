@@ -20,8 +20,9 @@ setup(
         "Framework :: Plone :: 5.2",
         "Framework :: Plone :: 6.0",
         "Framework :: Plone :: Core",
-        "Framework :: Zope2",
+        "Framework :: Zope :: 2",
         "Framework :: Zope :: 4",
+        "Framework :: Zope :: 5",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
@@ -51,7 +52,8 @@ setup(
         'Zope2',
         'plone.transformchain',
         'repoze.xmliter>=0.3',
-        'collective.monkeypatcher'
+        'collective.monkeypatcher',
+        'z3c.zcmlhook',
     ],
     extras_require={
         'test': [
