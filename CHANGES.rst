@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.7 (2022-12-02)
+------------------
+
+Bug fixes:
+
+
+- Add missing z3c.zcmlhook dependency.  [icemac] (#96)
+
+
 4.1.6 (2020-09-26)
 ------------------
 
