@@ -39,6 +39,7 @@ class TestUnprotectedView(BrowserView):
         if 'submit1' in self.request.form or 'submit2' in self.request.form:
             self.context.foo = 'bar'
             self.context._p_changed = True
+        self.request.response.setHeader('Content-Type', 'text/html')
         return """
 <html>
 <body>
