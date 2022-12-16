@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.8 (2022-12-16)
+------------------
+
+Bug fixes:
+
+
+- Testing: explicitly set response content type header to html.  [jeromeperrin] (#97)
+
+
 4.1.7 (2022-12-02)
 ------------------
 
