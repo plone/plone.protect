@@ -1,0 +1,39 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:protect="http://namespaces.plone.org/protect"
+    i18n_domain="plone">
+
+    <include package="plone.keyring" />
+    <include package="plone.transformchain" />
+
+    <include file="meta.zcml" />
+
+    <protect:loadConfiguration />
+
+    <browser:page
+       for="*"
+       name="authenticator"
+       class=".authenticator.AuthenticatorView"
+       permission="zope.Public"
+       allowed_interface=".interfaces.IAuthenticatorView"
+       />
+
+    <genericsetup:registerProfile
+        zcml:condition="installed Products.CMFCore"
+        name="default"
+        directory="profiles/default"
+        title="plone.protect configuration"
+        description="Local configuration for plone.protect"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        for="Products.CMFCore.interfaces.ISiteRoot"
+        />
+
+    <adapter
+        name="plone.protect.autocsrf"
+        factory=".auto.ProtectTransform"
+        />
+
+</configure>
