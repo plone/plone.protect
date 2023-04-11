@@ -70,7 +70,6 @@ class ProtectTransform:
     and no CSRF protection...
     """
 
-
     # should be last lxml related transform
     order = 9000
 
@@ -204,7 +203,7 @@ class ProtectTransform:
         """
         try:
             return self._check()
-        except:
+        except Exception:
             transaction.abort()
             logger.error(
                 "Error checking for CSRF. "
