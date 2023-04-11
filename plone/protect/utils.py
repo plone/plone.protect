@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl.requestmethod import buildfacade
 from Acquisition import aq_parent
 from BTrees.IFBTree import IFBTree
@@ -19,7 +18,7 @@ import inspect
 import logging
 
 
-SAFE_WRITE_KEY = 'plone.protect.safe_oids'
+SAFE_WRITE_KEY = "plone.protect.safe_oids"
 BTREE_TYPES = (
     IFBTree,
     IIBTree,
@@ -31,7 +30,7 @@ BTREE_TYPES = (
     OLBTree,
     OOBTree,
 )
-LOGGER = logging.getLogger('plone.protect')
+LOGGER = logging.getLogger("plone.protect")
 
 _default = []
 
@@ -39,8 +38,7 @@ _default = []
 # It should probably be updated to use the decorator module.
 
 
-class protect(object):
-
+class protect:
     def __init__(self, *checkers):
         self.checkers = checkers
 
@@ -61,7 +59,7 @@ class protect(object):
 
         arglen = len(args)
         if defaults is not None:
-            defaults = list(zip(args[arglen - len(defaults):], defaults))
+            defaults = list(zip(args[arglen - len(defaults) :], defaults))
             arglen -= len(defaults)
 
         def _curried(*args, **kw):
@@ -99,23 +97,23 @@ def addTokenToUrl(url, req=None, manager=None):
     if req is None or not url.startswith(req.SERVER_URL):
         # only transforms urls to same site
         return url
-    if getattr(req, 'environ', _default) is _default:
+    if getattr(req, "environ", _default) is _default:
         # TestRequests have no environ.
         token = createToken(manager=manager)
-    elif '_auth_token' not in req.environ:
+    elif "_auth_token" not in req.environ:
         # Let's cache this value since this could be called
         # many times for one request.
         token = createToken(manager=manager)
-        req.environ['_auth_token'] = token
+        req.environ["_auth_token"] = token
     else:
-        token = req.environ['_auth_token']
+        token = req.environ["_auth_token"]
 
-    if '_authenticator' not in url:
-        if '?' not in url:
-            url += '?'
+    if "_authenticator" not in url:
+        if "?" not in url:
+            url += "?"
         else:
-            url += '&'
-        url += '_authenticator=' + token
+            url += "&"
+        url += "_authenticator=" + token
     return url
 
 
@@ -140,9 +138,9 @@ def getRoot(context):
 def safeWrite(obj, request=None):
     if request is None:
         request = getRequest()
-    if request is None or getattr(request, 'environ', _default) is _default:
+    if request is None or getattr(request, "environ", _default) is _default:
         # Request not found or it is a TestRequest without an environment.
-        LOGGER.debug('could not mark object as a safe write')
+        LOGGER.debug("could not mark object as a safe write")
         return
     if SAFE_WRITE_KEY not in request.environ:
         request.environ[SAFE_WRITE_KEY] = []
@@ -156,4 +154,4 @@ def safeWrite(obj, request=None):
                     request.environ[SAFE_WRITE_KEY].append(bucket._p_oid)
                 bucket = bucket._next
     except AttributeError:
-        LOGGER.debug('object you attempted to mark safe does not have an oid')
+        LOGGER.debug("object you attempted to mark safe does not have an oid")

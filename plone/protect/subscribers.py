@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.protect.utils import getRoot
@@ -20,12 +19,12 @@ except ImportError:
     from zope.app.component.hooks import getSite
 
 
-LOGGER = logging.getLogger('plone.protect')
+LOGGER = logging.getLogger("plone.protect")
 
 _ring_rotation_schedules = (
-    ('_system', 60 * 60 * 24 * 7),  # weekly
-    ('_forms', 60 * 60 * 24),  # daily
-    ('_anon', 60 * 60 * 24),  # daily
+    ("_system", 60 * 60 * 24 * 7),  # weekly
+    ("_forms", 60 * 60 * 24),  # daily
+    ("_anon", 60 * 60 * 24),  # daily
 )
 
 
@@ -35,7 +34,7 @@ def _rotate(manager):
         try:
             ring = manager[ring_name]
             if (ring.last_rotation + check_period) < current_time:
-                LOGGER.info('auto rotating keyring %s' % ring_name)
+                LOGGER.info("auto rotating keyring %s" % ring_name)
                 ring.rotate()
         except KeyError:
             continue
@@ -63,5 +62,5 @@ def onUserLogsIn(event):
         if req:
             url = req.URL
         else:
-            url = ''
-        LOGGER.warn('cannot find key manager for url %s' % url)
+            url = ""
+        LOGGER.warn("cannot find key manager for url %s" % url)

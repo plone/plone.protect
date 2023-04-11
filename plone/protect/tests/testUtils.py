@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
 from plone.protect.utils import addTokenToUrl
 from plone.protect.utils import protect
@@ -18,13 +17,11 @@ def funcWithRequest(one, two, REQUEST=None):
 
 
 class DummyChecker:
-
     def __call__(self, request):
         self.request = request
 
 
 class DecoratorTests(TestCase):
-
     def testFunctionMustHaveRequest(self):
         protector = protect()
         self.assertRaises(ValueError, protector, funcWithoutRequest)
@@ -50,28 +47,26 @@ class DecoratorTests(TestCase):
 
 
 class UrlTests(unittest.TestCase):
-
     layer = PROTECT_FUNCTIONAL_TESTING
 
     def testWithUrlFromSameDomain(self):
-        url = addTokenToUrl('http://nohost/foobar', self.layer['request'])
-        self.assertTrue('_authenticator=' in url)
+        url = addTokenToUrl("http://nohost/foobar", self.layer["request"])
+        self.assertTrue("_authenticator=" in url)
 
     def testWithUrlFromOtherDomain(self):
-        url = addTokenToUrl('http://other/foobar', self.layer['request'])
-        self.assertTrue('_authenticator=' not in url)
+        url = addTokenToUrl("http://other/foobar", self.layer["request"])
+        self.assertTrue("_authenticator=" not in url)
 
     def testAddingWithQueryParams(self):
-        url = addTokenToUrl('http://nohost/foobar?foo=bar',
-                            self.layer['request'])
-        self.assertTrue('_authenticator=' in url)
+        url = addTokenToUrl("http://nohost/foobar?foo=bar", self.layer["request"])
+        self.assertTrue("_authenticator=" in url)
 
     def testWithoutRequest(self):
-        url = addTokenToUrl('http://nohost/foobar')
-        self.assertTrue('_authenticator=' in url)
+        url = addTokenToUrl("http://nohost/foobar")
+        self.assertTrue("_authenticator=" in url)
 
     def testWithNone(self):
-        url = addTokenToUrl(None, self.layer['request'])
+        url = addTokenToUrl(None, self.layer["request"])
         self.assertTrue(not url)
 
 

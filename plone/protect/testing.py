@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
@@ -14,39 +13,39 @@ class ProtectedLayer(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
         # load ZCML
         import plone.protect
-        xmlconfig.file('configure.zcml', plone.protect,
-                       context=configurationContext)
-        xmlconfig.file('test.zcml', plone.protect.tests,
-                       context=configurationContext)
+
+        xmlconfig.file("configure.zcml", plone.protect, context=configurationContext)
+        xmlconfig.file("test.zcml", plone.protect.tests, context=configurationContext)
 
     def setUpPloneSite(self, portal):
         # install into the Plone site
-        applyProfile(portal, 'plone.protect:default')
+        applyProfile(portal, "plone.protect:default")
         self.portal = portal
 
     def tearDownZope(self, app):
         from plone.protect.monkey import enable_zope_csrf_checks
 
+
 PROTECT_FIXTURE = ProtectedLayer()
 PROTECT_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(PROTECT_FIXTURE,), name="PROTECT_FIXTURE:Functional")
+    bases=(PROTECT_FIXTURE,), name="PROTECT_FIXTURE:Functional"
+)
 
 
 class TestUnprotectedView(BrowserView):
-
     def __call__(self):
         # on posts, write something to the db
-        if 'submit1' in self.request.form or 'submit2' in self.request.form:
-            self.context.foo = 'bar'
+        if "submit1" in self.request.form or "submit2" in self.request.form:
+            self.context.foo = "bar"
             self.context._p_changed = True
-        self.request.response.setHeader('Content-Type', 'text/html')
+        self.request.response.setHeader("Content-Type", "text/html")
         return """
 <html>
 <body>
 <form id="one" method="POST">
     <input type="submit" name="submit1" value="submit1" />
 </form>
-<form id="two" action="%s" METHOD="post">
+<form id="two" action="{}" METHOD="post">
     <input type="submit" name="submit2" value="submit2" />
 </form>
 <form id="three" method="GET">
@@ -65,14 +64,13 @@ class TestUnprotectedView(BrowserView):
     <input type="submit" name="submit7" value="submit7" />
 </form>
 </body>
-</html>""" % (
+</html>""".format(
             self.request.URL,
         )
 
 
 class TestSafeToWriteObject(BrowserView):
-
     def __call__(self):
-        self.context.foo = 'bar'
+        self.context.foo = "bar"
         safeWrite(self)
-        return 'done'
+        return "done"
