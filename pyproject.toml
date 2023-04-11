@@ -78,4 +78,8 @@ Zope = [
   'plone.batching', 'plone.registry', 'plone.schema','plone.z3cform',
   'Products.CMFCore', 'Products.CMFDynamicViewFTI',
 ]
+'plone.app.testing' = [
+  'zope.testing',
+  'plone.testing',
+]
 python-dateutil = ['dateutil']

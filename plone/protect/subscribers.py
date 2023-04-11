@@ -6,17 +6,12 @@ from Products.PluggableAuthService.interfaces.events import IUserLoggedInEvent
 from zope.component import adapter
 from zope.component import ComponentLookupError
 from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 
 import logging
 import time
-
-
-try:
-    from zope.component.hooks import getSite
-except ImportError:
-    from zope.app.component.hooks import getSite
 
 
 LOGGER = logging.getLogger("plone.protect")

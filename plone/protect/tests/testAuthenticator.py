@@ -1,4 +1,5 @@
 from AccessControl import getSecurityManager
+from hashlib import sha1 as sha
 from plone.protect import createToken
 from plone.protect import CustomCheckAuthenticator
 from plone.protect import protect
@@ -12,14 +13,7 @@ from zExceptions import Forbidden
 from ZPublisher.HTTPRequest import HTTPRequest
 
 import hmac
-import six
 import sys
-
-
-try:
-    from hashlib import sha1 as sha
-except ImportError:
-    import sha
 
 
 class AuthenticatorTests(KeyringTestCase):

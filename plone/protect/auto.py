@@ -13,6 +13,7 @@ from plone.protect.utils import getRoot
 from plone.protect.utils import getRootKeyManager
 from plone.protect.utils import SAFE_WRITE_KEY
 from plone.protect.utils import safeWrite  # noqa b/w compat import
+from plone.scale.storage import ScalesDict
 from plone.transformchain.interfaces import ITransform
 from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.serializer import XMLSerializer
@@ -23,42 +24,23 @@ from zExceptions import Forbidden
 from zope.component import adapter
 from zope.component import ComponentLookupError
 from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.interface import Interface
 
 import itertools
 import logging
 import os
-import pkg_resources
-import six
 import traceback
 import transaction
 import types
 
-
-try:
-    from zope.component.hooks import getSite
-except:
-    from zope.app.component.hooks import getSite
-
-try:
-    pkg_resources.get_distribution("plone.app.blob")
-except pkg_resources.DistributionNotFound:
-    ATBlob = None
-else:
-    from plone.app.blob.content import ATBlob
-
-try:
-    from plone.scale.storage import ScalesDict
-except ImportError:
-    ScalesDict = None
 
 # do not hard depend here on plone.portlets (for Plone 7)
 try:
     from plone.portlets.interfaces import IPortletAssignment
 except ImportError:
     IPortletAssignment = None
-
 
 logger = logging.getLogger("plone.protect")
 
@@ -76,7 +58,7 @@ ANNOTATION_KEYS = (
     "plone.portlets.contextassignments",
     "plone.scale",
 )
-SAFE_TYPES = tuple(t for t in [ATBlob, ScalesDict] if t is not None)
+SAFE_TYPES = (ScalesDict,)
 
 
 @implementer(ITransform)
@@ -273,7 +255,10 @@ class ProtectTransform:
                     safe_oids = self.request.environ[SAFE_WRITE_KEY]
                 safe = True
                 for obj in registered:
-                    if IPortletAssignment is not None and IPortletAssignment.providedBy(obj):
+                    if (
+                        IPortletAssignment is not None
+                        and IPortletAssignment.providedBy(obj)
+                    ):
                         continue
                     if getattr(obj, "_p_oid", False) in safe_oids:
                         continue

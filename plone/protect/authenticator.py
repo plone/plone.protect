@@ -1,4 +1,5 @@
 from AccessControl import getSecurityManager
+from hashlib import sha1 as sha
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IAuthenticatorView
 from Products.Five import BrowserView
@@ -8,13 +9,6 @@ from zope.interface import implementer
 from ZPublisher.HTTPRequest import HTTPRequest
 
 import hmac
-import six
-
-
-try:
-    from hashlib import sha1 as sha
-except ImportError:
-    import sha
 
 
 ANONYMOUS_USER = "Anonymous User"
