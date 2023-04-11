@@ -20,7 +20,7 @@ from repoze.xmliter.utils import getHTMLSerializer
 from urllib.parse import urlencode
 from urllib.parse import urlparse
 from zExceptions import Forbidden
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import ComponentLookupError
 from zope.component import getUtility
 from zope.interface import implementer
@@ -80,6 +80,7 @@ SAFE_TYPES = tuple(t for t in [ATBlob, ScalesDict] if t is not None)
 
 
 @implementer(ITransform)
+@adapter(Interface, Interface)  # any context, any request
 class ProtectTransform:
     """
     XXX Need to be extremely careful with everything we do in here
@@ -87,7 +88,6 @@ class ProtectTransform:
     and no CSRF protection...
     """
 
-    adapts(Interface, Interface)  # any context, any request
 
     # should be last lxml related transform
     order = 9000
