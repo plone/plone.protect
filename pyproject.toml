@@ -42,6 +42,9 @@ profile = "plone"
 [tool.black]
 target-version = ["py38"]
 
+[tool.codespell]
+ignore-words-list = "discreet,fo,parms"
+
 [tool.dependencychecker]
 Zope = [
   # Zope own provided namespaces

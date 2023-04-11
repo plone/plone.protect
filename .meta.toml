@@ -3,3 +3,7 @@
 [meta]
 template = "default"
 commit-id = "a9dd65cc"
+codespell_ignores = "discreet,fo,parms"
+
+
+
