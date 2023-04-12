@@ -1,5 +1,5 @@
-from plone.protect.authenticator import check as CheckAuthenticator  # noqa: F401
-from plone.protect.authenticator import createToken  # noqa: F401
-from plone.protect.authenticator import CustomCheckAuthenticator  # noqa: F401
-from plone.protect.postonly import check as PostOnly  # noqa: F401
-from plone.protect.utils import protect  # noqa: F401
+from plone.protect.authenticator import check as CheckAuthenticator
+from plone.protect.authenticator import createToken
+from plone.protect.authenticator import CustomCheckAuthenticator
+from plone.protect.postonly import check as PostOnly
+from plone.protect.utils import protect
