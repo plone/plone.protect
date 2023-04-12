@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_parent
 from BTrees.OOBTree import OOBTree
@@ -14,45 +13,28 @@ from plone.protect.utils import getRoot
 from plone.protect.utils import getRootKeyManager
 from plone.protect.utils import SAFE_WRITE_KEY
 from plone.protect.utils import safeWrite  # noqa b/w compat import
+from plone.scale.storage import ScalesDict
 from plone.transformchain.interfaces import ITransform
 from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.serializer import XMLSerializer
 from repoze.xmliter.utils import getHTMLSerializer
-from six.moves.urllib.parse import urlencode
-from six.moves.urllib.parse import urlparse
+from urllib.parse import urlencode
+from urllib.parse import urlparse
 from zExceptions import Forbidden
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import ComponentLookupError
 from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.interface import Interface
 
 import itertools
 import logging
 import os
-import pkg_resources
-import six
 import traceback
 import transaction
 import types
 
-
-try:
-    from zope.component.hooks import getSite
-except:
-    from zope.app.component.hooks import getSite
-
-try:
-    pkg_resources.get_distribution('plone.app.blob')
-except pkg_resources.DistributionNotFound:
-    ATBlob = None
-else:
-    from plone.app.blob.content import ATBlob
-
-try:
-    from plone.scale.storage import ScalesDict
-except ImportError:
-    ScalesDict = None
 
 # do not hard depend here on plone.portlets (for Plone 7)
 try:
@@ -60,38 +42,40 @@ try:
 except ImportError:
     IPortletAssignment = None
 
+logger = logging.getLogger("plone.protect")
 
-logger = logging.getLogger('plone.protect')
-
-X_FRAME_OPTIONS = os.environ.get('PLONE_X_FRAME_OPTIONS', 'SAMEORIGIN')
-CSRF_DISABLED = os.environ.get('PLONE_CSRF_DISABLED', 'false').lower() in \
-    ('true', 't', 'yes', 'y', '1')
-ANNOTATION_KEYS = (
-    'plone.contentrules.localassignments',
-    'syndication_settings',
-    'plone.portlets.contextassignments',
-    'plone.scale',
+X_FRAME_OPTIONS = os.environ.get("PLONE_X_FRAME_OPTIONS", "SAMEORIGIN")
+CSRF_DISABLED = os.environ.get("PLONE_CSRF_DISABLED", "false").lower() in (
+    "true",
+    "t",
+    "yes",
+    "y",
+    "1",
 )
-SAFE_TYPES = tuple(t for t in [ATBlob, ScalesDict] if t is not None)
+ANNOTATION_KEYS = (
+    "plone.contentrules.localassignments",
+    "syndication_settings",
+    "plone.portlets.contextassignments",
+    "plone.scale",
+)
+SAFE_TYPES = (ScalesDict,)
 
 
 @implementer(ITransform)
-class ProtectTransform(object):
+@adapter(Interface, Interface)  # any context, any request
+class ProtectTransform:
     """
     XXX Need to be extremely careful with everything we do in here
     since an error here would mean the transform is skipped
     and no CSRF protection...
     """
-    adapts(Interface, Interface)  # any context, any request
 
     # should be last lxml related transform
     order = 9000
 
     key_manager = None
     site = None
-    safe_views = (
-        'plone_lock_operations',
-    )
+    safe_views = ("plone_lock_operations",)
 
     def __init__(self, published, request):
         self.published = published
@@ -109,13 +93,16 @@ class ProtectTransform(object):
 
         # hhmmm, this is kind of taken right out of plone.app.theming
         # maybe this logic(parsing dom) should be someone central?
-        contentType = self.request.response.getHeader('Content-Type')
-        if contentType is None or not contentType.startswith('text/html'):
+        contentType = self.request.response.getHeader("Content-Type")
+        if contentType is None or not contentType.startswith("text/html"):
             return None
 
-        contentEncoding = self.request.response.getHeader('Content-Encoding')
-        if contentEncoding and contentEncoding in ('zip', 'deflate',
-                                                   'compress',):
+        contentEncoding = self.request.response.getHeader("Content-Encoding")
+        if contentEncoding and contentEncoding in (
+            "zip",
+            "deflate",
+            "compress",
+        ):
             return None
 
         if isinstance(result, list) and len(result) == 1:
@@ -123,20 +110,21 @@ class ProtectTransform(object):
             if not result[0].strip():
                 return None
         try:
-            result = getHTMLSerializer(
-                result, pretty_print=False, encoding=encoding)
+            result = getHTMLSerializer(result, pretty_print=False, encoding=encoding)
             # We are going to force html output here always as XHTML
             # output does odd character encodings
             result.serializer = html.tostring
             return result
         except (AttributeError, TypeError, etree.ParseError):
             # XXX handle something special?
-            logger.warn('error parsing dom, failure to add csrf '
-                        'token to response for url %s' % self.request.URL)
+            logger.warn(
+                "error parsing dom, failure to add csrf "
+                "token to response for url %s" % self.request.URL
+            )
             return None
 
     def transformBytes(self, result, encoding):
-        result = result.decode(encoding, 'ignore')
+        result = result.decode(encoding, "ignore")
         return self.transformIterable([result], encoding)
 
     def transformString(self, result, encoding):
@@ -146,14 +134,10 @@ class ProtectTransform(object):
         return self.transformIterable([result], encoding)
 
     def transformIterable(self, result, encoding):
-        """Apply the transform if required
-        """
+        """Apply the transform if required"""
         # before anything, do the clickjacking protection
-        if (
-            X_FRAME_OPTIONS and
-            not self.request.response.getHeader('X-Frame-Options')
-        ):
-            self.request.response.setHeader('X-Frame-Options', X_FRAME_OPTIONS)
+        if X_FRAME_OPTIONS and not self.request.response.getHeader("X-Frame-Options"):
+            self.request.response.setHeader("X-Frame-Options", X_FRAME_OPTIONS)
 
         if CSRF_DISABLED:
             return
@@ -164,7 +148,7 @@ class ProtectTransform(object):
 
         # if on confirm view, do not check, just abort and
         # immediately transform without csrf checking again
-        if IConfirmView.providedBy(self.request.get('PUBLISHED')):
+        if IConfirmView.providedBy(self.request.get("PUBLISHED")):
             # abort it, show the confirmation...
             transaction.abort()
             return self.transform(result, encoding)
@@ -176,7 +160,7 @@ class ProtectTransform(object):
             return
 
         try:
-            tool = getToolByName(context, 'portal_url', None)
+            tool = getToolByName(context, "portal_url", None)
             if tool:
                 self.site = tool.getPortalObject()
         except TypeError:
@@ -201,7 +185,7 @@ class ProtectTransform(object):
         return self.transform(result, encoding)
 
     def getContext(self):
-        published = self.request.get('PUBLISHED')
+        published = self.request.get("PUBLISHED")
         if isinstance(published, types.MethodType):
             return published.__self__
         return aq_parent(published)
@@ -219,28 +203,32 @@ class ProtectTransform(object):
         """
         try:
             return self._check()
-        except:
+        except Exception:
             transaction.abort()
-            logger.error("Error checking for CSRF. "
-                         "Transaction will be aborted since the request "
-                         "is now unsafe:\n%s" % (
-                             traceback.format_exc()))
+            logger.error(
+                "Error checking for CSRF. "
+                "Transaction will be aborted since the request "
+                "is now unsafe:\n%s" % (traceback.format_exc())
+            )
             raise
 
     def _registered_objects(self):
         app = self.request.PARENTS[-1]
-        return list(itertools.chain.from_iterable([
-            conn._registered_objects
-            # skip the 'temporary' connection since it stores session objects
-            # which get written all the time
-            for name, conn in app._p_jar.connections.items()
-            if name != 'temporary'
-        ]))
+        return list(
+            itertools.chain.from_iterable(
+                [
+                    conn._registered_objects
+                    # skip the 'temporary' connection since it stores session objects
+                    # which get written all the time
+                    for name, conn in app._p_jar.connections.items()
+                    if name != "temporary"
+                ]
+            )
+        )
 
     def _check(self):
         registered = self._registered_objects()
-        if len(registered) > 0 and \
-                not IDisableCSRFProtection.providedBy(self.request):
+        if len(registered) > 0 and not IDisableCSRFProtection.providedBy(self.request):
             if self.getViewName() in self.safe_views:
                 return True
             # Okay, we're writing here, we need to protect!
@@ -248,8 +236,10 @@ class ProtectTransform(object):
                 check(self.request, manager=self.key_manager)
                 return True
             except ComponentLookupError:
-                logger.info('Can not find key manager for CSRF protection. '
-                            'This should not happen.')
+                logger.info(
+                    "Can not find key manager for CSRF protection. "
+                    "This should not happen."
+                )
                 raise
             except Forbidden:
                 # XXX
@@ -260,13 +250,16 @@ class ProtectTransform(object):
                 # need to be portlet assignments. XXX needs to be fixed
                 # somehow...
                 safe_oids = []
-                if SAFE_WRITE_KEY in getattr(self.request, 'environ', {}):
+                if SAFE_WRITE_KEY in getattr(self.request, "environ", {}):
                     safe_oids = self.request.environ[SAFE_WRITE_KEY]
                 safe = True
                 for obj in registered:
-                    if IPortletAssignment is not None and IPortletAssignment.providedBy(obj):
+                    if (
+                        IPortletAssignment is not None
+                        and IPortletAssignment.providedBy(obj)
+                    ):
                         continue
-                    if getattr(obj, '_p_oid', False) in safe_oids:
+                    if getattr(obj, "_p_oid", False) in safe_oids:
                         continue
                     if SAFE_TYPES and isinstance(obj, SAFE_TYPES):
                         continue
@@ -284,14 +277,13 @@ class ProtectTransform(object):
                     safe = False
                     break
                 if not safe:
-                    if self.request.REQUEST_METHOD != 'GET':
+                    if self.request.REQUEST_METHOD != "GET":
                         # only try to be "smart" with GET requests
                         raise
                     logger.info(
-                        '{0:s}\naborting transaction due to no CSRF '
-                        'protection on url {1:s}'.format(
-                            '\n'.join(traceback.format_stack()),
-                            self.request.URL
+                        "{:s}\naborting transaction due to no CSRF "
+                        "protection on url {:s}".format(
+                            "\n".join(traceback.format_stack()), self.request.URL
                         )
                     )
                     transaction.abort()
@@ -305,15 +297,15 @@ class ProtectTransform(object):
                     #   write on read, without a POST request and we don't
                     #   know what to do with it gracefully.
                     resp = self.request.response
-                    ct = resp.getHeader('Content-Type', '') or ''
-                    if self.site and (
-                            resp.status in (301, 302) or 'text/html' in ct):
+                    ct = resp.getHeader("Content-Type", "") or ""
+                    if self.site and (resp.status in (301, 302) or "text/html" in ct):
                         data = self.request.form.copy()
-                        data['original_url'] = self.request.URL
-                        resp.redirect('%s/@@confirm-action?%s' % (
-                            self.site.absolute_url(),
-                            urlencode(data)
-                        ))
+                        data["original_url"] = self.request.URL
+                        resp.redirect(
+                            "{}/@@confirm-action?{}".format(
+                                self.site.absolute_url(), urlencode(data)
+                            )
+                        )
                         return False
         return True
 
@@ -328,7 +320,6 @@ class ProtectTransform(object):
         return True
 
     def transform(self, result, encoding):
-
         result = self.parseTree(result, encoding)
         if result is None:
             return None
@@ -339,12 +330,11 @@ class ProtectTransform(object):
         except ComponentLookupError:
             if self.site is not None:
                 logger.warn(
-                    'Keyring not found on site. This should not happen',
-                    exc_info=True
+                    "Keyring not found on site. This should not happen", exc_info=True
                 )
             return result
 
-        for form in root.cssselect('form'):
+        for form in root.cssselect("form"):
             # XXX should we only do POST? If we're logged in and
             # it's an internal form, I'm inclined to say no...
             # method = form.attrib.get('method', 'GET').lower()
@@ -353,36 +343,38 @@ class ProtectTransform(object):
 
             # some get forms we definitely do not want to protect.
             # for now, we know search we do not want to protect
-            method = form.attrib.get('method', 'GET').lower()
-            action = form.attrib.get('action', '').strip()
-            if method == 'get' and '@@search' in action:
+            method = form.attrib.get("method", "GET").lower()
+            action = form.attrib.get("action", "").strip()
+            if method == "get" and "@@search" in action:
                 continue
-            action = form.attrib.get('action', '').strip()
+            action = form.attrib.get("action", "").strip()
             if not self.isActionInSite(action, url):
                 continue
             # check if the token is already on the form..
             hidden = form.cssselect('[name="_authenticator"]')
             if len(hidden) == 0:
                 hidden = etree.Element("input")
-                hidden.attrib['name'] = '_authenticator'
-                hidden.attrib['type'] = 'hidden'
-                hidden.attrib['value'] = token
+                hidden.attrib["name"] = "_authenticator"
+                hidden.attrib["type"] = "hidden"
+                hidden.attrib["value"] = token
                 form.append(hidden)
 
-        if self.site is not None and not root.cssselect('#protect-script'):
+        if self.site is not None and not root.cssselect("#protect-script"):
             # Alternative: add this in the resource registry.
             site_url = self.site.absolute_url()
-            elements = root.cssselect('body')
+            elements = root.cssselect("body")
             if len(elements):
                 body = elements[0]
                 protect_script = etree.Element("script")
-                protect_script.attrib.update({
-                    'type': "application/javascript",
-                    'src': "%s/++resource++protect.js" % site_url,
-                    'data-site-url': site_url,
-                    'data-token': token,
-                    'id': 'protect-script'
-                })
+                protect_script.attrib.update(
+                    {
+                        "type": "application/javascript",
+                        "src": "%s/++resource++protect.js" % site_url,
+                        "data-site-url": site_url,
+                        "data-token": token,
+                        "id": "protect-script",
+                    }
+                )
                 body.append(protect_script)
 
         return result

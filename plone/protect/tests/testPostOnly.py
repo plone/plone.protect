@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.protect.postonly import check
 from unittest import makeSuite
 from unittest import TestCase
@@ -8,13 +7,12 @@ from ZPublisher.HTTPRequest import HTTPRequest
 
 
 class PostOnlyTests(TestCase):
-
     def makeRequest(self, method):
-        return HTTPRequest(None,
-                           dict(REQUEST_METHOD=method,
-                                SERVER_PORT="80",
-                                SERVER_NAME="localhost"),
-                           None)
+        return HTTPRequest(
+            None,
+            dict(REQUEST_METHOD=method, SERVER_PORT="80", SERVER_NAME="localhost"),
+            None,
+        )
 
     def testNonHTTPRequestAllowed(self):
         check("not a request")

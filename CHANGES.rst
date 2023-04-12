@@ -11,8 +11,8 @@ Changelog
 4.1.8 (2022-12-16)
 ------------------
 
-Bug fixes:
 
+Bug fixes:
 
 - Testing: explicitly set response content type header to html.  [jeromeperrin] (#97)
 

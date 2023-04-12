@@ -1,0 +1,9 @@
+# Generated from:
+# https://github.com/plone/meta/tree/master/config/default
+[meta]
+template = "default"
+commit-id = "a9dd65cc"
+codespell_ignores = "discreet,fo,parms"
+
+
+

@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
+from hashlib import sha1 as sha
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.interfaces import IAuthenticatorView
 from Products.Five import BrowserView
@@ -9,13 +9,6 @@ from zope.interface import implementer
 from ZPublisher.HTTPRequest import HTTPRequest
 
 import hmac
-import six
-
-
-try:
-    from hashlib import sha1 as sha
-except ImportError:
-    import sha
 
 
 ANONYMOUS_USER = "Anonymous User"
@@ -36,7 +29,7 @@ def _is_equal(val1, val2):
     """
     constant time comparison
     """
-    if not isinstance(val1, six.string_types) or not isinstance(val2, six.string_types):
+    if not isinstance(val1, str) or not isinstance(val2, str):
         return False
     if len(val1) != len(val2):
         return False
@@ -51,23 +44,23 @@ def _getKeyring(username, manager=None):
         manager = getUtility(IKeyManager)
     if username == ANONYMOUS_USER:
         try:
-            ring = manager[u'_anon']
+            ring = manager["_anon"]
         except KeyError:
             # no anonymous key defined.
             # XXX should we even bother allowing to verify?
-            ring = manager[u'_system']
+            ring = manager["_system"]
     else:
         try:
-            ring = manager[u"_forms"]
+            ring = manager["_forms"]
         except KeyError:
-            ring = manager[u'_system']
+            ring = manager["_system"]
     return ring
 
 
-def _verify_request(request, extra='', name='_authenticator', manager=None):
+def _verify_request(request, extra="", name="_authenticator", manager=None):
     auth = request.get(name)
     if auth is None:
-        auth = request.getHeader('X-CSRF-TOKEN')
+        auth = request.getHeader("X-CSRF-TOKEN")
         if auth is None:
             return False
     if isinstance(auth, list):
@@ -77,60 +70,57 @@ def _verify_request(request, extra='', name='_authenticator', manager=None):
     user = _getUserName()
     ring = _getKeyring(user, manager=manager)
 
-    if six.PY3:
-        user = user.encode('utf-8')
-        extra = extra.encode('utf-8')
+    user = user.encode("utf-8")
+    extra = extra.encode("utf-8")
 
     for key in ring:
         if key is None:
             continue
-        correct = hmac.new(key.encode('utf-8'), user + extra, sha).hexdigest()
+        correct = hmac.new(key.encode("utf-8"), user + extra, sha).hexdigest()
         if _is_equal(correct, auth):
             return True
 
     return False
 
+
 # We had to rename because previous hotfixes patched _verify
 _verify = _verify_request
 
 
-def createToken(extra='', manager=None):
+def createToken(extra="", manager=None):
     user = _getUserName()
     ring = _getKeyring(user, manager=manager)
     secret = ring.random()
-    if six.PY3:
-        secret = secret.encode('utf-8')
-        user = user.encode('utf-8')
-        extra = extra.encode('utf-8')
+    secret = secret.encode("utf-8")
+    user = user.encode("utf-8")
+    extra = extra.encode("utf-8")
     return hmac.new(secret, user + extra, sha).hexdigest()
 
 
 @implementer(IAuthenticatorView)
 class AuthenticatorView(BrowserView):
-
-    def token(self, extra=''):
+    def token(self, extra=""):
         return createToken(extra)
 
-    def authenticator(self, extra='', name='_authenticator'):
+    def authenticator(self, extra="", name="_authenticator"):
         auth = createToken(extra)
-        return '<input type="hidden" name="%s" value="%s"/>' % (name, auth)
+        return f'<input type="hidden" name="{name}" value="{auth}"/>'
 
-    def verify(self, extra='', name="_authenticator"):
+    def verify(self, extra="", name="_authenticator"):
         return _verify_request(self.request, extra=extra, name=name)
 
 
-def check(request, extra='', name="_authenticator", manager=None):
+def check(request, extra="", name="_authenticator", manager=None):
     if isinstance(request, HTTPRequest):
-        if not _verify_request(request, extra=extra,
-                               name=name, manager=manager):
-            raise Forbidden('Form authenticator is invalid.')
+        if not _verify_request(request, extra=extra, name=name, manager=manager):
+            raise Forbidden("Form authenticator is invalid.")
 
 
-def CustomCheckAuthenticator(extra='', name='_authenticator'):
+def CustomCheckAuthenticator(extra="", name="_authenticator"):
     def _check(request):
         return check(request, extra=extra, name=name)
+
     return _check
 
 
-__all__ = ["AuthenticatorView", "check", "createToken",
-           "CustomCheckAuthenticator"]
+__all__ = ["AuthenticatorView", "check", "createToken", "CustomCheckAuthenticator"]

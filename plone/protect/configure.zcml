@@ -1,69 +1,73 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:monkey="http://namespaces.plone.org/monkey"
-    i18n_domain="plone">
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
 
-    <include package="AccessControl"
-             zcml:condition="installed AccessControl.rolemanager" />
-    <include package="plone.keyring" />
-    <include package="plone.transformchain" />
+  <include
+      package="AccessControl"
+      zcml:condition="installed AccessControl.rolemanager"
+      />
+  <include package="plone.keyring" />
+  <include package="plone.transformchain" />
 
-    <browser:page
-       for="*"
-       name="authenticator"
-       class=".authenticator.AuthenticatorView"
-       permission="zope.Public"
-       allowed_interface=".interfaces.IAuthenticatorView"
-       />
+  <browser:page
+      name="authenticator"
+      for="*"
+      class=".authenticator.AuthenticatorView"
+      allowed_interface=".interfaces.IAuthenticatorView"
+      permission="zope.Public"
+      />
 
-    <genericsetup:registerProfile
-        zcml:condition="installed Products.CMFCore"
-        name="default"
-        directory="profiles/default"
-        title="plone.protect configuration"
-        description="Local configuration for plone.protect"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        for="Products.CMFCore.interfaces.ISiteRoot"
-        />
+  <genericsetup:registerProfile
+      name="default"
+      title="plone.protect configuration"
+      description="Local configuration for plone.protect"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      directory="profiles/default"
+      zcml:condition="installed Products.CMFCore"
+      />
 
-    <adapter
-        name="plone.protect.autocsrf"
-        factory=".auto.ProtectTransform"
-        />
+  <adapter
+      factory=".auto.ProtectTransform"
+      name="plone.protect.autocsrf"
+      />
 
-    <browser:resource
-        name="protect.js"
-        file="protect.js"
-        />
+  <browser:resource
+      name="protect.js"
+      file="protect.js"
+      />
 
-    <browser:page
-        name="confirm-action"
-        for="*"
-        class=".views.ConfirmView"
-        template="confirm.pt"
-        permission="zope2.View"
-    />
+  <browser:page
+      name="confirm-action"
+      for="*"
+      class=".views.ConfirmView"
+      template="confirm.pt"
+      permission="zope2.View"
+      />
 
-    <subscriber handler=".subscribers.onUserLogsIn" />
+  <subscriber handler=".subscribers.onUserLogsIn" />
 
-    <include package="collective.monkeypatcher" />
+  <include package="collective.monkeypatcher" />
 
-    <monkey:patch
-        zcml:condition="installed OFS.Lockable"
-        description="Special handling for write on read Zope2 locking issues"
-        class="OFS.Lockable.LockableItem"
-        original="wl_lockmapping"
-        replacement=".monkey.wl_lockmapping"
-        preserveOriginal="True"
-        />
+  <monkey:patch
+      original="wl_lockmapping"
+      replacement=".monkey.wl_lockmapping"
+      class="OFS.Lockable.LockableItem"
+      description="Special handling for write on read Zope2 locking issues"
+      preserveOriginal="True"
+      zcml:condition="installed OFS.Lockable"
+      />
 
-    <include package="z3c.zcmlhook" file="meta.zcml" />
+  <include
+      package="z3c.zcmlhook"
+      file="meta.zcml"
+      />
 
-    <zcml:customAction
-        handler=".monkey.disable_zope_csrf_checks"
-        />
+  <zcml:customAction handler=".monkey.disable_zope_csrf_checks" />
 
 </configure>
