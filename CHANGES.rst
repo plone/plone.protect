@@ -8,6 +8,30 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0 (2023-04-15)
+------------------
+
+New features:
+
+
+- Drop support for Python <3.8. (5390ebc6)
+
+
+Bug fixes:
+
+
+- Do not hard-depend on `plone.portlets`.
+  Prepare for Plone with portlets optional.
+  @jensens (#99)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs] (a9dd65cc)
+
+
 4.1.8 (2022-12-16)
 ------------------
 
