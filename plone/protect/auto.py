@@ -5,6 +5,7 @@ from BTrees.OOBTree import OOBTree
 from lxml import etree
 from lxml import html
 from plone.keyring.interfaces import IKeyManager
+from plone.portlets.interfaces import IPortletAssignment
 from plone.protect.authenticator import check
 from plone.protect.authenticator import createToken
 from plone.protect.authenticator import isAnonymousUser
@@ -53,12 +54,6 @@ try:
     from plone.scale.storage import ScalesDict
 except ImportError:
     ScalesDict = None
-
-# do not hard depend here on plone.portlets (for Plone 7)
-try:
-    from plone.portlets.interfaces import IPortletAssignment
-except ImportError:
-    IPortletAssignment = None
 
 
 logger = logging.getLogger('plone.protect')
@@ -264,7 +259,7 @@ class ProtectTransform(object):
                     safe_oids = self.request.environ[SAFE_WRITE_KEY]
                 safe = True
                 for obj in registered:
-                    if IPortletAssignment is not None and IPortletAssignment.providedBy(obj):
+                    if IPortletAssignment.providedBy(obj):
                         continue
                     if getattr(obj, '_p_oid', False) in safe_oids:
                         continue
