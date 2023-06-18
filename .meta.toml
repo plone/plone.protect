@@ -1,9 +1,17 @@
 # Generated from:
 # https://github.com/plone/meta/tree/master/config/default
+# See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "a9dd65cc"
+commit-id = "7723aeaf"
 codespell_ignores = "discreet,fo,parms"
 
+[flake8]
+extra_lines = """
+per-file-ignores =
+    plone/protect/__init__.py:F401
+"""
 
-
+[pyproject]
+codespell_ignores = "fo,parms"
+dependencies_ignores = "['plone.portlets',]"

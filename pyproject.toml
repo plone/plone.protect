@@ -1,8 +1,9 @@
 # Generated from:
 # https://github.com/plone/meta/tree/master/config/default
+# See the inline comments on how to expand/tweak this configuration file
 [tool.towncrier]
-filename = "CHANGES.rst"
 directory = "news/"
+filename = "CHANGES.rst"
 title_format = "{version} ({project_date})"
 underlines = ["-", ""]
 
@@ -44,6 +45,13 @@ target-version = ["py38"]
 
 [tool.codespell]
 ignore-words-list = "discreet,fo,parms"
+skip = "*.po,"
+##
+# Add extra configuration options in .meta.toml:
+#  [pyproject]
+#  codespell_ignores = "foo,bar"
+#  codespell_skip = "*.po,*.map,package-lock.json"
+##
 
 [tool.dependencychecker]
 Zope = [
@@ -51,11 +59,13 @@ Zope = [
   'App', 'OFS', 'Products.Five', 'Products.OFSP', 'Products.PageTemplates',
   'Products.SiteAccess', 'Shared', 'Testing', 'ZPublisher', 'ZTUtils',
   'Zope2', 'webdav', 'zmi',
+  # ExtensionClass own provided namespaces
+  'ExtensionClass', 'ComputedAttribute', 'MethodObject',
   # Zope dependencies
   'AccessControl', 'Acquisition', 'AuthEncoding', 'beautifulsoup4', 'BTrees',
-  'cffi', 'Chameleon', 'DateTime', 'DocumentTemplate', 'ExtensionClass',
+  'cffi', 'Chameleon', 'DateTime', 'DocumentTemplate',
   'MultiMapping', 'multipart', 'PasteDeploy', 'Persistence', 'persistent',
-  'pycparser', 'python-gettext', 'pytz', 'RestrictedPython', 'roman', 'six',
+  'pycparser', 'python-gettext', 'pytz', 'RestrictedPython', 'roman',
   'soupsieve', 'transaction', 'waitress', 'WebOb', 'WebTest', 'WSGIProxy2',
   'z3c.pt', 'zc.lockfile', 'ZConfig', 'zExceptions', 'ZODB', 'zodbpickle',
   'zope.annotation', 'zope.browser', 'zope.browsermenu', 'zope.browserpage',
@@ -81,8 +91,44 @@ Zope = [
   'plone.batching', 'plone.registry', 'plone.schema','plone.z3cform',
   'Products.CMFCore', 'Products.CMFDynamicViewFTI',
 ]
-'plone.app.testing' = [
-  'zope.testing',
-  'plone.testing',
-]
 python-dateutil = ['dateutil']
+ignore-packages = ['plone.portlets',]
+
+##
+# Add extra configuration options in .meta.toml:
+#  [pyproject]
+#  dependencies_ignores = "['zestreleaser.towncrier']"
+#  dependencies_mappings = [
+#    "gitpython = ['git']",
+#    "pygithub = ['github']",
+#  ]
+#  """
+##
+
+[tool.check-manifest]
+ignore = [
+    ".editorconfig",
+    ".meta.toml",
+    ".pre-commit-config.yaml",
+    "tox.ini",
+    ".flake8",
+    "mx.ini",
+
+]
+##
+# Add extra configuration options in .meta.toml:
+#  [pyproject]
+#  check_manifest_ignores = """
+#      "*.map.js",
+#      "*.pyc",
+#  """
+##
+
+
+##
+# Add extra configuration options in .meta.toml:
+#  [pyproject]
+#  extra_lines = """
+#  _your own configuration lines_
+#  """
+##
