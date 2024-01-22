@@ -39,7 +39,6 @@ setup(
     zip_safe=False,
     python_requires=">=3.8",
     install_requires=[
-        "BTrees",
         "collective.monkeypatcher",
         "lxml[cssselect]",
         "plone.keyring",
@@ -51,7 +50,7 @@ setup(
         "repoze.xmliter",
         "setuptools",
         "z3c.zcmlhook",
-        "zope.annotation",
+        "Zope",
     ],
     extras_require={
         "test": [
