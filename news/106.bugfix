@@ -1,0 +1,2 @@
+Remove tinymce patch. `tinymce.utils.XHR` has been removed in TinyMCE 6.
+[petschki]
