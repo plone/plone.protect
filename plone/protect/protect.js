@@ -30,6 +30,8 @@ if(script){
     });
   }
   if(window.tinymce && window.tinymce.util.XHR && window.tinymce.util.XHR._send === undefined){
+    // Fix for TinyMCE < 6 in Plone < 6.1
+    // TODO: Can be removed in Plone 6.1
     window.tinymce.util.XHR._send = window.tinymce.util.XHR.send;
     var xhr = window.tinymce.util.XHR;
     var _send = xhr.send;
