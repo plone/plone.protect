@@ -1,2 +1,2 @@
-Remove tinymce patch. `tinymce.utils.XHR` has been removed in TinyMCE 6.
+Fix tinymce patch of `tinymce.utils.XHR` to not break in TinyMCE 6 where this has been removed.
 [petschki]
