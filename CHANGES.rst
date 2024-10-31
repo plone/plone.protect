@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.2 (2024-10-31)
+------------------
+
+Bug fixes:
+
+
+- Fix tinymce patch of `tinymce.utils.XHR` to not break in TinyMCE 6 where this has been removed.
+  [petschki] (#106)
+
+
 5.0.1 (2024-01-22)
 ------------------
 
