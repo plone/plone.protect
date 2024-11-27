@@ -1,5 +1,5 @@
 from plone.protect.postonly import check
-from unittest import makeSuite
+from unittest import defaultTestLoader
 from unittest import TestCase
 from unittest import TestSuite
 from zExceptions import Forbidden
@@ -25,6 +25,6 @@ class PostOnlyTests(TestCase):
 
 
 def test_suite():
-    suite = TestSuite()
-    suite.addTest(makeSuite(PostOnlyTests))
-    return suite
+    return TestSuite((
+        defaultTestLoader.loadTestsFromTestCase(PostOnlyTests),
+    ))

@@ -7,7 +7,7 @@ from plone.protect.authenticator import AuthenticatorView
 from plone.protect.authenticator import check
 from plone.protect.tests.case import KeyringTestCase
 from plone.protect.tests.case import MockRequest
-from unittest import makeSuite
+from unittest import defaultTestLoader
 from unittest import TestSuite
 from zExceptions import Forbidden
 from ZPublisher.HTTPRequest import HTTPRequest
@@ -144,8 +144,8 @@ class DecoratorTests(KeyringTestCase):
 
 
 def test_suite():
-    suite = TestSuite()
-    suite.addTest(makeSuite(AuthenticatorTests))
-    suite.addTest(makeSuite(VerifyTests))
-    suite.addTest(makeSuite(DecoratorTests))
-    return suite
+    return TestSuite((
+        defaultTestLoader.loadTestsFromTestCase(AuthenticatorTests),
+        defaultTestLoader.loadTestsFromTestCase(VerifyTests),
+        defaultTestLoader.loadTestsFromTestCase(DecoratorTests),
+    ))
