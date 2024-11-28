@@ -25,6 +25,4 @@ class PostOnlyTests(TestCase):
 
 
 def test_suite():
-    return TestSuite((
-        defaultTestLoader.loadTestsFromTestCase(PostOnlyTests),
-    ))
+    return TestSuite((defaultTestLoader.loadTestsFromTestCase(PostOnlyTests),))

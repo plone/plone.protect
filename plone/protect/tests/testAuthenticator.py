@@ -144,8 +144,10 @@ class DecoratorTests(KeyringTestCase):
 
 
 def test_suite():
-    return TestSuite((
-        defaultTestLoader.loadTestsFromTestCase(AuthenticatorTests),
-        defaultTestLoader.loadTestsFromTestCase(VerifyTests),
-        defaultTestLoader.loadTestsFromTestCase(DecoratorTests),
-    ))
+    return TestSuite(
+        (
+            defaultTestLoader.loadTestsFromTestCase(AuthenticatorTests),
+            defaultTestLoader.loadTestsFromTestCase(VerifyTests),
+            defaultTestLoader.loadTestsFromTestCase(DecoratorTests),
+        )
+    )

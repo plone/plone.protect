@@ -71,7 +71,9 @@ class UrlTests(unittest.TestCase):
 
 
 def test_suite():
-    return TestSuite((
-        defaultTestLoader.loadTestsFromTestCase(DecoratorTests),
-        defaultTestLoader.loadTestsFromTestCase(UrlTests),
-    ))
+    return TestSuite(
+        (
+            defaultTestLoader.loadTestsFromTestCase(DecoratorTests),
+            defaultTestLoader.loadTestsFromTestCase(UrlTests),
+        )
+    )
