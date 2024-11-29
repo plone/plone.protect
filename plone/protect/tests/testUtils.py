@@ -1,7 +1,7 @@
 from plone.protect.testing import PROTECT_FUNCTIONAL_TESTING
 from plone.protect.utils import addTokenToUrl
 from plone.protect.utils import protect
-from unittest import makeSuite
+from unittest import defaultTestLoader
 from unittest import TestCase
 from unittest import TestSuite
 
@@ -71,7 +71,9 @@ class UrlTests(unittest.TestCase):
 
 
 def test_suite():
-    suite = TestSuite()
-    suite.addTest(makeSuite(DecoratorTests))
-    suite.addTest(makeSuite(UrlTests))
-    return suite
+    return TestSuite(
+        (
+            defaultTestLoader.loadTestsFromTestCase(DecoratorTests),
+            defaultTestLoader.loadTestsFromTestCase(UrlTests),
+        )
+    )
