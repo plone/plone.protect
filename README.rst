@@ -214,7 +214,9 @@ override it at your proxy server, or you can set the environment variable of
 ``PLONE_X_FRAME_OPTIONS`` to whatever value you'd like plone.protect to set
 this to globally.
 
-You can opt out of this by making the environment variable empty.
+You can opt out of this by making the environment variable empty, which will
+remove the header entirely. Setting a custom value in a custom view will
+override the environment variable.
 
 
 Disable All Automatic CSRF Protection
