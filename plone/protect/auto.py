@@ -136,8 +136,17 @@ class ProtectTransform:
     def transformIterable(self, result, encoding):
         """Apply the transform if required"""
         # before anything, do the clickjacking protection
-        if X_FRAME_OPTIONS and not self.request.response.getHeader("X-Frame-Options"):
+        current_x_frame_options = self.request.response.getHeader("X-Frame-Options")
+        empty = ("", "None", None)
+
+        if X_FRAME_OPTIONS in empty and current_x_frame_options in empty:
+            self.request.response.headers.pop("x-frame-options", None)
+        elif X_FRAME_OPTIONS not in empty and current_x_frame_options is None:
+            # env var is set and header is not, set it
             self.request.response.setHeader("X-Frame-Options", X_FRAME_OPTIONS)
+        else:
+            # Header present, leave it be regardless of env var
+            assert current_x_frame_options or current_x_frame_options == ""
 
         if CSRF_DISABLED:
             return
