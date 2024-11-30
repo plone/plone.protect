@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.3 (2024-11-30)
+------------------
+
+Tests
+
+
+- Fix removed `unittest.makeSuite` in python 3.13.
+  [petschki] (#121)
+
+
 5.0.2 (2024-10-31)
 ------------------
 
