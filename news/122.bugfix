@@ -1,0 +1,3 @@
+In login event subscriber, do not fail if request is not found.
+This probably only happens in tests, not in real world usage.
+[maurits]
