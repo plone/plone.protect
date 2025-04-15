@@ -43,7 +43,8 @@ def onUserLogsIn(event):
     """
     # disable csrf protection on login requests
     req = getRequest()
-    alsoProvides(req, IDisableCSRFProtection)
+    if req:
+        alsoProvides(req, IDisableCSRFProtection)
 
     try:
         manager = getUtility(IKeyManager)
