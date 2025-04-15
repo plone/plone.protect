@@ -1,0 +1,2 @@
+Modify plone.protect.confirm to use a simpler template that does not assume Classic UI is installed.
+[cihanandac]
