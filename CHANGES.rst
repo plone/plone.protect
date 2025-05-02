@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.4 (2025-05-02)
+------------------
+
+Bug fixes:
+
+
+- In login event subscriber, do not fail if request is not found.
+  This probably only happens in tests, not in real world usage.
+  [maurits] (#122)
+
+
 5.0.3 (2024-11-30)
 ------------------
 
