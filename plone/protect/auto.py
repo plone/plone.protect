@@ -301,6 +301,10 @@ class ProtectTransform:
                     if self.site and (resp.status in (301, 302) or "text/html" in ct):
                         data = self.request.form.copy()
                         data["original_url"] = self.request.URL
+                        # NOTE: self.key_manager is initialized in the transformIterable
+                        # method, which calls the check method and thus this
+                        # _check method.
+                        data["_authenticator"] = createToken(manager=self.key_manager)
                         resp.redirect(
                             "{}/@@confirm-action?{}".format(
                                 self.site.absolute_url(), urlencode(data)
