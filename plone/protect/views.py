@@ -1,3 +1,4 @@
+from plone.protect.authenticator import check
 from plone.protect.interfaces import IConfirmView
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
@@ -7,7 +8,9 @@ from zope.interface import implementer
 
 @implementer(IConfirmView)
 class ConfirmView(BrowserView):
+
     def __call__(self):
+        check(self.request)
         urltool = getToolByName(self.context, "portal_url")
         original_url = getattr(self.request, "original_url", "")
         if not original_url or not urltool.isURLInPortal(original_url):
