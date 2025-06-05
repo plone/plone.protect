@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.5 (2025-06-05)
+------------------
+
+Bug fixes:
+
+
+- Do not allow the confirm-action view to be called without a valid authenticator. [ale-rt] (#131)
+
+
 5.0.4 (2025-05-02)
 ------------------
 
