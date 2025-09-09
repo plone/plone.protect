@@ -9,7 +9,7 @@ codespell_ignores = "discreet,fo,parms"
 [flake8]
 extra_lines = """
 per-file-ignores =
-    plone/protect/__init__.py:F401
+    src/plone/protect/__init__.py:F401
 """
 
 [pyproject]
