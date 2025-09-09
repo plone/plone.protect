@@ -31,10 +31,9 @@ setup(
     author_email="plone-developers@lists.sourceforge.net",
     url="https://github.com/plone/plone.protect",
     license="BSD",
-    packages=find_packages(),
-    namespace_packages=[
-        "plone",
-    ],
+    packages=find_packages("src"),
+    namespace_packages=["plone"],
+    package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
     python_requires=">=3.8",
