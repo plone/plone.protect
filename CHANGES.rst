@@ -8,6 +8,31 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0a1 (2025-09-10)
+--------------------
+
+Breaking changes:
+
+
+- Modify plone.protect.confirm to use a simpler template that does not assume Classic UI is installed.
+  [cihanandac] (#3953)
+
+
+Bug fixes:
+
+
+- In login event subscriber, do not fail if request is not found.
+  This probably only happens in tests, not in real world usage.
+  [maurits] (#122)
+- Do not allow the confirm-action view to be called without a valid authenticator. [ale-rt] (#131)
+
+
+Internal:
+
+
+- Move distribution to src layout [gforcada] (#4217)
+
+
 5.0.3 (2024-11-30)
 ------------------
 
