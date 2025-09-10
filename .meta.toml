@@ -3,13 +3,13 @@
 # See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "ee6cf9f6"
+commit-id = "2.0.1.dev0"
 codespell_ignores = "discreet,fo,parms"
 
 [flake8]
 extra_lines = """
 per-file-ignores =
-    plone/protect/__init__.py:F401
+    src/plone/protect/__init__.py:F401
 """
 
 [pyproject]
