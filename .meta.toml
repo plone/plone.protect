@@ -15,3 +15,6 @@ per-file-ignores =
 [pyproject]
 codespell_ignores = "fo,parms"
 dependencies_ignores = "['plone.portlets',]"
+
+[tox]
+test_matrix = {"6.2" = ["*"]}
