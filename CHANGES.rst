@@ -8,6 +8,23 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0a2 (2025-10-28)
+--------------------
+
+Breaking changes:
+
+
+- Replace ``pkg_resources`` namespace with PEP 420 native namespace.
+  Support only Plone 6.2 and Python 3.10+. (#3928)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs]
+
+
 6.0.0a1 (2025-09-10)
 --------------------
 
