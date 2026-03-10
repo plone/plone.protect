@@ -17,7 +17,6 @@ from zope.globalrequest import getRequest
 import inspect
 import logging
 
-
 SAFE_WRITE_KEY = "plone.protect.safe_oids"
 BTREE_TYPES = (
     IFBTree,

@@ -13,7 +13,6 @@ from zope.interface import alsoProvides
 import logging
 import time
 
-
 LOGGER = logging.getLogger("plone.protect")
 
 _ring_rotation_schedules = (
