@@ -10,7 +10,6 @@ from ZPublisher.HTTPRequest import HTTPRequest
 
 import hmac
 
-
 ANONYMOUS_USER = "Anonymous User"
 
 

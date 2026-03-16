@@ -35,7 +35,6 @@ import traceback
 import transaction
 import types
 
-
 # do not hard depend here on plone.portlets (for Plone 7)
 try:
     from plone.portlets.interfaces import IPortletAssignment
