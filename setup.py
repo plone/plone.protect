@@ -43,7 +43,6 @@ setup(
         "Products.GenericSetup",
         "Products.PluggableAuthService",
         "repoze.xmliter",
-        "setuptools",
         "z3c.zcmlhook",
         "Zope",
     ],
