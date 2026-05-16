@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = "6.0.0a3.dev0"
+version = "6.0.0.dev0"
 
 setup(
     name="plone.protect",
