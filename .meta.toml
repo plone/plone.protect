@@ -3,7 +3,7 @@
 # See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "2.8.0"
+commit-id = "2.13.1"
 codespell_ignores = "discreet,fo,parms"
 
 [flake8]
@@ -17,4 +17,4 @@ codespell_ignores = "fo,parms"
 dependencies_ignores = "['plone.portlets',]"
 
 [tox]
-test_matrix = {"6.2" = ["*"]}
+test_matrix = {"6.3" = ["*"], "6.2" = ["*"]}
